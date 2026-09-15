@@ -1,0 +1,101 @@
+\ZSFNewColumn
+\StartChapter{Lineare Gleichungssysteme}
+
+\begin{runintext}
+Ein \ZSFkeyword*{Lineares Gleichungssystem} (LGS) der Form $A \cdot x = b$ besteht aus einer Koeffizientenmatrix $A \in \R^{m \times n}$, dem Unbekanntenvektor $x \in \R^n$ und der rechten Seite $b \in \R^m$. Dabei ist $m$ die Anzahl der Zeilen (Gleichungen) und $n$ die Anzahl der Spalten (Unbekannten).
+\end{runintext}
+
+\SubsectionBar[sec:row-echelon]{Zeilenstufenform \ZSFref{sec:hub-rank-deficit}}
+\ZSFindex{Lineares Gleichungssystem}
+\ZSFindexsee{LGS}{Lineares Gleichungssystem}
+\ZSFindex{Rang}
+\ZSFindexsee{rang}{Rang}
+\ZSFindex{Rangbestimmung}
+\ZSFindex{Pivot}
+\ZSFindex{Freie Parameter}
+\ZSFindex{Lösungsmenge eines LGS}
+\ZSFindex[Vertraglichkeitsbedingungen]{Verträglichkeitsbedingungen}
+\ZSFindex{Elementare Zeilenumformungen}
+\ZSFindexsee{Gausssches Eliminationsverfahren}{Gauss-Algorithmus}
+
+\begin{runintext}
+Jedes LGS kann durch wiederholtes Ausführen der drei zulässigen elementaren Zeilenoperationen (\ZSFkeyword{Gauss-Algorithmus}) in die \ZSFkeyword{Zeilenstufenform} gebracht werden:
+\end{runintext}
+
+\begin{ZSFlist}[Zulässige Zeilenoperationen]
+  \ZSFItem{Zeilen vertauschen}
+  \ZSFItem{Ein Vielfaches einer Zeile zu einer anderen addieren}
+  \ZSFItem{Eine Zeile mit einem Skalar $\neq 0$ multiplizieren}
+\end{ZSFlist}
+
+\textVorBox{Visualisierung der Zeilenstufenform (r = Rang, m = Zeilen, n = Spalten):}
+% Platz fuer die Beschriftung der OBEREN Klammer (brace-3): \drawbrace und
+% \annote zeichnen als Overlay ohne Hoehe, \ZSFbraceRoom stellt den Platz nur
+% nach dem Block. Eine Klammer ueber dem Block braucht ihn davor.
+\ZSFgap[M]
+\[
+\begin{ZSFaugmatrix}[rows=roomy, delims=none]{7}{1}
+  \tikzmark[xshift=-1pt,yshift=4pt]{t}x_1 & x_2 & x_3 & \dotsm & x_j & \dotsm & x_n\tikzmark[xshift=0,yshift=4pt]{u} & 1 \\ \hline
+  \tikzmark[xshift=-8pt,yshift=1ex]{x}\oasterisk & \asterisk & \asterisk & \dotsm & \asterisk & \dotsm & \asterisk & b_1\tikzmark[xshift=8pt,yshift=1ex]{v} \\ \cline{1-2}
+  0 & 0 & \multicolumn{1}{|c}{\oasterisk} & \dotsm & \asterisk & \dotsm & \asterisk & b_2 \\ \cline{3-3}
+  0 & 0 & 0 & \dotsm & \asterisk & \dotsm & \asterisk & b_3 \\
+  \vdots & \vdots & \vdots &  & \vdots & & \vdots & \vdots \\
+  0 & 0 & 0 & \dotsm & \multicolumn{1}{|c}{\oasterisk} & \dotsm & \asterisk & b_r\tikzmark[xshift=8pt,yshift=-1ex]{w} \\ \cline{5-7}
+  0 & 0 & 0 & \dotsm & 0 & \dotsm & 0 & b_{r+1} \\
+  \vdots & \vdots & \vdots &  & \vdots & & \vdots & \vdots \\
+  \tikzmark[xshift=-8pt,yshift=-1ex]{y}0 & 0 & 0 & \dotsm & 0 & \dotsm & 0 & b_m
+\end{ZSFaugmatrix}
+\]
+
+\drawbrace[brace mirrored, thick, black!60]{x}{y}
+\drawbrace[brace, thick, black!60]{v}{w}
+\drawbrace[brace, thick, black!60]{t}{u}
+
+\annote[above=13mm, left=9pt, rotate=90]{brace-1}{\text{\ZSFfontDiagramLabel $m$: Zeilen}}
+\annote[above=5mm, right=9pt, rotate=-90]{brace-2}{\text{\ZSFfontDiagramLabel $r$: Rang}}
+\annote[above=3pt]{brace-3}{\text{\ZSFfontDiagramLabel $n$: Spalten}}
+
+\ZSFindex[Losbarkeit eines LGS]{Lösbarkeit eines LGS}
+\textVorBox{Kriterien für die Lösbarkeit von $Ax = b$:}
+\begin{ZSFtable}[header=false, colsep=tight]{Z{0.7} | Z{1.3}}
+  \ZSFlabel{Keine Lösung:} & $r < m$ und $b_i \neq 0$ für mind. ein $i > r$ \\ \hline
+  \ZSFlabel{Eindeutige Lösung:} & $r = n = m$ \\ \hline
+  \ZSFlabel{Unendlich Lösungen:} & $r < n$ und $b_i = 0 \ \forall i > r$ \newline Anzahl freie Parameter: $n - r$ \\ \hline
+  \ZSFlabel{Lösbar für bel. b:} & $r = m$ (voller Zeilenrang) \newline oder: $m = n$ und $Ax = 0$ hat nur triviale Lösung \\ \hline
+  \ZSFlabel{Eind. lösbar für bel. b:} & $r = m$ und $m = n$
+\end{ZSFtable}
+
+\ZSFindex{Fredholm-Alternative}
+\begin{defbox}[Fredholm-Alternative][weight=quiet]
+$Ax = b$ ist lösbar ($b \in \Im(A)$) genau dann, wenn $b$ senkrecht auf allen Lösungen des adjungierten LGS $A^T \cdot y = 0$ steht:
+\[ b \perp \Ker(A^T) \]
+\end{defbox}
+\ZSFNewColumn
+\SubsectionBar[sec:homogeneous-lgs]{Homogenes Lineares Gleichungssystem}
+\ZSFindexsee{HLGS}{Homogenes lineares Gleichungssystem}
+\ZSFindexsee{Rangdefekt}{Rangdefizit}
+
+\begin{runintext}
+Ein LGS heisst \ZSFkeyword[Homogenes lineares Gleichungssystem]{homogen}, wenn die rechte Seite gleich dem Nullvektor ist ($Ax = 0$):
+\end{runintext}
+
+\[
+\begin{ZSFaugmatrix}[delims=none]{4}{1}
+  x_1 & x_2 & \dotsm & x_n & 1 \\ \hline
+  a_{11} & a_{12} & \dotsm & a_{1n} & 0 \tikzmark[xshift=5pt,yshift=1ex]{vh} \\
+  a_{21} & a_{22} & \dotsm & a_{2n} & 0 \\
+  \vdots & \vdots &  & \vdots & \vdots \\
+  a_{m1} & a_{m2} & \dotsm & a_{mn} & 0 \tikzmark[xshift=5pt,yshift=-1ex]{wh}
+\end{ZSFaugmatrix}
+\]
+
+\drawbrace[brace, thick, black!60]{vh}{wh}
+\annote[above=6.5mm, right=9pt, rotate=-90]{brace-4}{\text{\ZSFfontDiagramLabel Nullvektor}}
+
+\begin{defbox}[Lösungsverhalten homogenes LGS \ZSFref{sec:determinant-connections}][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Hat immer die \ZSFkeyword[Triviale Lösung]{triviale Lösung} $x = 0$.}
+    \ZSFItem{Hat \ZSFdanger{ausschliesslich} die triviale Lösung, wenn der Rang vollständig ist ($r = n$, $\det(A) \neq 0$).}
+    \ZSFItem{Hat zusätzliche nichttriviale Lösungen, wenn ein \ZSFkeyword{Rangdefizit} vorliegt ($r < n$, $\det(A) = 0$).}
+  \end{ZSFlist}
+\end{defbox}

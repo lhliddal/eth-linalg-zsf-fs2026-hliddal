@@ -1,0 +1,119 @@
+\ZSFNewColumn
+\StartChapter{Lineare Abbildungen}
+
+\begin{runintext}
+Eine \ZSFkeyword*{lineare Abbildung} $\mathcal{F} \colon V \to W$ ist eine Abbildung zwischen zwei Vektorräumen über $\R$, die Addition und Skalarmultiplikation erhält.
+\end{runintext}
+
+\SubsectionBar{Definition}
+\ZSFindex{Lineare Abbildung}
+
+\begin{defbox}[Lineare Abbildung]
+Eine Abbildung $\mathcal{F}$ heisst linear, wenn für alle Vektoren $x, y \in V$ und jeden Skalar $\alpha \in \R$ gilt:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{Additivität: $\mathcal{F}(x + y) = \mathcal{F}(x) + \mathcal{F}(y)$.}
+    \ZSFItem{Homogenität: $\mathcal{F}(\alpha \cdot x) = \alpha \cdot \mathcal{F}(x)$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{runintext}
+\ZSFconclusion{Folgerungen:}
+  \begin{ZSFlist}
+    \ZSFItem{Jede lineare Abbildung bildet den Nullvektor \ZSFdanger{immer} auf den Nullvektor ab: $\mathcal{F}(0_V) = 0_W$.}
+    \ZSFItem{Abbildungen zwischen endlichdimensionalen Vektorräumen lassen sich stets durch Matrixmultiplikation $x \mapsto A \cdot x$ darstellen.}
+  \end{ZSFlist}
+\end{runintext}
+
+\SubsectionBar[sec:kernel-image]{Kern und Bild \ZSFref{sec:hub-kernel-image-dimension}}
+
+\ZSFindexsee{Nullraum}{Kern}
+\ZSFindexsee{Spaltenraum}{Bild}
+\ZSFindexsee{Rangsatz}{Dimensionssatz}
+\ZSFindexsee{Ker}{Kern}
+\ZSFindexsee{Im}{Bild}
+\begin{defbox}[Kern (Lösungsraum)]
+Der \ZSFkeyword{Kern} $\Ker(A)$ von $A \in \R^{m \times n}$ enthält alle Vektoren $x$, die auf den Nullvektor abgebildet werden:
+\[ \Ker(A) = \{x \in \R^n \mid A \cdot x = 0 \} \]
+Die Dimension des Kerns ist gleich der Anzahl der freien Parameter im homogenen LGS:
+\[ \dim(\Ker(A)) = n - \rang(A) \]
+Um den Kern zu bestimmen, löst man das LGS $A \cdot x = 0$.
+\end{defbox}
+
+\begin{defbox}[Bild (Spaltenraum)]
+Das \ZSFkeyword{Bild} $\Im(A)$ von $A \in \R^{m \times n}$ ist die Menge aller möglichen Funktionswerte:
+\[ \Im(A) = \{y \in \R^m \mid \exists x \in \R^n \colon y = A \cdot x \} \]
+Das Bild wird von den Spaltenvektoren von $A$ aufgespannt: $\Im(A) = \spanop(a_1, \dots, a_n)$. \ZSFref{sec:basis}
+\end{defbox}
+
+\begin{defbox}[Zusammenhänge und Dimensionssatz][weight=quiet]
+Für jede Matrix $A \in \R^{m \times n}$ gilt:
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFkeyword{Dimensionssatz} (Rangsatz):
+  \[ \dim(\Im(A)) + \dim(\Ker(A)) = n \]}
+    \ZSFItem{Spaltenrang ist gleich Zeilenrang:\ZSFbreak $\dim(\Im(A)) = \rang(A)$.}
+    \ZSFItem{\ZSFkeyword{Orthogonales Komplement}: $\Im(A) \perp \Ker(A^T)$. \ZSFref{sec:orthogonality-projection}}
+    \ZSFItem{\ZSFkeyword{Fredholm-Alternative}: $Ax = b$ ist lösbar $\Longleftrightarrow b \in \Im(A) \Longleftrightarrow b \perp \Ker(A^T)$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:map-matrix]{Bestimmung der Abbildungsmatrix}
+\ZSFindex{Abbildungsmatrix}
+\ZSFindexsee{Darstellungsmatrix}{Abbildungsmatrix}
+
+\begin{runintext}
+Um eine Matrix $A$ für eine lineare Abbildung $\mathcal{F} \colon V \to W$ zu bestimmen, bilden wir die Basisvektoren von $V$ ab und stellen die Ergebnisse als Spalten von $A$ dar.
+\newline
+Beispiel: $\mathcal{F} \colon P_2 \to P_1$, $p(x) \mapsto p'(x)$ (Ableitung).
+\end{runintext}
+
+\begin{ZSFlist}[Konstruktion der Abbildungsmatrix][ordered]
+  \ZSFItem{Basen festlegen}{Wähle Basen für Startraum $V$ und Zielraum $W$ \ZSFref{sec:basis}.
+  \newline
+  Startbasis $P_2$: $\mathcal{B}_V = \{x^2, x, 1\}$.
+  \newline
+  Zielbasis $P_1$: $\mathcal{B}_W = \{x, 1\}$.}
+  \ZSFItem{Basisvektoren abbilden}{Berechne die Bilder der Basisvektoren und stelle sie als Koordinaten bezüglich der Zielbasis $\mathcal{B}_W$ dar \ZSFref{sec:coordinates}:
+  \newline
+  $\mathcal{F}(x^2) = (x^2)' = 2x = 2 \cdot x + 0 \cdot 1 \implies \begin{pmatrix} 2 \\ 0 \end{pmatrix}$
+  \newline
+  $\mathcal{F}(x) = (x)' = 1 = 0 \cdot x + 1 \cdot 1 \implies \begin{pmatrix} 0 \\ 1 \end{pmatrix}$
+  \newline
+  $\mathcal{F}(1) = (1)' = 0 = 0 \cdot x + 0 \cdot 1 \implies \begin{pmatrix} 0 \\ 0 \end{pmatrix}$}
+  \ZSFItem{Matrix aufstellen}{Trage die Koordinatenvektoren als Spalten in die Matrix $A$ ein:
+  \[ A = \begin{pmatrix} 2 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix} \]}
+\end{ZSFlist}
+
+\SubsectionBar[sec:rotation-matrices]{Drehmatrizen}
+\ZSFindex{Drehmatrix}
+\ZSFindexsee{Rotationsmatrix}{Drehmatrix}
+
+\begin{runintext}
+Drehungen im $\R^3$ werden durch orthogonale Matrizen dargestellt \ZSFref{sec:orthogonal-matrices}. Die Drehrichtung folgt der \ZSFkeyword{Rechte-Hand-Regel}:
+\end{runintext}
+
+\begin{formulabox}[Drehung um die x-Achse]
+  \[
+  R_x(\varphi) = \begin{pmatrix}
+    1 & 0 & 0 \\
+    0 & \cos\varphi & -\sin\varphi \\
+    0 & \sin\varphi & \cos\varphi
+  \end{pmatrix}
+  \]
+  \ZSFsep[Drehung um die y-Achse]
+  \[
+  R_y(\varphi) = \begin{pmatrix}
+    \cos\varphi & 0 & \sin\varphi \\
+    0 & 1 & 0 \\
+    -\sin\varphi & 0 & \cos\varphi
+  \end{pmatrix}
+  \]
+  \ZSFsep[Drehung um die z-Achse]
+  \[
+  R_z(\varphi) = \begin{pmatrix}
+    \cos\varphi & -\sin\varphi & 0 \\
+    \sin\varphi & \cos\varphi & 0 \\
+    0 & 0 & 1
+  \end{pmatrix}
+  \]
+\end{formulabox}

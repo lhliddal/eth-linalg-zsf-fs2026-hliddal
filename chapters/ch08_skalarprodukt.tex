@@ -1,0 +1,122 @@
+\StartChapter{Skalarprodukt}
+
+\begin{runintext}
+Ein \ZSFkeyword*{Skalarprodukt} (inneres Produkt) ist ein mathematisches Werkzeug zur Bestimmung von geometrischen Begriffen wie Winkeln, Längen und Orthogonalität in abstrakten Vektorräumen.
+\end{runintext}
+
+\SubsectionBar[sec:scalar-product]{Definition \& Eigenschaften}
+\ZSFindex{Skalarprodukt}
+
+\begin{defbox}[Skalarprodukt]
+Ein Skalarprodukt $\langle \cdot, \cdot \rangle \colon V \times V \to \R$ ordnet jedem Paar von Vektoren eine reelle Zahl zu. Es erfüllt folgende Axiome:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{\ZSFkeyword[Skalarprodukt-Axiome]{Linearität} im zweiten Argument: $\langle x, y + z \rangle = \langle x, y \rangle + \langle x, z \rangle$ und $\langle x, \alpha \cdot y \rangle = \alpha \cdot \langle x, y \rangle$.}
+    \ZSFItem{\ZSFkeyword*{Symmetrie}: $\langle x, y \rangle = \langle y, x \rangle$.}
+    \ZSFItem{\ZSFkeyword*{Positive Definitheit}: $\langle x, x \rangle \geq 0$ und $\langle x, x \rangle = 0 \Longleftrightarrow x = 0$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{defbox}[Beispiele für Skalarprodukte][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Standardskalarprodukt auf $\R^n$: $\langle x, y \rangle = x^T \cdot y$.}
+    \ZSFItem{Funktionenskalarprodukt auf $[a,b]$: $\langle f, g \rangle = \int_{a}^{b} f(x) \cdot g(x) \dd x$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\ZSFindex{Winkel zwischen Vektoren}
+\begin{formulabox}[Rechenregeln]
+  \[
+  \begin{aligned}
+    \langle A \cdot x, A \cdot y \rangle &= \langle x, A^T \cdot A \cdot y \rangle \\
+    \cos\phi &= \frac{\langle a, b \rangle}{\norm{a}_2 \norm{b}_2} \quad \text{(Winkel zwischen Vektoren)}
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:induced-norm]{Induzierte Norm}
+
+\ZSFindex{Induzierte Norm}
+\begin{defbox}[Induzierte Norm]
+Jedes Skalarprodukt induziert eine Vektornorm \ZSFref{sec:vector-norm} über:
+\[ \norm{x} = \sqrt{\langle x, x \rangle} \]
+\end{defbox}
+
+\begin{defbox}[Parallelogrammidentität \& Polarisationsformel][weight=quiet]
+Eine Norm $\norm{\cdot}$ wird genau dann von einem Skalarprodukt induziert, wenn die \ZSFkeyword{Parallelogrammregel} gilt:
+\[ \norm{x+y}^2 + \norm{x-y}^2 = 2\left(\norm{x}^2 + \norm{y}^2\right) \]
+In diesem Fall lässt sich das Skalarprodukt über die \ZSFkeyword{Polarisationsformel} aus der Norm rekonstruieren:
+\[ \langle x, y \rangle = \frac{1}{4}\left(\norm{x+y}^2 - \norm{x-y}^2\right) \]
+\end{defbox}
+
+\SubsectionBar[sec:orthogonality-projection]{Orthogonalität \& Projektion \ZSFref{sec:hub-inner-product-norm-orthogonality}}
+
+\begin{defbox}[Orthogonalität]
+Zwei Vektoren $x, y$ heissen \ZSFkeyword[Orthogonalitat@Orthogonalität]{orthogonal} ($x \perp y$), wenn ihr Skalarprodukt Null ist \ZSFref{sec:orthogonal-matrices}:
+\[ \langle x, y \rangle = 0 \]
+\end{defbox}
+
+\ZSFindex{Cauchy-Schwarz-Ungleichung}
+\ZSFindexsee{CS-Ungleichung}{Cauchy-Schwarz-Ungleichung}
+\ZSFindex{Satz von Pythagoras}
+\ZSFindexsee{Pythagoras}{Satz von Pythagoras}
+\ZSFindexsee{Projektion}{Orthogonalprojektion}
+\begin{formulabox}[Sätze und Ungleichungen]
+  \[
+  \begin{aligned}
+    \text{CS-Ungleichung:} && \abs{\langle x, y \rangle} &\leq \norm{x} \cdot \norm{y} \\
+    \text{Pythagoras:} && x \perp y \Longrightarrow \norm{x+y}^2 &= \norm{x}^2 + \norm{y}^2
+  \end{aligned}
+  \]
+  \ZSFsep[Orthogonalprojektion]
+  Die \ZSFkeyword{Orthogonalprojektion} des Vektors $x$ auf den Vektor $y$ ist gegeben durch \ZSFref{sec:least-squares}:
+  \[ \proj_y(x) = \frac{\langle x, y \rangle}{\langle y, y \rangle} \cdot y \]
+\end{formulabox}
+
+\ZSFfig{graphics/orthogonal_projection.pdf}{Visualisierung Orthogonalprojektion}{Vektor $x$ projiziert auf $y$. Der Fehler $e = x - \proj_y(x)$ steht orthogonal auf $y$ ($e \perp y$).}
+
+\ZSFNewColumn
+\SubsectionBar[sec:gram-schmidt]{Gram-Schmidt-Verfahren}
+\ZSFindex{Gram-Schmidt-Verfahren}
+\ZSFindexsee{Orthogonalisierung}{Gram-Schmidt-Verfahren}
+\ZSFindexsee{ONB}{Orthonormalbasis}
+
+\begin{defbox}[Orthonormalbasis (ONB)]
+Eine Basis $\{e_1, \dots, e_n\}$ heisst \ZSFkeyword{Orthonormalbasis} \ZSFref{sec:basis}, wenn alle Basisvektoren paarweise orthogonal zueinander sind ($\langle e_i, e_j \rangle = 0$ für $i \neq j$) und die Länge 1 besitzen ($\norm{e_i} = 1$).
+\end{defbox}
+
+\begin{ZSFlist}[Gram-Schmidt-Verfahren \ZSFref{sec:basis}][ordered]
+  \ZSFItem{Ersten Vektor normieren}{Setze $e_1$ als normierten Vektor des ersten Basisvektors $b_1$:
+  \[ e_1 = \frac{b_1}{\norm{b_1}} = \frac{b_1}{\sqrt{\langle b_1, b_1 \rangle}} \]}
+  \ZSFItem{Zweiten Vektor bestimmen}{Subtrahiere die Projektion von $b_2$ auf $e_1$ und normiere den Vektor $e_2$:
+  \[ e_2' = b_2 - \langle b_2, e_1 \rangle \cdot e_1 \quad \Longrightarrow \quad e_2 = \frac{e_2'}{\norm{e_2'}} \]}
+  \ZSFItem{Iterieren}{Führe das Verfahren für alle weiteren Vektoren $b_i$ fort:
+  \[ e_i' = b_i - \ZSFsumAuto{j=1}{i-1} \langle b_i, e_j \rangle \cdot e_j \quad \Longrightarrow \quad e_i = \frac{e_i'}{\norm{e_i'}} \]}
+\end{ZSFlist}
+
+\ZSFfig{graphics/gram_schmidt.pdf}{Visualisierung Gram-Schmidt-Verfahren}{1. Ausgangsbasis $\{b_1, b_2\}$. 2. Projektion $p$ subtrahieren, um orthogonalen Vektor $e_2^\prime$ zu erhalten. 3. Normieren zu $e_2$, um ONB $\{e_1, e_2\}$ zu erhalten.}
+
+\begin{defbox}[Gram-Matrix]
+Die \ZSFkeyword{Gram-Matrix} sammelt alle Skalarprodukte einer Basis $\{b_1, \dots, b_n\}$ in einer Tabelle ($G_{ij} = \langle b_i, b_j \rangle$):
+\[
+G =
+\begin{pmatrix}
+\ZSFmhlA{\langle b_1, b_1 \rangle} & \langle b_1, b_2 \rangle & \langle b_1, b_3 \rangle \\
+\langle b_2, b_1 \rangle & \ZSFmhlA{\langle b_2, b_2 \rangle} & \langle b_2, b_3 \rangle \\
+\langle b_3, b_1 \rangle & \langle b_3, b_2 \rangle & \ZSFmhlA{\langle b_3, b_3 \rangle}
+\end{pmatrix}
+\]
+Intuition: Wie stark zeigt jeder Basisvektor in Richtung jedes anderen? \ZSFmhlA{Diagonale} $= \norm{b_i}^2$, Rest $=$ Überlapp.
+
+Gram-Schmidt für drei Vektoren ($\tilde{b}_1 = b_1$):
+\[
+\begin{aligned}
+  \tilde{b}_2 &= b_2 - \langle b_2, e_1 \rangle \cdot e_1 \\
+  \tilde{b}_3 &= b_3 - \langle b_3, e_1 \rangle \cdot e_1 - \langle b_3, e_2 \rangle \cdot e_2
+\end{aligned}
+\]
+jeweils normieren: $e_i = \tilde{b}_i \big/ \sqrt{\langle \tilde{b}_i, \tilde{b}_i \rangle}$.
+
+Mit Koordinaten $a, c$ von $v, w$ in $\mathcal{B}$ \ZSFref{sec:coordinates}:
+\[ \langle v, w \rangle = a^T \cdot G \cdot c \qquad \norm{v}^2 = a^T \cdot G \cdot a \]
+\ZSFref{sec:quadratic-form-def}
+\end{defbox}

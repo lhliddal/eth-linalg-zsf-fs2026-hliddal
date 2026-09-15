@@ -1,0 +1,77 @@
+\StartChapter{Normen}
+
+\begin{runintext}
+Eine \ZSFkeyword*{Norm} $\norm{\cdot}$ ordnet den Elementen eines Vektorraums eine nichtnegative reelle Zahl zu, die als Länge oder Abstand interpretiert werden kann.
+\end{runintext}
+
+\SubsectionBar[sec:vector-norm]{Definition Vektornorm}
+
+\ZSFindex{Norm}
+\ZSFindex{Normaxiome}
+\begin{defbox}[Vektornorm]
+Sei $V$ ein Vektorraum. Eine Abbildung $\norm{\cdot} \colon V \to \R$ heisst Vektornorm, wenn für alle $v, w \in V$ und $\alpha \in \R$ gilt:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{\ZSFkeyword*{Definitheit}: $\norm{v} \geq 0$ und $\norm{v} = 0 \Longleftrightarrow v = 0$.}
+    \ZSFItem{\ZSFkeyword*{Homogenität}: $\norm{\alpha \cdot v} = \abs{\alpha} \cdot \norm{v}$.}
+    \ZSFItem{\ZSFkeyword{Dreiecksungleichung}: $\norm{v + w} \leq \norm{v} + \norm{w}$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:lp-vector-norms]{$L_p$-Normen im $\R^n$}
+
+\begin{defbox}[$L_p$-Norm]
+Die allgemeine \ZSFkeyword[Lp-Norm@Lp-Norm]{$L_p$-Norm} für Vektoren $v \in \R^n$ (mit $p \geq 1$) ist definiert als:
+\[ \norm{v}_p = \sqrt[p]{\ZSFsumAuto{i=1}{n} \abs{v_i}^p} \]
+\end{defbox}
+
+\ZSFindex{Summennorm}
+\ZSFindex{Euklidische Norm}
+\ZSFindex{Maximumnorm}
+\begin{formulabox}[Spezialfälle]
+  \[
+  \begin{aligned}
+    L_1\text{-Norm (Summennorm):} && \norm{v}_1 &= \ZSFsumAuto{i=1}{n} \abs{v_i} \\
+    L_2\text{-Norm (Euklidische Länge):} && \norm{v}_2 &= \sqrt{\ZSFsumAuto{i=1}{n} v_i^2} \\
+    L_\infty\text{-Norm (Maximumnorm):} && \norm{v}_\infty &= \max_{i=1,\dots,n} \abs{v_i}
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:function-norms]{$L_p$-Normen für Funktionen}
+
+\ZSFindex{Norm von Funktionen}
+\ZSFindex{Supremumsnorm}
+\begin{defbox}[Funktionen-Norm]
+Für stetige Funktionen $f \colon [a,b] \to \R$ ist die $L_p$-Norm definiert durch:
+\[ \norm{f}_p = \left( \int_{a}^{b} \abs{f(x)}^p \dd x \right)^{\frac{1}{p}} \]
+\end{defbox}
+
+\begin{formulabox}[Spezialfälle]
+  \[
+  \begin{aligned}
+    L_1\text{-Norm (Flächeninhalt):} && \norm{f}_1 &= \int_{a}^{b} \abs{f(x)} \dd x \\
+    L_\infty\text{-Norm (Supremumsnorm):} && \norm{f}_\infty &= \max_{x \in [a,b]} \abs{f(x)}
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:matrix-norms]{Matrixoperatornormen}
+
+\ZSFindex{Matrixnorm}
+\ZSFindex{Operatornorm}
+\begin{defbox}[Matrixnorm]
+Die durch die euklidische Vektornorm induzierte Matrixnorm (\ZSFkeyword{Spektralnorm}) misst die maximale Streckung eines Vektors durch die Matrix $A$:
+\[ \norm{A}_2 = \max_{\norm{x}_2 = 1} \norm{A \cdot x}_2 \]
+\end{defbox}
+
+\textVorBox{Spezialfälle für quadratische Matrizen \ZSFref{sec:eigenvalues}\ZSFref{sec:symmetric-matrices}\ZSFref{sec:orthogonal-matrices}:}
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    A \text{ beliebig quadratisch:} && \norm{A}_2 &= \sqrt{\lambda_{\max}(A^T \cdot A)} \\
+    S \text{ symmetrisch:} && \norm{S}_2 &= \abs{\lambda_{\max}(S)} \\
+    Q \text{ orthogonal:} && \norm{Q}_2 &= 1 \\
+    A \text{ regulär (Inverse):} && \norm{A^{-1}}_2 &= \frac{1}{\sqrt{\lambda_{\min}(A^T \cdot A)}}
+  \end{aligned}
+  \]
+\end{formulabox}

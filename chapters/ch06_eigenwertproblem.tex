@@ -1,0 +1,182 @@
+\ZSFNewColumn
+\StartChapter{Eigenwertproblem}
+
+\begin{runintext}
+Das \ZSFkeyword*{Eigenwertproblem} untersucht Vektoren, deren Richtung sich bei Multiplikation mit einer Matrix nicht ändert. Es bildet die Grundlage für Koordinatentransformationen (Diagonalisierung) und Systemanalysen.
+\end{runintext}
+
+\SubsectionBar{Definition}
+\ZSFindexsee{EV}{Eigenvektor}
+\ZSFindexsee{EW}{Eigenwert}
+
+\begin{defbox}[Eigenwert \& Eigenvektor]
+Sei $A \in \R^{n \times n}$ eine quadratische Matrix. Ein Vektor $v \in \C^n \setminus \{0\}$ heisst \ZSFkeyword{Eigenvektor} (EV) von $A$ zum \ZSFkeyword{Eigenwert} (EW) $\lambda \in \C$, wenn gilt:
+\[ A \cdot v = \lambda \cdot v \]
+\end{defbox}
+
+\begin{defbox}[Zusammenhang mit Invertierbarkeit \ZSFref{sec:matrix-inverse}][weight=quiet]
+Für eine quadratische Matrix $B \in \R^{n \times n}$ sind folgende Aussagen äquivalent:
+  \begin{ZSFlist}
+    \ZSFItem{$\lambda = 0$ ist kein Eigenwert von $B$.}
+    \ZSFItem{Die Inverse $B^{-1}$ existiert ($\det(B) \neq 0$).}
+    \ZSFItem{Die Matrix hat vollen Rang: $\rang(B) = n$.}
+    \ZSFItem{Das LGS $B \cdot x = 0$ besitzt nur die triviale Lösung $x = 0$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:eigenvalues]{Eigenwerte bestimmen \ZSFref{sec:hub-det-trace-eigenvalues}}
+\ZSFindex{Eigenwerte bestimmen}
+\ZSFindexsee{Spektrum}{Eigenwert}
+\ZSFindexsee{Charakteristische Gleichung}{Charakteristisches Polynom}
+
+\begin{ZSFlist}[Berechnung der Eigenwerte][ordered]
+  \ZSFItem{Charakteristisches Polynom}{Bestimme das \ZSFkeyword[Charakteristisches Polynom]{charakteristische Polynom} $p(\lambda)$ über die Determinante:
+  \[ p(\lambda) = \det(A - \lambda \cdot I) \]
+  \ZSFref{sec:determinant-methods}}
+  \ZSFItem{Nullstellen berechnen}{Löse die charakteristische Gleichung:
+  \[ p(\lambda) = 0 \]
+  Die Nullstellen $\lambda_i$ sind die Eigenwerte von $A$.}
+\end{ZSFlist}
+
+\begin{defbox}[Shortcut für $2 \times 2$-Matrizen][weight=quiet]
+  Für $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ lautet das Polynom direkt:
+  \[ \lambda^2 - \ZSFbraceunder{(a+d)}{$\Spur(A)$} \cdot \lambda + \ZSFbraceunder{(ad-bc)}{$\det(A)$} = 0 \]
+  Die Eigenwerte ergeben sich somit über:
+  \[ \lambda_{1,2} = \frac{\Spur(A) \pm \sqrt{\Spur(A)^2 - 4\det(A)}}{2} \]
+\end{defbox}
+
+\begin{defbox}[Überprüfung der Berechnungen \ZSFref{sec:trace}\ZSFref{sec:determinant-rules}][weight=quiet]
+Für $A \in \R^{n \times n}$ gilt immer:
+  \begin{ZSFlist}
+    \ZSFItem{Summe der Eigenwerte ist die Spur: $\Spur(A) = \ZSFsumAuto{i=1}{n} a_{ii} = \ZSFsumAuto{i=1}{n} \lambda_i$.}
+    \ZSFItem{Produkt der Eigenwerte ist die Determinante: $\det(A) = \prod_{i=1}^n \lambda_i$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:eigenvectors]{Eigenvektoren bestimmen}
+\ZSFindex{Eigenvektoren bestimmen}
+
+\begin{ZSFlist}[Berechnung der Eigenvektoren][ordered]
+  \ZSFItem{Einsetzen}{Setze einen ermittelten Eigenwert $\lambda_k$ in die Matrix $(A - \lambda_k \cdot I)$ ein.}
+  \ZSFItem{Homogenes LGS lösen}{Löse das LGS:
+  \[ (A - \lambda_k \cdot I) \cdot x = 0 \]
+  Durch den Gauss-Algorithmus \ZSFref{sec:row-echelon} erhält man den zugehörigen \ZSFkeyword{Eigenraum} (Lösungsraum).}
+  \ZSFItem{Eigenvektoren ablesen}{Setze in der Lösung jeweils einen freien Parameter $=1$ (die übrigen $=0$). Jeder so erhaltene Vektor ist ein Eigenvektor; zusammen bilden sie eine Basis des Eigenraums zum Eigenwert $\lambda_k$.}
+\end{ZSFlist}
+
+\begin{defbox}[Eigenschaften von Eigenvektoren][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Eigenvektoren sind per Definition ungleich dem Nullvektor.}
+    \ZSFItem{Vektoren zu verschiedenen Eigenwerten sind stets linear unabhängig.}
+    \ZSFItem{Hat $A$ den EW $\lambda$ zum EV $v$, so gilt für denselben EV $v$:}
+    \begin{ZSFlist}
+      \ZSFItem{$c \cdot A$ hat den EW $c \lambda$.}
+      \ZSFItem{$A^k$ hat den EW $\lambda^k$.}
+      \ZSFItem{$A + c \cdot I$ hat den EW $\lambda + c$.}
+      \ZSFItem{$A^{-1}$ (falls regulär) hat den EW $\lambda^{-1}$. \ZSFref{sec:matrix-inverse}}
+    \end{ZSFlist}
+    \ZSFItem{Dreiecksmatrizen haben ihre Eigenwerte direkt auf der Hauptdiagonalen. \ZSFref{sec:triangular-matrices}}
+    \ZSFItem{Sind $v_1, v_2$ Eigenvektoren zu unterschiedlichen Eigenwerten $\lambda_1 \neq \lambda_2$, so ist $v_1 + v_2$ \ZSFdanger{kein} Eigenvektor.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:multiplicities]{Algebraische \& geometrische Vielfachheit}
+
+\begin{defbox}[Vielfachheiten]
+Die \ZSFkeyword[Algebraische Vielfachheit]{algebraische Vielfachheit} $\algVfh(\lambda)$ ist die Vielfachheit der Nullstelle $\lambda$ im charakteristischen Polynom.
+\newline
+Die \ZSFkeyword[Geometrische Vielfachheit]{geometrische Vielfachheit} $\gVfh(\lambda)$ ist die Dimension des Eigenraums zum Eigenwert $\lambda$ (Anzahl der freien Parameter im LGS).
+\end{defbox}
+\begin{formulabox}
+  \[ 1 \leq \gVfh(\lambda) \leq \algVfh(\lambda) \leq n \]
+\end{formulabox}
+
+\SubsectionBar[sec:eigenbasis]{Halbeinfachheit \& Eigenbasis}
+
+\begin{defbox}[Einfach und Halbeinfach]
+Eine Matrix $A$ heisst \ZSFkeyword*{einfach}, wenn jeder Eigenwert $\algVfh(\lambda) = 1$ hat.
+\newline
+Eine Matrix $A$ heisst \ZSFkeyword[Halbeinfachheit]{halbeinfach}, wenn für jeden Eigenwert gilt:
+\[ \gVfh(\lambda) = \algVfh(\lambda) \]
+\end{defbox}
+\begin{defbox}[Eigenbasis-Kriterium][weight=quiet]
+Die Eigenvektoren einer Matrix $A \in \C^{n \times n}$ bilden eine Basis für den $\C^n$ (\ZSFkeyword{Eigenbasis}) genau dann, wenn $A$ halbeinfach ist.
+\end{defbox}
+
+\SubsectionBar[sec:diagonalization]{Diagonalisierbarkeit \ZSFref{sec:hub-diagonalization}}
+
+\begin{defbox}[Diagonalisierung]
+Eine Matrix $A$ heisst \ZSFkeyword[Diagonalisierbarkeit]{diagonalisierbar}, wenn sie ähnlich \ZSFref{sec:matrix-similarity} zu einer Diagonalmatrix $D$ ist. Es existiert eine reguläre Matrix $T$ mit:
+\[ D = T^{-1} \cdot A \cdot T \quad\Longleftrightarrow\quad A = T \cdot D \cdot T^{-1} \]
+Dies ist genau dann der Fall, wenn $A$ halbeinfach ist.
+\end{defbox}
+
+\begin{ZSFlist}[Diagonalisierung durchführen][ordered]
+  \ZSFItem{Eigenbasis berechnen}{Finde die Eigenwerte $\lambda_i$ \ZSFref{sec:eigenvalues} und die zugehörige Eigenbasis $\{v_1, \dots, v_n\}$ \ZSFref{sec:eigenvectors}.}
+  \ZSFItem{Matrizen konstruieren}{Stelle die Diagonalmatrix $D = \diag(\lambda_1, \dots, \lambda_n)$ und die Transformationsmatrix $T = (v_1, \dots, v_n)$ auf. Die Reihenfolge von Eigenwerten und Eigenvektoren muss übereinstimmen.}
+  \ZSFItem{Invertieren}{Berechne $T^{-1}$ \ZSFref{sec:matrix-inverse}. Ist die Basis orthonormal (z. B. bei symmetrischen Matrizen), gilt $T^{-1} = T^T$.}
+\end{ZSFlist}
+
+\ZSFindex{Matrixexponential}
+\ZSFindexsee{Exponentialfunktion einer Matrix}{Matrixexponential}
+\ZSFindex{Matrixpotenzen}
+\ZSFindex{Nilpotente Matrix}
+\begin{defbox}[Rechnen mit diagonalisierbaren Matrizen \ZSFref{sec:linear-ode}][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Matrixpotenzen: $A^k = T \cdot \diag(\lambda_1^k, \dots, \lambda_n^k) \cdot T^{-1}$.}
+    \ZSFItem{Matrixexponential: $e^A = T \cdot \diag(e^{\lambda_1}, \dots, e^{\lambda_n}) \cdot T^{-1} = \ZSFsumAuto{n=0}{\infty} \frac{A^n}{n!}$.}
+    \ZSFItem{\ZSFdanger{Nilpotente Matrix}: Matrix mit ausschliesslich $\lambda = 0 \Longrightarrow A^k = 0$ ab einem $k \leq n$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:matrix-exponential]{Matrixexponential \& Jordan-Blöcke}
+\ZSFindex{Jordan-Block}
+\ZSFindex{Nicht diagonalisierbar}
+
+\begin{defbox}[Nicht diagonalisierbar][weight=quiet]
+  Zu wenig Eigenvektoren bei mehrfachem EW: $\gVfh(\lambda) < \algVfh(\lambda)$.
+  \ZSFconclusion{Prüfungsfall:} $2 \times 2$-Matrix mit gleichem $\lambda$ auf der Diagonalen und einer \ZSFmhlB{1} oberhalb $\Rightarrow$ \ZSFkeyword{Jordan-Block}.
+\end{defbox}
+
+\begin{defbox}[Jordan-Block $2 \times 2$]
+  \[
+  J_2(\lambda) = \begin{pmatrix} \ZSFmhlA{\lambda} & \ZSFmhlB{1} \\ 0 & \ZSFmhlA{\lambda} \end{pmatrix}
+  \]
+  \ZSFmhlA{Diagonale} $= $ EW $\lambda$; \ZSFmhlB{Superdiagonale} $= $ Kopplung zwischen den beiden Kopien.
+\end{defbox}
+
+\begin{formulabox}
+  \[
+  e^{J_2(\lambda)\, t}
+  = \ZSFmhlA{e^{\lambda t}} \begin{pmatrix} 1 & \ZSFmhlB{t} \\ 0 & 1 \end{pmatrix}
+  \]
+  \formulanote{\ZSFmhlA{Diagonale} $\to$ Faktor $e^{\lambda t}$; \ZSFmhlB{Superdiagonale} $\to$ $t$ oben rechts.}
+  \ZSFsep
+  \[
+  \begin{aligned}
+    A &= \begin{pmatrix} \ZSFmhlA{2} & \ZSFmhlB{1} \\ 0 & \ZSFmhlA{2} \end{pmatrix}
+    \quad\Longrightarrow\quad
+    e^{At} = \ZSFmhlA{e^{2t}} \begin{pmatrix} 1 & \ZSFmhlB{t} \\ 0 & 1 \end{pmatrix}
+  \end{aligned}
+  \]
+  \formulanote{Ist $A$ bereits ein Jordan-Block: Formel direkt anwenden.}
+\end{formulabox}
+
+\SubsectionBar[sec:matrix-similarity]{Ähnlichkeit von Matrizen}
+
+\begin{defbox}[Ähnliche Matrizen]
+Zwei quadratische Matrizen $A$ und $B$ heissen \ZSFkeyword[Ahnlichkeit von Matrizen@Ähnlichkeit von Matrizen]{ähnlich}, wenn gilt:
+\[ A = T^{-1} \cdot B \cdot T \quad \text{für eine reguläre Matrix } T \]
+Sie beschreiben dieselbe lineare Abbildung in unterschiedlichen Basen \ZSFref{sec:basis-change}.
+
+\ZSFlabel{Intuition:} Dieselbe geometrische Abbildung, nur aus verschiedenen Blickwinkeln (Basen) betrachtet; $T$ übersetzt die Perspektive.
+\end{defbox}
+\begin{defbox}[Invarianten \ZSFref{sec:determinant-rules}\ZSFref{sec:trace}][weight=quiet]
+Ähnliche Matrizen teilen dieselben grundlegenden Eigenschaften:
+  \begin{ZSFlist}
+    \ZSFItem{Gleiches char.\ Polynom $\chi_A(\lambda) = \chi_B(\lambda)$ und gleiche Eigenwerte}
+    \ZSFItem{Gleiche Determinante, Spur und Rang: $\det(A) = \det(B)$, $\Spur(A) = \Spur(B)$, $\rang(A) = \rang(B)$}
+  \end{ZSFlist}
+Ist $v$ ein EV von $A$ zum EW $\lambda$, so ist $y = T^{-1} \cdot v$ ein EV von $B$ zum selben EW.
+\end{defbox}

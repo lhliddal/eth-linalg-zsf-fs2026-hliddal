@@ -1,0 +1,126 @@
+\StartChapter{Determinante}
+
+\begin{runintext}
+Die \ZSFkeyword*{Determinante} $\det(A)$ (oder $|A|$) ist eine Kennzahl, die jeder quadratischen Matrix $A \in \R^{n \times n}$ zugeordnet wird. Sie gibt Auskunft über Invertierbarkeit, Volumenskalierung und Lösbarkeit von LGS. \ZSFref{sec:matrix-inverse}\ZSFref{sec:row-echelon}
+\end{runintext}
+
+\SubsectionBar[sec:determinant-properties]{Definition \& Eigenschaften}
+\ZSFindex{Determinante}
+\ZSFindexsee{det}{Determinante}
+
+\begin{runintext}
+Die Determinante lässt sich axiomatisch über Zeilen- und Spalteneigenschaften definieren:
+\end{runintext}
+
+\begin{figbox}[Zeilen- und Spaltenlinearität][align=center]
+  \ZSFimage[width=0.95]{graphics/determinant_row_linearity.pdf}
+  \par\ZSFgap[XS]
+  \ZSFimage[width=0.95]{graphics/determinant_column_linearity.pdf}
+\end{figbox}
+
+\begin{defbox}[Zeilen- und Spaltenoperationen \ZSFref{sec:row-echelon}][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Vertauscht man zwei Zeilen oder Spalten von $A$, ändert sich das \ZSFdanger{Vorzeichen} der Determinante.}
+    \ZSFItem{Addiert man ein Vielfaches einer Zeile/Spalte zu einer anderen, bleibt die Determinante \ZSFkeyword*{unverändert}.}
+    \ZSFItem{\ZSFdanger{Achtung!:} Multipliziert man eine Zeile/Spalte mit einem Skalar $\alpha$, skaliert die Determinante ebenfalls mit $\alpha$. Beim Herausheben muss man entsprechend dividieren.}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{ZSFlist}[Folgerungen]
+  \ZSFItem{Hat $A$ zwei gleiche Zeilen / Spalten $\Longrightarrow \det(A) = 0$.}
+  \ZSFItem{Hat $A$ eine Nullzeile / Nullspalte $\Longrightarrow \det(A) = 0$.}
+  \ZSFItem{Für $A \in \R^{n \times n}$ gilt: $\det(\alpha \cdot A) = \alpha^n \cdot \det(A)$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:determinant-rules]{Rechenregeln}
+\ZSFindex{Determinante}
+
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    \det(A \cdot B) &= \det(A) \cdot \det(B) = \det(B \cdot A) \\
+    \det(A^{-1}) &= \frac{1}{\det(A)} \\
+    \det(A^T) &= \det(A) \\
+    \det(A \cdot B^{-1}) &= \frac{\det(A)}{\det(B)} \\
+    \det(A + B) &\neq \det(A) + \det(B) \\
+    \det(\diag(d_1, \dots, d_n)) &= d_1 \cdot d_2 \cdots d_n \\
+    \det(\text{Dreiecksmatrix}) &= d_1 \cdot d_2 \cdots d_n
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:determinant-methods]{Berechnungsmethoden}
+\ZSFindex{Determinante berechnen}
+
+\textVorBox{Explizite Formeln für kleine Dimensionen:}
+\begin{formulabox}[$1 \times 1$-Matrix]
+  \[ \det(a) = a \]
+  \ZSFsep[$2 \times 2$-Matrix]
+  \[ \begin{vmatrix} a & b \\ c & d \end{vmatrix} = a d - b c \]
+\end{formulabox}
+
+\begin{defbox}[Sarrus-Regel (nur für $3 \times 3$-Matrizen)][weight=quiet]
+  \begin{splitbox}[split=0.32, align=center]
+    \ZSFimage[height=\ZSFfigMaxHeight]{graphics/regel_von_sarrus.png}
+    \tcblower
+    \[
+    \begin{vmatrix} a & b & c \\ d & e & f \\ g & h & i \end{vmatrix}
+    = \begin{aligned}[t]
+      &aei + bfg + cdh \\
+      &- gec - hfa - idb
+    \end{aligned}
+    \]
+  \end{splitbox}
+\end{defbox}
+
+\ZSFindexsee{Entwicklungssatz}{Laplace-Entwicklung}
+\ZSFindex{Minor}
+\ZSFindex{Kofaktor}
+\begin{ZSFlist}[Laplace'scher Entwicklungssatz][ordered]
+  \ZSFItem{Auswahl}{Wähle eine Zeile $i$ oder Spalte $j$ mit möglichst vielen Nullen.}
+  \ZSFItem{Entwicklung}{Entwickle entlang der gewählten Zeile (Summe über Spalten $j$) oder Spalte (Summe über Zeilen $i$).}
+  \ZSFItem{Vorgehen je Element}{Für jedes Element der Zeile/Spalte:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{Vorzeichen aus dem \ZSFkeyword{Schachbrettmuster} $(-1)^{i+j}$ bestimmen.}
+    \ZSFItem{Zeile $i$ und Spalte $j$ des Elements streichen.}
+    \ZSFItem{Determinante der verbleibenden $(n-1) \times (n-1)$ Untermatrix $A_{ij}$ berechnen.}
+  \end{ZSFlist}}
+  \ZSFItem{Summation}{Addiere alle Teilergebnisse: Element $\cdot$ Vorzeichen $\cdot$ Unterdeterminante.}
+\end{ZSFlist}
+
+\textVorBox{Beispiel: \ZSFkeyword{Laplace-Entwicklung} nach der 1. Spalte:}
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    \begin{vmatrix} 1 & 2 & 1 \\ 3 & 8 & 5 \\ 0 & 3 & 2 \end{vmatrix}
+    &= 1 \cdot \begin{vmatrix} 8 & 5 \\ 3 & 2 \end{vmatrix} - 3 \cdot \begin{vmatrix} 2 & 1 \\ 3 & 2 \end{vmatrix} \\
+    &= 1(16 - 15) - 3(4 - 3) = -2
+  \end{aligned}
+  \]
+  \formulanote{Vorzeichenmuster: $\begin{pmatrix} + & - & + \\ - & + & - \\ + & - & + \end{pmatrix}$}
+\end{formulabox}
+
+\begin{figbox}[Blocksatz für Blockmatrizen][align=center]
+\ZSFindex{Blocksatz für Determinanten}
+  \ZSFimage[width=0.85]{graphics/blocksatz_determinante.pdf}
+\end{figbox}
+
+\begin{defbox}[Determinante aus LR-Zerlegung \ZSFref{sec:lr-decomposition}][weight=quiet]
+  Besonders nützlich, wenn die \ZSFkeyword{LR-Zerlegung} $P \cdot A = L \cdot R$ bereits berechnet ist:
+  \[ \det(A) = (-1)^{s} \cdot \prod_{i=1}^n r_{ii} \]
+  wobei $s$ die Anzahl der ausgeführten Zeilenvertauschungen (in $P$) bezeichnet.
+\end{defbox}
+
+\SubsectionBar[sec:determinant-connections]{Zusammenhangsliste}
+\ZSFindex[Regulare Matrix]{Reguläre Matrix}
+
+\begin{ZSFlist}[Äquivalente Aussagen für reguläre Matrizen $A \in \R^{n \times n}$]
+  \ZSFItem{Die Determinante ist ungleich Null: $\det(A) \neq 0$.}
+  \ZSFItem{Der Rang der Matrix ist maximal: $\rang(A) = n$. \ZSFref{sec:row-echelon}}
+  \ZSFItem{Das LGS $Ax = b$ ist für beliebiges $b$ eindeutig lösbar.}
+  \ZSFItem{Das homogene LGS $Ax = 0$ besitzt nur die triviale Lösung $x = 0$.}
+  \ZSFItem{Die Spalten- und Zeilenvektoren von $A$ sind linear unabhängig.}
+  \ZSFItem{Die Spalten von $A$ bilden eine Basis des $\R^n$. \ZSFref{sec:basis}}
+  \ZSFItem{Der Kern von $A$ enthält nur den Nullvektor: $\Ker(A) = \{0\}$. \ZSFref{sec:kernel-image}}
+  \ZSFItem{Kein Eigenwert von $A$ ist gleich $0$. \ZSFref{sec:eigenvalues}}
+\end{ZSFlist}

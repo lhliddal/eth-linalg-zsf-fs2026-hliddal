@@ -1,0 +1,254 @@
+\ZSFNewColumn
+\StartChapter{Kleinste Quadrate}
+
+\begin{runintext}
+Das Prinzip der \ZSFkeyword*{kleinsten Quadrate} dient zum Lösen von \ZSFkeyword*{überbestimmten} Gleichungssystemen (mehr Gleichungen als Unbekannte), indem die Summe der quadratischen Residuen minimiert wird.
+\end{runintext}
+
+\SubsectionBar[sec:least-squares]{Normalengleichung \ZSFref{sec:hub-least-squares-projection}}
+
+\ZSFindex{Methode der kleinsten Quadrate}
+\ZSFindex[Uberbestimmtes LGS]{Überbestimmtes LGS}
+\ZSFindex{Ausgleichsproblem}
+\ZSFindexsee{Normalgleichung}{Normalengleichung}
+\begin{defbox}[Ausgleichsproblem]
+Für ein überbestimmtes LGS $\ZSFmhlA{A} \cdot x = \ZSFmhlB{c}$ mit $\ZSFmhlA{A} \in \R^{m \times n}$ ($m > n$) existiert meist keine exakte Lösung. Wir suchen ein $x$, das die Norm des \ZSFkeyword[Residuenvektor]{Residuenvektors} $r = \ZSFmhlA{A} \cdot x - \ZSFmhlB{c}$ minimiert:
+  \[ \min_{x} \norm{\ZSFbraceunder{\ZSFmhlA{A} \cdot x - \ZSFmhlB{c}}{Residuenvektor $r$}}_2 \]
+  \ZSFref{sec:lp-vector-norms}
+\end{defbox}
+
+\begin{ZSFlist}[Lösen via Normalengleichung][ordered]
+  \ZSFItem{System bestimmen}{Stelle die Matrix $\ZSFmhlA{A}$ und den Vektor $\ZSFmhlB{c}$ auf.}
+  \ZSFItem{Normalenform bilden}{Berechne das quadratische System durch Multiplikation mit $\ZSFmhlA{A}^T$ \ZSFref{sec:orthogonality-projection}:
+  \[ \ZSFmhlC{\ZSFbraceunder{\ZSFmhlA{A}^T \cdot \ZSFmhlA{A}}{quadratisch $n \times n$} \cdot x = \ZSFbraceunder{\ZSFmhlA{A}^T \cdot \ZSFmhlB{c}}{Vektor $n \times 1$}} \]}
+  \ZSFItem{LGS lösen}{Löse nach $x$ auf (z.\,B. via $x = (\ZSFmhlA{A}^T \ZSFmhlA{A})^{-1} \ZSFmhlA{A}^T \ZSFmhlB{c}$ oder Gauss).}
+\end{ZSFlist}
+
+\begin{goalbox}[Normalengleichung]
+  \ZSFDerivationCase{LGS $\ZSFmhlA{A} \cdot x = \ZSFmhlB{c}$ überbestimmt}{\cdot \ZSFmhlA{A}^T}{\ZSFmhlA{A}^T \ZSFmhlA{A} \cdot x = \ZSFmhlA{A}^T \ZSFmhlB{c}}
+\end{goalbox}
+
+\begin{defbox}[Beispiel][weight=quiet]
+  Gleichungssystem: $\begin{matrix} 2x_1 + 3x_2 = 6 \\ 3x_1 + 4x_2 = 8 \\ 2x_1 + x_2 = 3 \end{matrix}$
+  \ZSFgap[XS]
+  
+  \ZSFlabel{1. System bestimmen:}
+  \[
+  \ZSFmhlA{A} = \ZSFmhlA{\begin{pmatrix} 2 & 3 \\ 3 & 4 \\ 2 & 1 \end{pmatrix}}, \quad \ZSFmhlB{c} = \ZSFmhlB{\begin{pmatrix} 6 \\ 8 \\ 3 \end{pmatrix}}
+  \]
+  \ZSFlabel{2. Normalenform bilden ($\ZSFmhlA{A}^T \ZSFmhlA{A} \cdot x = \ZSFmhlA{A}^T \ZSFmhlB{c}$):}
+  \[
+  \ZSFmhlA{A}^T \ZSFmhlA{A} = \begin{pmatrix} 17 & 20 \\ 20 & 26 \end{pmatrix}, \quad \ZSFmhlA{A}^T \ZSFmhlB{c} = \ZSFmhlB{\begin{pmatrix} 42 \\ 53 \end{pmatrix}}
+  \]
+  \ZSFlabel{3. LGS lösen:}
+  Inversion via $\det(\ZSFmhlA{A}^T \ZSFmhlA{A}) = 17 \cdot 26 - 20^2 = 42$:
+  \[
+  (\ZSFmhlA{A}^T \ZSFmhlA{A})^{-1} = \frac{1}{42} \begin{pmatrix} 26 & -20 \\ -20 & 17 \end{pmatrix}
+  \]
+  Berechne $x = (\ZSFmhlA{A}^T \ZSFmhlA{A})^{-1} \ZSFmhlA{A}^T \ZSFmhlB{c}$:
+  \[
+  \begin{aligned}
+  x &= \tfrac{1}{42} \begin{pmatrix} 26 & -20 \\ -20 & 17 \end{pmatrix} \ZSFmhlB{\begin{pmatrix} 42 \\ 53 \end{pmatrix}} \\
+  &= \tfrac{1}{42} \begin{pmatrix} 32 \\ 61 \end{pmatrix} \approx \begin{pmatrix} 0.76 \\ 1.45 \end{pmatrix}
+  \end{aligned}
+  \]
+\end{defbox}
+
+\SubsectionBar[sec:qr-decomposition]{QR-Zerlegung}
+\ZSFindex{QR-Zerlegung}
+
+\begin{defbox}[QR-Zerlegung]
+Jede Matrix $A \in \R^{m \times n}$ kann in das Produkt einer orthogonalen Matrix $Q \in \R^{m \times m}$ \ZSFref{sec:orthogonal-matrices} und einer oberen Rechtsdreiecksmatrix $R \in \R^{m \times n}$ zerlegt werden:
+\[ A = Q \cdot R \]
+\end{defbox}
+
+\ZSFindex{Givens-Rotation}
+\begin{defbox}[Grundidee der Givens-Rotation][weight=quiet]
+Eine Givens-Rotation eliminiert den Eintrag \ZSFmhlB{$b$} unter Verwendung des Pivots \ZSFmhlA{$a$}. Sie mischt dazu genau zwei Zeilen:
+\[
+\begin{pmatrix} \ZSFmhlA{c} & \ZSFmhlB{s} \\ \ZSFmhlB{-s} & \ZSFmhlA{c} \end{pmatrix}
+\begin{pmatrix} \ZSFmhlA{a} \\ \ZSFmhlB{b} \end{pmatrix}
+=
+\begin{pmatrix} \ZSFmhlD{w} \\ \ZSFmhlC{0} \end{pmatrix}
+\quad \text{mit} \quad
+\begin{aligned}
+\ZSFmhlD{w}&=\sqrt{\ZSFmhlA{a}^2+\ZSFmhlB{b}^2}\\
+\ZSFmhlA{c}&=\frac{\ZSFmhlA{a}}{\ZSFmhlD{w}}, \quad \ZSFmhlB{s}=\frac{\ZSFmhlB{b}}{\ZSFmhlD{w}}
+\end{aligned}
+\]
+Farbfäden: \ZSFmhlA{Pivot $a\to c$}, \ZSFmhlB{Ziel $b\to s$}, \ZSFmhlD{Länge $w$}, \ZSFmhlC{Null}.
+\ZSFgap[S]
+
+\ZSFlabel{Effekt auf die Matrix (Zeilenmischung):}
+Die Rotation betrifft \ZSFdanger{nur} Zeile $j$ (Pivot) und Zeile $i$ (Ziel):
+\[
+\begin{aligned}
+\text{neue Zeile } j &\leftarrow \ZSFmhlA{c} \cdot (\text{alte Zeile } j) + \ZSFmhlB{s} \cdot (\text{alte Zeile } i) \\
+\text{neue Zeile } i &\leftarrow \ZSFmhlB{-s} \cdot (\text{alte Zeile } j) + \ZSFmhlA{c} \cdot (\text{alte Zeile } i)
+\end{aligned}
+\]
+Wiederholt man dies unterhalb der Hauptdiagonalen, entsteht die Matrix $R$.
+\end{defbox}
+
+\begin{ZSFlist}[Givens-Rotation zur QR-Zerlegung][ordered]
+  \ZSFItem{Initialisieren}{Setze Arbeitsmatrix $B=A$ und Gesamtrotation $Q=I_m$.}
+  \ZSFItem{Ziel bestimmen}{Bearbeite Spalten $j=1,\dots,n$ von links nach rechts. Eliminiere darin alle Einträge unterhalb der Hauptdiagonale von unten nach oben.
+  
+  \ZSFlabel{Eliminations-Reihenfolge:}
+  \[
+  \begin{pmatrix}
+    * & * & * \\
+    \text{2.} & * & * \\
+    \text{1.} & \text{3.} & *
+  \end{pmatrix}
+  \]
+  Die Zahlen zeigen die Reihenfolge der Schritte.}
+  \ZSFItem{Koeffizienten ablesen}{Lies den Pivot \ZSFmhlA{$a=b_{jj}$} (stets das Diagonalelement der Spalte) und den zu eliminierenden Zieleintrag \ZSFmhlB{$b=b_{ij}$} ab. Berechne $w, c, s$ gemäss Grundidee. \ZSFref{sec:lp-vector-norms}}
+  \ZSFItem{Zeilen rotieren}{Wende die Rotation auf die Zeilen $j$ und $i$ von $B$ an:
+  \[
+  \begin{aligned}
+  \text{neue } Z_j &\leftarrow \ZSFmhlA{c} \cdot Z_j + \ZSFmhlB{s} \cdot Z_i \\
+  \text{neue } Z_i &\leftarrow \ZSFmhlB{-s} \cdot Z_j + \ZSFmhlA{c} \cdot Z_i
+  \end{aligned}
+  \]
+  Der Eintrag $b_{ij}$ wird zu \ZSFmhlC{$0$} (und der Pivot $b_{jj}$ zu $w$).}
+  \ZSFItem{Q aktualisieren (optional)}{Falls $Q$ benötigt wird:
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Für $Q^T$ (empfohlen):} Wende dieselbe Zeilenrotation parallel auf eine Einheitsmatrix (startend mit $I_m$) an.}
+    \ZSFItem{\ZSFlabel{Für $Q$:} Multipliziere $Q \leftarrow Q \cdot G_{ij}$ von rechts.}
+  \end{ZSFlist}
+  \ZSFref{sec:rotation-matrices}}
+  \ZSFItem{Resultat}{Wiederhole, bis alle Einträge unter der Hauptdiagonalen Null sind. Dann gilt $\ZSFmhlC{R=B}$ und $\ZSFmhlC{A=Q\cdot R}$.}
+\end{ZSFlist}
+
+\begin{defbox}[Beispiel: zwei Rotationen][weight=quiet]
+  \[
+  A = \begin{pmatrix} \ZSFmhlA{1} & 0 \\ 0 & 1 \\ \ZSFmhlB{1} & 1 \end{pmatrix}
+  \]
+  \ZSFlabel{1. Rotation (Spalte $j=1$, Ziel $i=3$):}
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Koeffizienten ablesen:} Pivot $a=a_{11}=1$, Ziel $b=a_{31}=1$.
+      \[ w=\sqrt{1^2+1^2}=\sqrt{2}, \quad c=1/\sqrt{2}, \quad s=1/\sqrt{2} \]}
+    \ZSFItem{\ZSFlabel{Zeilen rotieren ($Z_1$ und $Z_3$):}
+      \[
+      \begin{aligned}
+      \text{neue } Z_1 &= \tfrac{1}{\sqrt{2}} (Z_1 + Z_3) = \begin{pmatrix} \ZSFmhlD{\sqrt{2}} & 1/\sqrt{2} \end{pmatrix} \\
+      \text{neue } Z_3 &= \tfrac{1}{\sqrt{2}} (-Z_1 + Z_3) = \begin{pmatrix} \ZSFmhlC{0} & 1/\sqrt{2} \end{pmatrix}
+      \end{aligned}
+      \]}
+    \ZSFItem{\ZSFlabel{Arbeitsmatrix $B_1$ und $G_1^T$:}
+      \[
+      G_1^T=
+      \begin{pmatrix}
+      \ZSFmhlA{1/\sqrt{2}} & 0 & \ZSFmhlB{1/\sqrt{2}} \\
+      0 & 1 & 0 \\
+      \ZSFmhlB{-1/\sqrt{2}} & 0 & \ZSFmhlA{1/\sqrt{2}}
+      \end{pmatrix}
+      \]
+      \[
+      B_1 = G_1^T A =
+      \begin{pmatrix}
+      \ZSFmhlD{\sqrt{2}} & 1/\sqrt{2} \\
+      0 & \ZSFmhlA{1} \\
+      \ZSFmhlC{0} & \ZSFmhlB{1/\sqrt{2}}
+      \end{pmatrix}
+      \]}
+  \end{ZSFlist}
+  \ZSFgap[XS]
+  
+  \ZSFlabel{2. Rotation (Spalte $j=2$, Ziel $i=3$):}
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Koeffizienten ablesen:} Pivot $a=(B_1)_{22}=1$, Ziel $b=(B_1)_{32}=1/\sqrt{2}$.
+      \[ w=\sqrt{1^2 + (1/\sqrt{2})^2} = \sqrt{3/2}, \; c=\sqrt{2/3}, \; s=1/\sqrt{3} \]}
+    \ZSFItem{\ZSFlabel{Zeilen rotieren ($Z_2$ und $Z_3$):}
+      \[
+      \begin{aligned}
+      \text{neue } Z_2 &= \sqrt{\tfrac{2}{3}} Z_2 + \tfrac{1}{\sqrt{3}} Z_3 = \begin{pmatrix} 0 & \ZSFmhlD{\sqrt{\frac{3}{2}}} \end{pmatrix} \\
+      \text{neue } Z_3 &= -\tfrac{1}{\sqrt{3}} Z_2 + \sqrt{\tfrac{2}{3}} Z_3 = \begin{pmatrix} 0 & \ZSFmhlC{0} \end{pmatrix}
+      \end{aligned}
+      \]}
+    \ZSFItem{\ZSFlabel{Resultat $R$ und $G_2^T$:}
+      \[
+      G_2^T=
+      \begin{pmatrix}
+      1 & 0 & 0 \\
+      0 & \ZSFmhlA{\sqrt{2}/\sqrt{3}} & \ZSFmhlB{1/\sqrt{3}} \\
+      0 & \ZSFmhlB{-1/\sqrt{3}} & \ZSFmhlA{\sqrt{2}/\sqrt{3}}
+      \end{pmatrix}
+      \]
+      \[
+      R = G_2^T B_1 =
+      \begin{pmatrix}
+      \ZSFmhlD{\sqrt{2}} & 1/\sqrt{2} \\
+      0 & \ZSFmhlD{\sqrt{3}/\sqrt{2}} \\
+      0 & \ZSFmhlC{0}
+      \end{pmatrix}
+      \]}
+  \end{ZSFlist}
+  Gesamtrotation $Q = G_1 G_2$ (oder $Q^T = G_2^T G_1^T$):
+  \[
+  Q=
+  \begin{pmatrix}
+  1/\sqrt{2} & -1/\sqrt{6} & -1/\sqrt{3} \\
+  0 & \sqrt{2}/\sqrt{3} & -1/\sqrt{3} \\
+  1/\sqrt{2} & 1/\sqrt{6} & 1/\sqrt{3}
+  \end{pmatrix}.
+  \]
+  \ZSFconclusion{Kontrolle:} $Q^{T}Q=I_3$ und $QR=A$.
+\end{defbox}
+
+\begin{warnbox}[Typische Fehler \& Prüfungstipp]
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Aktuelle Werte nutzen:} Verwende für jede neue Rotation die Einträge der \ZSFdanger{aktuellen Arbeitsmatrix} $B$, nicht die ursprünglichen von $A$.}
+    \ZSFItem{\ZSFlabel{Vorzeichen:} Halte den Vorzeichenblock von $G_{ij}^T$ (mit $-s$ unten links) exakt ein.}
+    \ZSFItem{\ZSFlabel{Prüfungstipp (Direktes Lösen):} Musst du für ein Ausgleichsproblem nur $d = Q^T c$ berechnen, so berechne niemals $Q$! Führe alle Zeilenrotationen parallel auf der erweiterten Matrix $(A \mid c)$ aus. Dies liefert direkt $(R \mid d)$!
+  \[ (A \mid c) \xrightarrow{\text{Givens-Rotationen}} (R \mid d) \]}
+  \end{ZSFlist}
+\end{warnbox}
+
+\SubsectionBar[sec:qr-solve]{Lösen mit QR-Zerlegung}
+
+\begin{runintext}
+Die \ZSFkeyword{QR-Zerlegung} ist numerisch \ZSFhl{wesentlich stabiler} als die Normalengleichung zur Lösung von Ausgleichsproblemen.
+\end{runintext}
+
+\begin{ZSFlist}[Lösen via QR][ordered]
+  \ZSFItem{Zerlegung}{Bestimme $\ZSFmhlA{A} = Q \cdot R$. \ZSFref{sec:qr-decomposition}}
+  \ZSFItem{Transformation}{Berechne den Vektor $d = Q^T \cdot \ZSFmhlB{c}$.}
+  \ZSFItem{System reduzieren}{Partitioniere $R$ und $d$, um die obere quadratische $n \times n$-Dreiecksmatrix $R_0$ und die ersten $n$ Einträge $d_0$ zu erhalten:
+  \[ R = \begin{pmatrix} R_0 \\ 0 \end{pmatrix}, \quad d = \begin{pmatrix} d_0 \\ d_1 \end{pmatrix} \]}
+  \ZSFItem{Rückwärtssubstitution}{Löse das quadratische Dreieckssystem:
+  \[ \ZSFmhlC{R_0 \cdot x = d_0} \]}
+\end{ZSFlist}
+
+\begin{goalbox}[Lösen via QR]
+  \ZSFDerivationCase{LGS $\ZSFmhlA{A} \cdot x = \ZSFmhlB{c}$ mit $\ZSFmhlA{A} = Q \cdot R$}{\cdot Q^T \ \Longrightarrow \ \begin{pmatrix} R_0 \\ 0 \end{pmatrix} x = \begin{pmatrix} d_0 \\ d_1 \end{pmatrix}}{R_0 \cdot x = d_0}
+\end{goalbox}
+
+\begin{defbox}[Fortsetzung des Beispiels][weight=quiet]
+  \ZSFlabel{1. Zerlegung / Vektor gegeben:}
+  Matrix $\ZSFmhlA{A}$ sowie $Q, R$ sind bekannt. Vektor:
+  \[
+  c = \ZSFmhlB{\begin{pmatrix} 1 \\ 2 \\ 2 \end{pmatrix}}
+  \]
+  \ZSFlabel{2. Transformation ($d = Q^T \ZSFmhlB{c}$):}
+  \[
+  d = Q^T \ZSFmhlB{c} = \begin{pmatrix} 3/\sqrt{2} \\ 5/\sqrt{6} \\ -1/\sqrt{3} \end{pmatrix}
+  \]
+  \ZSFlabel{3. System reduzieren ($R_0 \cdot x = d_0$):}
+  Extrahiere $R_0$ ($2 \times 2$) und $d_0$ (erste 2 Zeilen):
+  \[
+  R_0 = \begin{pmatrix} \sqrt{2} & 1/\sqrt{2} \\ 0 & \sqrt{3}/\sqrt{2} \end{pmatrix}, \quad d_0 = \begin{pmatrix} 3/\sqrt{2} \\ 5/\sqrt{6} \end{pmatrix}
+  \]
+  Dies liefert das reduzierte LGS:
+  \[
+  \begin{pmatrix} \sqrt{2} & 1/\sqrt{2} \\ 0 & \sqrt{3}/\sqrt{2} \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 3/\sqrt{2} \\ 5/\sqrt{6} \end{pmatrix}
+  \]
+  \ZSFlabel{4. Rückwärtssubstitution:}
+  \[
+  \begin{aligned}
+  \text{Zeile 2: } \sqrt{3/2} \cdot x_2 &= 5/\sqrt{6} \quad \Longrightarrow \quad \ZSFmhlC{x_2 = 5/3} \\
+  \text{Zeile 1: } \sqrt{2} \cdot x_1 + \tfrac{1}{\sqrt{2}} \cdot x_2 &= 3/\sqrt{2} \quad \Longrightarrow \quad \ZSFmhlC{x_1 = 2/3}
+  \end{aligned}
+  \]
+\end{defbox}

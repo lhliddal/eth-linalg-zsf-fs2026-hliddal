@@ -1,0 +1,376 @@
+\StartChapter{Matrizen}
+
+\begin{runintext}
+Eine \ZSFkeyword*{Matrix} $A \in \R^{m \times n}$ ist eine rechteckige Anordnung von mathematischen Elementen in $m$ Zeilen und $n$ Spalten. Die Rechenregeln und Transformationen bilden das Fundament der linearen Algebra.
+\end{runintext}
+
+\SubsectionBar{Matrixschreibweise}
+\ZSFindex{Matrix}
+
+\begin{runintext}
+Ein lineares Gleichungssystem kann kompakt in Matrixschreibweise dargestellt werden:
+\end{runintext}
+
+\[
+\begin{ZSFaugmatrix}[delims=none]{2}{1}
+  x_1 & x_2 & 1 \\ \hline
+  a_{11} & a_{12} & b_1  \\
+  a_{21} & a_{22} & b_2  \\
+  a_{31} & a_{32} & b_3  \\
+\end{ZSFaugmatrix}
+\quad\Longleftrightarrow\quad
+\begin{pmatrix}
+  a_{11} & a_{12} \\
+  a_{21} & a_{22} \\
+  a_{31} & a_{32} \\
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+  x_1 \\
+  x_2
+\end{pmatrix}
+=
+\begin{pmatrix}
+  b_1 \\
+  b_2 \\
+  b_3
+\end{pmatrix}
+\]
+
+\SubsectionBar{Matrixmultiplikation}
+\ZSFindex{Matrixmultiplikation}
+
+\begin{runintext}
+Zwei Matrizen $A$ und $B$ können multipliziert werden, wenn die Spaltenanzahl von $A$ gleich der Zeilenanzahl von $B$ ist:
+\end{runintext}
+
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    A \in \R^{\ZSFmhlB{m} \times \ZSFmhlA{n}}, \ B \in \R^{\ZSFmhlA{n} \times \ZSFmhlC{p}} &\implies C = A \cdot B \in \R^{\ZSFmhlB{m} \times \ZSFmhlC{p}} \\
+    \begin{pmatrix}
+      a_1 & b_1 \\
+      c_1 & d_1
+    \end{pmatrix}
+    \cdot
+    \begin{pmatrix}
+      a_2 & b_2 \\
+      c_2 & d_2
+    \end{pmatrix}
+    &=
+    \begin{pmatrix}
+      a_1 a_2 + b_1 c_2 & a_1 b_2 + b_1 d_2 \\
+      c_1 a_2 + d_1 c_2 & c_1 b_2 + d_1 d_2
+    \end{pmatrix}
+  \end{aligned}
+  \]
+  \ZSFsep[Rechengesetze der Matrixmultiplikation]
+  \[
+  \begin{aligned}
+    \text{Assoziativgesetz:} && (A \cdot B) \cdot C &= A \cdot (B \cdot C) \\
+    \text{Distributivgesetz:} && (A + B) \cdot C &= A \cdot C + B \cdot C \\
+    && A \cdot (C + D) &= A \cdot C + A \cdot D \\
+    \text{Addition kommutativ:} && A + B &= B + A \\
+    \text{Addition assoziativ:} && (A + B) + C &= A + (B + C)
+  \end{aligned}
+  \]
+  \ZSFsep
+  \formulanote{\ZSFdanger{Achtung!} Das Kommutativgesetz gilt für die Multiplikation im Allgemeinen \ZSFdanger{nicht}: $A \cdot B \neq B \cdot A$.}
+\end{formulabox}
+
+\SubsectionBar{Identitätsmatrix}
+
+\begin{defbox}[Identitätsmatrix]
+\ZSFindexsee{Einheitsmatrix}{Identitätsmatrix}%
+Die \ZSFkeyword[Identitätsmatrix]{Identitäts- oder Einheitsmatrix} $I_n \in \R^{n \times n}$ ist eine quadratische Matrix, deren Hauptdiagonalelemente 1 und Ausserdiagonalelemente 0 sind:
+\[
+I_n = \begin{pmatrix}
+  1 & 0 & \dotsm & 0 \\
+  0 & 1 & \dotsm & 0 \\
+  \vdots & \vdots & \ddots & \vdots \\
+  0 & 0 & \dotsm & 1
+\end{pmatrix}
+\]
+\end{defbox}
+\begin{formulabox}
+  \[ A^{m \times n} \cdot I_n = I_m \cdot A^{m \times n} = A^{m \times n} \]
+\end{formulabox}
+
+\SubsectionBar[sec:triangular-matrices]{Diagonal- und Dreiecksmatrizen}
+
+\begin{defbox}[Diagonal- und Dreiecksmatrizen]
+Eine \ZSFkeyword{Diagonalmatrix} $D = \diag(d_1, \dots, d_n)$ ist eine quadratische Matrix, deren Elemente ausserhalb der Hauptdiagonalen $0$ sind:
+\[ D = \begin{pmatrix} d_1 & 0 & 0 \\ 0 & d_2 & 0 \\ 0 & 0 & d_3 \end{pmatrix} \]
+Eine \ZSFkeyword{Dreiecksmatrix} hat entweder oberhalb (Rechtsdreiecksmatrix $R$) oder unterhalb (Linksdreiecksmatrix $L$) der Hauptdiagonalen nur Nullen:
+\[
+R = \begin{pmatrix} r_{11} & r_{12} & r_{13} \\ 0 & r_{22} & r_{23} \\ 0 & 0 & r_{33} \end{pmatrix}
+\quad \text{und} \quad
+L = \begin{pmatrix} l_{11} & 0 & 0 \\ l_{21} & l_{22} & 0 \\ l_{31} & l_{32} & l_{33} \end{pmatrix}
+\]
+\end{defbox}
+
+\begin{defbox}[Eigenschaften][weight=quiet]
+Für Diagonal- und Dreiecksmatrizen $A$ gilt:
+  \begin{ZSFlist}
+    \ZSFItem{Determinante ist das Produkt der Diagonalelemente: $\det(A) = a_{11} \cdot a_{22} \cdots a_{nn}$. \ZSFref{sec:determinant-methods}}
+    \ZSFItem{Eigenwerte sind die Diagonalelemente selbst: $\eig(A) = \{a_{11}, a_{22}, \dots, a_{nn}\}$. \ZSFref{sec:eigenvalues}}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar{Transponierte}
+
+\begin{defbox}[Transponierte Matrix]
+Die \ZSFkeyword{Transponierte} $A^T$ entsteht durch das Spiegeln der Matrix an der Hauptdiagonalen (Zeilen werden zu Spalten und Spalten zu Zeilen):
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d \\
+  e & f \\
+\end{pmatrix}^T
+=
+\begin{pmatrix}
+  a & c & e \\
+  b & d & f \\
+\end{pmatrix}
+\]
+\end{defbox}
+
+\textVorBox{Rechenregeln für Transponierte:}
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    (A + B)^T &= A^T + B^T & (A^T)^{-1} &= (A^{-1})^T \\
+    (A \cdot B)^T &= B^T \cdot A^T & \rang(A^T) &= \rang(A) \\
+    (c \cdot A)^T &= c \cdot A^T & \det(A^T) &= \det(A) \\
+    (A^T)^T &= A & \eig(A^T) &= \eig(A)
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:trace]{Spur}
+\ZSFindexsee{Trace}{Spur}
+
+\begin{defbox}[Spur einer Matrix]
+Die \ZSFkeyword{Spur} (Trace) einer quadratischen Matrix $A \in \R^{n \times n}$ ist die Summe ihrer Hauptdiagonalelemente:
+\[ \Spur(A) = \ZSFsumAuto{j=1}{n} a_{jj} = a_{11} + a_{22} + \dotsm + a_{nn} \]
+\end{defbox}
+
+\begin{ZSFlist}[Eigenschaften der Spur \ZSFref{sec:eigenvalues}]
+  \ZSFItem{Transponierte: $\Spur(A) = \Spur(A^T)$.}
+  \ZSFItem{Linearität: $\Spur(\alpha A + \beta B) = \alpha \Spur(A) + \beta \Spur(B)$.}
+  \ZSFItem{\ZSFkeyword[Spur, zyklische Invarianz]{Zyklische Invarianz}:
+  \[ \Spur(A \cdot B) = \Spur(B \cdot A) \]
+  \[ \Spur(A \cdot B \cdot C) = \Spur(B \cdot C \cdot A) = \Spur(C \cdot A \cdot B) \]}
+  \ZSFItem{Ähnlichkeit: Ähnliche Matrizen haben dieselbe Spur: $\Spur(B^{-1} A B) = \Spur(A)$. \ZSFref{sec:matrix-similarity}}
+  \ZSFItem{Positivität: Sind $A, B$ reelle $n \times n$ Matrizen, wobei $A$ positiv definit und $B$ positiv semidefinit ist, so gilt: $\Spur(A \cdot B) \geq 0$. \ZSFref{sec:definiteness}}
+\end{ZSFlist}
+
+\SubsectionBar[sec:matrix-inverse]{Inverse \ZSFref{sec:hub-full-rank}}
+\ZSFindex{Invertierbarkeit}
+\ZSFindex{Matrix invertieren}
+
+\begin{defbox}[Inverse Matrix]
+Die \ZSFkeyword{Inverse} $A^{-1}$ einer quadratischen Matrix $A$ macht eine Multiplikation mit $A$ rückgängig:
+\[ A \cdot x = b \quad\Longleftrightarrow\quad x = A^{-1} \cdot b \]
+\[ A^{-1} \cdot A = A \cdot A^{-1} = I \]
+\end{defbox}
+
+\begin{ZSFlist}[Eigenschaften der Inversen]
+  \ZSFItem{Nur quadratische Matrizen können invertierbar (\ZSFkeyword[Regulare Matrix@Reguläre Matrix]{regulär}) sein. Sonst heissen sie \ZSFkeyword[Singulare Matrix@Singuläre Matrix]{singulär}.}
+  \ZSFItem{$A$ ist invertierbar $\Longleftrightarrow \det(A) \neq 0 \Longleftrightarrow \rang(A) = n \Longleftrightarrow$ kein Eigenwert $\lambda_i = 0$. \ZSFref{sec:determinant-connections}\ZSFref{sec:eigenvalues}}
+  \ZSFItem{Die Inverse ist eindeutig.}
+  \ZSFItem{$(A^T)^{-1} = (A^{-1})^T$.}
+  \ZSFItem{$A$ symmetrisch $\Longleftrightarrow A^{-1}$ symmetrisch.}
+  \ZSFItem{$A$ Dreiecksmatrix $\Longleftrightarrow A^{-1}$ Dreiecksmatrix.}
+  \ZSFItem{Wenn $A$ eine Diagonalmatrix ist, hat $A^{-1}$ die Kehrwerte der Diagonalelemente von $A$ auf der Diagonalen.}
+  \ZSFItem{Sind $A$ und $B$ invertierbar $\Longrightarrow (A \cdot B)^{-1} = B^{-1} \cdot A^{-1}$.}
+\end{ZSFlist}
+
+\textVorBox{Rechenregeln für die Inverse:}
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    I^{-1} &= I & (A^T)^{-1} &= (A^{-1})^T \\
+    (A^{-1})^{-1} &= A & \rang(A^{-1}) &= \rang(A) \\
+    (A^k)^{-1} &= (A^{-1})^k & \det(A^{-1}) &= \det(A)^{-1} \\
+    (c\cdot A)^{-1} &= c^{-1} \cdot A^{-1} & \eig(A^{-1}) &= \eig(A)^{-1}
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\ZSFindex{Gauss-Jordan-Algorithmus}
+\begin{defbox}[Gauss-Jordan-Algorithmus][weight=quiet]
+Erlaube die Bestimmung der Inversen für grössere Matrizen. Man führt Zeilenoperationen auf $(A \mid I)$ aus, bis links $I$ steht.
+\ZSFgap[XS]
+Ausgangs-Tableau $(A \mid I)$:
+\[
+\begin{ZSFaugmatrix}[delims=none]{3}{3}
+  1 & 2 & 0 & 1 & 0 & 0 \\
+  2 & 3 & 0 & 0 & 1 & 0 \\
+  3 & 4 & 1 & 0 & 0 & 1
+\end{ZSFaugmatrix}
+\]
+Ziel-Tableau $(I \mid A^{-1})$ nach Gauss:
+\[
+\begin{ZSFaugmatrix}[delims=none]{3}{3}
+  1 & 0 & 0 & -3 & 2 & 0 \\
+  0 & 1 & 0 & 2 & -1 & 0 \\
+  0 & 0 & 1 & 1 & -2 & 1
+\end{ZSFaugmatrix}
+\]
+Daraus ergibt sich rechts die Inverse $A^{-1}$.
+\end{defbox}
+
+\ZSFindex{Adjunktenformel}
+\begin{defbox}[Adjunktenformel (für $2 \times 2$ und $3 \times 3$) \ZSFref{sec:adjugate}][weight=quiet]
+\[ A^{-1} = \frac{1}{\det(A)} \cdot \Adj(A) \]
+Für $2 \times 2$-Matrizen vereinfacht:
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}^{-1}
+=
+\frac{1}{ad - bc} \cdot
+\begin{pmatrix}
+  d & -b \\
+  -c & a 
+\end{pmatrix}
+\]
+\end{defbox}
+
+\SubsectionBar[sec:adjugate]{Berechnung der Adjunkte}
+\ZSFindex{Kofaktor}
+
+\begin{runintext}
+Die \ZSFkeyword{Adjunkte} $\Adj(A)$ bezeichnet die Transponierte der \ZSFkeyword{Kofaktormatrix} (vorzeichenbehaftete Unterdeterminanten):
+\end{runintext}
+
+\begin{formulabox}
+  \[
+  A = \begin{pmatrix} 2 & 0 & 1 \\ 3 & 2 & -4 \\ 1 & 0 & 3 \end{pmatrix}
+  \]
+  \formulanote{Vorzeichenmuster:}
+  \[
+  \begin{pmatrix}
+    + & - & + \\
+    - & + & - \\
+    + & - & +
+  \end{pmatrix}
+  \]
+  \ZSFsep
+  \[
+  \Adj(A) = 
+  \begin{pmatrix} 
+    6 & -13 & -2 \\
+    0 & 5 & 0 \\
+    -2 & 11 & 4 
+  \end{pmatrix}^T = 
+  \begin{pmatrix} 
+    6 & 0 & -2 \\
+    -13 & 5 & 11 \\
+    -2 & 0 & 4 
+  \end{pmatrix}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:orthogonal-matrices]{Orthogonale Matrizen}
+\ZSFindex{Isometrie}
+
+\begin{defbox}[Orthogonale Matrix]
+Eine quadratische Matrix $Q \in \R^{n \times n}$ heisst \ZSFkeyword[Orthogonale Matrix]{orthogonal}, wenn ihre Spalten- (und auch Zeilen-)vektoren eine Orthonormalbasis bilden \ZSFref{sec:gram-schmidt} (d.h. sie haben alle die Länge 1 und stehen paarweise senkrecht aufeinander):
+\[ Q^T \cdot Q = I \quad\Longleftrightarrow\quad Q^{-1} = Q^T \]
+\end{defbox}
+
+\begin{defbox}[Eigenschaften][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Spalten- und Zeilenvektoren von $Q$ müssen jeweils die Länge 1 haben (Einheitsvektoren) und paarweise senkrecht aufeinander stehen (zueinander orthogonal sein).}
+    \ZSFItem{Multiplikation erhält Längen und Winkel (Isometrie): $\norm{Q \cdot x} = \norm{x}$. \ZSFref{sec:scalar-product}}
+    \ZSFItem{Sind $A$ und $B$ orthogonal $\Longrightarrow A \cdot B$ ist orthogonal.}
+    \ZSFItem{Determinante: $\det(Q) = \pm 1$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:lr-decomposition]{LR-Zerlegung}
+\ZSFindex{LR-Zerlegung}
+\ZSFindex[Vorwartssubstitution]{Vorwärtssubstitution}
+\ZSFindex[Ruckwartssubstitution]{Rückwärtssubstitution}
+\ZSFindexsee[Ruckwartseinsetzen]{Rückwärtseinsetzen}{Rückwärtssubstitution}
+
+\begin{defbox}[LR-Zerlegung]
+Zerlegung einer Matrix $A$ in das Produkt einer normierten Linksdreiecksmatrix $L$ (Einsen auf der Hauptdiagonalen) und einer Rechtsdreiecksmatrix $R$:
+\[ A = L \cdot R \]
+\end{defbox}
+
+\begin{ZSFlist}[Vorgehen bei der LR-Zerlegung][ordered]
+  \ZSFItem{Initialisierung}{Stelle die Identitätsmatrix links als $L$ auf, rechts die Matrix $A$ als $R$.}
+  \ZSFItem{Gauss-Schritte}{Eliminiere Werte unterhalb des Diagonalelements in $R$. Trage den Multiplikationsfaktor $c$ (aus $R_{new} = R - c \cdot R_{pivot}$) in die entsprechende Stelle in $L$ ein. \ZSFref{sec:row-echelon}}
+  \ZSFItem{Vorwärtssubstitution}{Löse das LGS $L \cdot y = b$ nach $y$ auf.}
+  \ZSFItem{Rückwärtssubstitution}{Löse das LGS $R \cdot x = y$ nach $x$ auf.}
+\end{ZSFlist}
+
+\begin{defbox}[Beispiel zur LR-Zerlegung][weight=quiet]
+  \[
+  A = \begin{pmatrix} 2 & 2 & 3 \\ 5 & 9 & 10 \\ 4 & 1 & 2 \end{pmatrix}
+  \]
+  \ZSFlabel{1. Pivot $2$ (Spalte 1):}
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Multiplikatoren:} $l_{21} = \frac{5}{2} = \ZSFmhlA{\frac{5}{2}}, \quad l_{31} = \frac{4}{2} = \ZSFmhlB{2}$}
+    \ZSFItem{\ZSFlabel{Zeilenoperationen:} \\
+      $R_2' = R_2 - \ZSFmhlA{\frac{5}{2}} R_1 = \begin{pmatrix} 0 & 4 & \frac{5}{2} \end{pmatrix}$ \\
+      $R_3' = R_3 - \ZSFmhlB{2} R_1 = \begin{pmatrix} 0 & -3 & -4 \end{pmatrix}$}
+  \end{ZSFlist}
+  \ZSFgap[XS]
+  \ZSFlabel{2. Pivot $4$ (Spalte 2):}
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFlabel{Multiplikator:} $l_{32} = \frac{-3}{4} = \ZSFmhlC{-\frac{3}{4}}$}
+    \ZSFItem{\ZSFlabel{Zeilenoperation:} $R_3'' = R_3' - \ZSFmhlC{\left(-\frac{3}{4}\right)} R_2' = \begin{pmatrix} 0 & 0 & -\frac{17}{8} \end{pmatrix}$}
+  \end{ZSFlist}
+  \ZSFgap[XS]
+  \ZSFlabel{Resultierende Matrizen $L$ und $R$ ($=R''$):}
+  \[
+  L = \begin{pmatrix} 1 & 0 & 0 \\ \ZSFmhlA{\frac{5}{2}} & 1 & 0 \\ \ZSFmhlB{2} & \ZSFmhlC{-\frac{3}{4}} & 1 \end{pmatrix}, \quad
+  R = \begin{pmatrix} 2 & 2 & 3 \\ 0 & 4 & \frac{5}{2} \\ 0 & 0 & -\frac{17}{8} \end{pmatrix}
+  \]
+\end{defbox}
+
+\begin{defbox}[LRP-Zerlegung mit Permutation][weight=quiet]
+Falls Nullen auf der Diagonalen entstehen, müssen Zeilen vertauscht werden. Dies wird durch die \ZSFkeyword{Permutationsmatrix} $P$ erfasst:
+\[ P \cdot A = L \cdot R \]
+Hierbei wird anfangs die Identitätsmatrix $P = I$ aufgestellt und jede Zeilenvertauschung mitgeführt.
+\newline
+Lösungsverfahren: Erst $L \cdot y = P \cdot b$ lösen, dann $R \cdot x = y$.
+\ZSFsep[Beispiel ($2 \times 2$)]
+Für $A = \left(\begin{smallmatrix} \ZSFmhlA{0} & 1 \\ 2 & 3 \end{smallmatrix}\right)$ ist das Diagonalelement $\ZSFmhlA{0}$ $\Longrightarrow$ Zeilentausch $1 \leftrightarrow 2$ nötig.
+\ZSFgap[XS]
+Wende Tausch auf $I$ an für $P$, und berechne das vertauschte System:
+\[
+P = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+P \cdot A = \begin{pmatrix} 2 & 3 \\ 0 & 1 \end{pmatrix}
+\]
+Da $P \cdot A$ bereits eine Rechtsdreiecksmatrix ($R$) ist, gilt $L = I$:
+\[
+L = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad
+R = \begin{pmatrix} 2 & 3 \\ 0 & 1 \end{pmatrix}
+\]
+\end{defbox}
+
+\SubsectionBar[sec:symmetric-matrices]{Symmetrische Matrizen \ZSFref{sec:hub-quadratic-matrix-properties}}
+\ZSFindex{Orthogonale Diagonalisierung}
+
+\begin{defbox}[Symmetrisch und Schiefsymmetrisch]
+Eine quadratische Matrix $S$ heisst \ZSFkeyword[Symmetrische Matrix]{symmetrisch}, wenn gilt:
+\[ S = S^T \]
+Sie heisst \ZSFkeyword[Schiefsymmetrische Matrix]{schiefsymmetrisch} (oder antisymmetrisch), wenn gilt:
+\[ S^T = -S \]
+\end{defbox}
+
+\begin{ZSFlist}[Eigenschaften symmetrischer Matrizen]
+  \ZSFItem{$A^T A$ und $A A^T$ sind für jede reelle Matrix $A$ symmetrisch.}
+  \ZSFItem{Alle Eigenwerte von $S$ sind reell.}
+  \ZSFItem{Die Eigenvektoren zu unterschiedlichen Eigenwerten sind orthogonal zueinander.}
+  \ZSFItem{$S$ ist halbeinfach, also diagonalisierbar. Sie besitzt eine orthonormale Eigenbasis, wodurch die Transformationsmatrix $T$ orthogonal gewählt werden kann. \ZSFref{sec:diagonalization}}
+  \ZSFItem{Ist $A$ symmetrisch und invertierbar $\Longrightarrow A^{-1}$ ist symmetrisch.}
+  \ZSFItem{Sind $A$ und $B$ symmetrisch $\Longrightarrow A+B$ ist symmetrisch.}
+  \ZSFItem{Ist $A$ symmetrisch $\Longrightarrow A^2$ ist symmetrisch.}
+\end{ZSFlist}

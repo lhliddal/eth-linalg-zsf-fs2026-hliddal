@@ -1,0 +1,219 @@
+\ZSFNewColumn
+\StartChapter{Quadratische Formen}
+
+\begin{runintext}
+Eine \ZSFkeyword*{quadratische Form} ist eine Funktion, in der nur quadratische Terme (Quadrate und Kreuzprodukte) vorkommen. Sie beschreibt geometrische Flächen zweiten Grades.
+\end{runintext}
+
+\SubsectionBar[sec:quadratic-form-def]{Definition}
+\ZSFindex{Quadratische Form}
+
+\begin{defbox}[Quadratische Form \& Quadrik]
+Eine quadratische Form auf dem $\R^n$ ist eine Funktion $q \colon \R^n \to \R$, die über eine symmetrische Matrix $A \in \R^{n \times n}$ definiert ist:
+\[ q(x) = x^T \cdot A \cdot x = \ZSFsumAuto{i=1}{n} \ZSFsumAuto{j=1}{n} a_{ij} x_i x_j \]
+Ist $A$ eine Diagonalmatrix, heisst die Form \ZSFkeyword[Rein quadratische Form]{rein quadratisch}.
+\ZSFsep
+Eine \ZSFkeyword{Quadrik} (quadratische Gleichung) hat zusätzlich lineare Terme $a^T x$ und eine Konstante $b$:
+\[ Q(x) = x^T A x + a^T x + b = c \quad \text{mit} \quad a = (a_1, \dots, a_n)^T \]
+\end{defbox}
+
+\textVorBox{Beispiele für quadratische Formen \& Quadriken:}
+\begin{formulabox}
+  \[
+  \begin{aligned}
+    Q(x) &= \ZSFmhlA{\alpha}\, x_1^2 + \ZSFmhlB{\beta}\, x_1 x_2 + \ZSFmhlA{\gamma}\, x_2^2 + \ZSFmhlC{\delta}\, x_1 + \ZSFmhlC{\epsilon}\, x_2 \\
+    A &= \begin{pmatrix} \ZSFmhlA{\alpha} & \ZSFmhlB{\beta/2} \\ \ZSFmhlB{\beta/2} & \ZSFmhlA{\gamma} \end{pmatrix}, \quad a = \begin{pmatrix} \ZSFmhlC{\delta} \\ \ZSFmhlC{\epsilon} \end{pmatrix}
+  \end{aligned}
+  \]
+  \formulanote{Quadrat-Koeffizienten ($\alpha, \gamma$) auf die Diagonale; Mischkoeffizient $\beta$ halbieren (symmetrisch verteilen); lineare Koeffizienten ($\delta, \epsilon$) in Vektor $a$.}
+  \ZSFsep
+  \[
+  \begin{aligned}
+    q(x) &= \ZSFmhlA{a} x_1^2 + \ZSFmhlA{b} x_2^2 + \ZSFmhlA{c} x_3^2 \\
+         &\quad + \ZSFmhlB{d} x_1 x_2 + \ZSFmhlB{e} x_1 x_3 + \ZSFmhlB{f} x_2 x_3 \\
+    A &= \begin{pmatrix} \ZSFmhlA{a} & \ZSFmhlB{d/2} & \ZSFmhlB{e/2} \\ \ZSFmhlB{d/2} & \ZSFmhlA{b} & \ZSFmhlB{f/2} \\ \ZSFmhlB{e/2} & \ZSFmhlB{f/2} & \ZSFmhlA{c} \end{pmatrix}
+  \end{aligned}
+  \]
+  \formulanote{Allgemeine $3 \times 3$ Form: Alle Mischkoeffizienten ($d, e, f$) halbieren und symmetrisch verteilen.}
+  \ZSFsep
+  \[
+  q_b(x) = \begin{pmatrix} x_1 & x_2 \end{pmatrix} \begin{pmatrix} \ZSFmhlA{1} & \ZSFmhlB{2} \\ \ZSFmhlB{2} & \ZSFmhlA{1} \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \ZSFmhlA{x_1^2} + \ZSFmhlB{4x_1x_2} + \ZSFmhlA{x_2^2}
+  \]
+  \formulanote{Diagonale $\to$ Quadrate; Nebendiagonale $\to$ Kreuzterm: $\ZSFmhlB{a_{12} + a_{21} = 2 + 2 = 4}$}
+  \ZSFsep
+  \[
+  \begin{aligned}
+    q_c(x) &= \begin{pmatrix} x_1 & x_2 & x_3 \end{pmatrix} \begin{pmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} \\
+    &= 2x_1^2 + 3x_2^2 + x_3^2
+  \end{aligned}
+  \]
+\end{formulabox}
+
+\SubsectionBar[sec:definiteness]{Definitheit}
+
+\begin{defbox}[Klassen der Definitheit]
+Eine quadratische Form $q(x)$ (bzw. ihre symmetrische Matrix $A$) heisst:
+  \begin{ZSFlist}
+    \ZSFItem{\ZSFkeyword[Positive Definitheit]{positiv definit}: $q(x) > 0$ für alle $x \neq 0$.}
+    \ZSFItem{\ZSFkeyword[Negative Definitheit]{negativ definit}: $q(x) < 0$ für alle $x \neq 0$.}
+    \ZSFItem{\ZSFkeyword[Positive Semidefinitheit]{positiv semidefinit}: $q(x) \geq 0$ für alle $x \neq 0$.}
+    \ZSFItem{\ZSFkeyword[Negative Semidefinitheit]{negativ semidefinit}: $q(x) \leq 0$ für alle $x \neq 0$.}
+    \ZSFItem{\ZSFkeyword[Indefinitheit]{indefinit}: nimmt sowohl positive als auch negative Werte an.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:definiteness-criteria]{Kriterien für Definitheit \ZSFref{sec:hub-quadratic-forms-definiteness}}
+
+\ZSFindex{Definitheit, Kriterien}
+\ZSFindex{Eigenwert-Kriterium}
+\begin{defbox}[1. Eigenwert-Kriterium \ZSFref{sec:eigenvalues}][weight=quiet]
+Seien $\lambda_i$ die Eigenwerte der symmetrischen Matrix $A$. $A$ ist:
+  \begin{ZSFlist}
+    \ZSFItem{positiv definit $\Longleftrightarrow$ alle $\lambda_i > 0$.}
+    \ZSFItem{negativ definit $\Longleftrightarrow$ alle $\lambda_i < 0$.}
+    \ZSFItem{positiv semidefinit $\Longleftrightarrow$ alle $\lambda_i \geq 0$.}
+    \ZSFItem{negativ semidefinit $\Longleftrightarrow$ alle $\lambda_i \leq 0$.}
+    \ZSFItem{indefinit $\Longleftrightarrow$ es gibt sowohl $\lambda_i > 0$ als auch $\lambda_j < 0$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{defbox}[2. Hurwitz-Kriterium (Hauptminoren) \ZSFref{sec:determinant-methods}][weight=quiet]
+Berechne die führenden \ZSFkeyword{Hauptminoren} $\det(A_k)$ (Determinanten der linken oberen $k \times k$ Untermatrizen):
+\[ A_1 = (a_{11}), \ A_2 = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}, \ \dots, \ A_n = A \]
+  \begin{ZSFlist}
+    \ZSFItem{positiv definit $\Longleftrightarrow$ alle $\det(A_k) > 0$ für $k = 1, \dots, n$.}
+    \ZSFItem{negativ definit $\Longleftrightarrow$ alle $\det(A_k) < 0$ für ungerade $k$, und $\det(A_k) > 0$ für gerade $k$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\SubsectionBar[sec:quadratic-extrema]{Extrema}
+
+\ZSFindex{Kritische Punkte}
+\begin{ZSFlist}[Kritische Punkte klassifizieren][ordered]
+  \ZSFItem{Kritische Punkte}{Setze Gradient gleich Null: $\nabla q(x) = 2 A \cdot x = 0$. Ist $A$ regulär, existiert nur der kritische Punkt $x = 0$.}
+  \ZSFItem{Hesse-Matrix}{Die \ZSFkeyword{Hesse-Matrix} $H$ sammelt alle 2. Ableitungen:
+  \[ H(q) = \begin{pmatrix} q_{x_1 x_1} & q_{x_1 x_2} \\ q_{x_2 x_1} & q_{x_2 x_2} \end{pmatrix} = 2A \]
+  \ZSFconclusion{} Da $H = 2A$, reicht es direkt die Definitheit von $A$ zu prüfen!}
+  \ZSFItem{Klassifikation}{Bestimme Definitheit von $A$ (oder $H$) \ZSFref{sec:definiteness-criteria}:
+  \newline
+  positiv definit $\Longrightarrow$ lokales Minimum.
+  \newline
+  negativ definit $\Longrightarrow$ lokales Maximum.
+  \newline
+  indefinit $\Longrightarrow$ Sattelpunkt.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:signature]{Signatur}
+\ZSFindexsee{Sylvester}{Trägheitssatz von Sylvester}
+\ZSFindex[Tragheitssatz von Sylvester]{Trägheitssatz von Sylvester}
+
+\begin{defbox}[Zählen][weight=quiet]
+  Die \ZSFkeyword{Signatur} $\sig(A) = (p, n, z)$ zählt die Eigenwerte einer symmetrischen Matrix nach Vorzeichen \ZSFref{sec:eigenvalues}:
+  \begin{ZSFlist}
+    \ZSFItem{$p$ = Anzahl \ZSFmhlA{$\lambda > 0$}}
+    \ZSFItem{$n$ = Anzahl \ZSFmhlB{$\lambda < 0$}}
+    \ZSFItem{$z$ = Anzahl $\lambda = 0$}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{formulabox}
+  \[
+  D = \diag(\ZSFbraceunder{\ZSFmhlA{1, \dots, 1}}{$p$},\ \ZSFbraceunder{\ZSFmhlB{-1, \dots, -1}}{$n$},\ 0, \dots, 0)
+  \]
+  \formulanote{Jede symmetrische $A$ lässt sich zu $D$ bringen: \ZSFmhlA{$p$ mal $+1$}, \ZSFmhlB{$n$ mal $-1$}, $z$ Nullen.}
+  \ZSFsep
+  \[
+  A = W^T \cdot D \cdot W
+  \quad\Longrightarrow\quad
+  \sig(A) = \sig(D)
+  \]
+  \formulanote{Liegt $A$ so vor: \ZSFmhlA{$+1$}/\ZSFmhlB{$-1$}/$0$ auf der Diagonalen von $D$ zählen — keine neuen EW von $A$.}
+\end{formulabox}
+
+\begin{defbox}[Trägheitssatz von Sylvester][weight=quiet]
+  Wenn eine symmetrische Matrix als $A = W^T \cdot D \cdot W$ (reguläres $W$) vorliegt, hat $A$ dieselbe Signatur wie $D$.
+\end{defbox}
+\SubsectionBar[sec:principal-axis]{Hauptachsentransformation}
+\ZSFindex{Hauptachsentransformation}
+\ZSFindexsee{HAT}{Hauptachsentransformation}
+\ZSFindex{Orthogonale Diagonalisierung}
+\ZSFindex[Quadratische Erganzung]{Quadratische Ergänzung}
+\ZSFindex{Normalform einer Quadrik}
+
+\begin{splitbox}[split=0.58, align=center]
+  Durch Koordinatentransformation (Drehung $x = T \cdot y$ und Verschiebung $y = z - c$) lässt sich jede \ZSFkeyword{Quadrik} in Normalform bringen.
+\tcblower
+  \ZSFimage[width=1]{graphics/hauptachsentransformation.pdf}
+\end{splitbox}
+
+\begin{ZSFlist}[Hauptachsentransformation (HAT)][ordered]
+  \ZSFItem{Matrix \& Vektor}{Lese symmetrische Matrix $A$ und linearen Vektor $a$ ab:
+    \[ \ZSFbraceunder{\ZSFmhlA{A_{11} x_1^2 + A_{22} x_2^2}}{\text{Quadratisch}} \ + \ \ZSFbraceunder{\ZSFmhlA{2A_{12} x_1 x_2}}{\text{Mischterm}} \ + \ \ZSFbraceunder{\ZSFmhlB{a_1 x_1 + a_2 x_2}}{\text{Linear}} \ + \ b = c \]
+    $\bullet$ Matrixform: $Q(x) = x^T A x + a^T x + b = c$ (Ablesen von $A$ und $a$ siehe \ZSFref{sec:quadratic-form-def}).}
+  \ZSFItem{Diagonalisierung}{Bestimme Eigenwerte $\lambda_i$ von $A$. Bilde orthogonale Drehmatrix \ZSFlabel{$T$} $= (v_1 \mid \dots \mid v_n)$ aus normierten Eigenvektoren als Spalten. \ZSFref{sec:gram-schmidt} (Es gilt $T^T = T^{-1}$).}
+  \ZSFItem{Drehung ($x = T y$)}{Quadratischer/Mischterm-Teil wird zu $\ZSFsumAuto{}{} \lambda_i y_i^2$.
+    Berechne neuen linearen Koeffizientenvektor \ZSFlabel{$\tilde{a} = T^T a$} ($T^T$ ist transponiert):
+    \[ \ZSFmhlA{x^T A x} + \ZSFmhlB{a^T x} \ \longrightarrow \ \ZSFmhlA{\ZSFsumAuto{i=1}{n} \lambda_i y_i^2} + \ZSFmhlB{\tilde{a}^T y} \]
+    Die neue Gleichung hat keine Mischterme mehr ($\tilde{a}_i$ sind die Komponenten von $\tilde{a}$).}
+  \ZSFItem{Verschiebung}{Quadratische Ergänzung für alle $\lambda_i \neq 0$ durchführen:
+    \[ \ZSFmhlA{\lambda_i y_i^2} + \ZSFmhlB{\tilde{a}_i y_i} \ = \ \ZSFmhlC{\lambda_i \left(y_i + \frac{\tilde{a}_i}{2\lambda_i}\right)^2} - \frac{\tilde{a}_i^2}{4\lambda_i} \]
+    Definiere neue verschobene Koordinaten \ZSFlabel{$z_i$} $= y_i + \frac{\tilde{a}_i}{2\lambda_i}$.}
+  \ZSFItem{Normalform}{Fasse alle verbleibenden Konstanten auf der rechten Seite zusammen $\Longrightarrow \lambda_1 z_1^2 + \cdots + \lambda_n z_n^2 = d$ (Parabeln behalten lineare Terme mit $\lambda_i = 0$).}
+\end{ZSFlist}
+
+\begin{defbox}[Beispiel zur HAT][weight=quiet]
+  \[ \ZSFbraceunder{\ZSFmhlA{2x_1^2}}{\text{quad.}} \ + \ \ZSFbraceunder{\ZSFmhlA{2x_1 x_2}}{\text{misch.}} \ + \ \ZSFbraceunder{\ZSFmhlA{2x_2^2}}{\text{quad.}} \ + \ \ZSFbraceunder{\ZSFmhlB{6x_1 + 6x_2}}{\text{linear}} \ = 1 \]
+  $\to$ $A = \ZSFmhlA{\begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}}$ (Nebendiagonale $\frac{2}{2}=1$), $a = \ZSFmhlB{\begin{pmatrix} 6 \\ 6 \end{pmatrix}}$
+  \begin{ZSFlist}
+    \ZSFItem{EW/EV}{EW $\lambda_1 = \ZSFmhlA{3}, \lambda_2 = \ZSFmhlA{1}$ $\Longrightarrow$ normierte EV bilden $T = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}$.}
+    \ZSFItem{Drehung}{$\tilde{a} = T^T a = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix} \begin{pmatrix} 6 \\ 6 \end{pmatrix} = \begin{pmatrix} 6\sqrt{2} \\ 0 \end{pmatrix}$ ($\tilde{a}_1=6\sqrt{2}$).
+      \\ Die Gleichung wird zu: $3y_1^2 + y_2^2 + 6\sqrt{2} y_1 = 1$.}
+    \ZSFItem{Ergänzung}{Für $\lambda_1 = 3 \neq 0$: $3(y_1 + \frac{6\sqrt{2}}{2\cdot 3})^2 - \frac{(6\sqrt{2})^2}{4\cdot 3} + y_2^2 = 1$
+      \\ $\Longrightarrow 3(y_1+\sqrt{2})^2 - 6 + y_2^2 = 1$.}
+    \ZSFItem{Normalform}{Mit $z_1 = y_1 + \sqrt{2}, z_2 = y_2$:
+      \\ $\Longrightarrow \ZSFmhlC{3z_1^2 + z_2^2 = 7}$ (Ellipse).}
+  \end{ZSFlist}
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:conics]{Kegelschnitte (Rang-Klassifikation)}
+\ZSFindex{Kegelschnitt klassifizieren}
+\ZSFindex{Ellipse}
+\ZSFindex{Hyperbel}
+\ZSFindex{Parabel}
+
+\begin{defbox}[Schnelltest: Typ aus Eigenwert-Vorzeichen \ZSFref{sec:principal-axis}\ZSFref{sec:eigenvalues}][weight=quiet]
+Nach der HAT hat die Quadrik die Form
+\[ x^T A x = c \quad \longrightarrow \quad \lambda_1 y_1^2 + \lambda_2 y_2^2 = c \]
+Der Typ folgt direkt aus den Vorzeichen der Eigenwerte:
+  \begin{ZSFlist}
+    \ZSFItem{$\lambda_1, \lambda_2$ gleiches Vorzeichen \ZSFconclusion{Ellipse-Typ / Punkt / leer}}
+    \ZSFItem{$\lambda_1, \lambda_2$ verschiedenes Vorzeichen \ZSFconclusion{Hyperbel-Typ / schneidende Geraden}}
+    \ZSFItem{ein Eigenwert $0$ (Rang 1) \ZSFconclusion{Parabel-Typ / parallele oder doppelte Geraden / leer}}
+  \end{ZSFlist}
+\ZSFdanger{Rechte Seite $c$ beachten} — sie entscheidet, welcher Fall genau eintritt; die exakte Normalform liefert die Tabelle unten.
+\end{defbox}
+
+\textVorBox{Normalformen von zweidimensionalen Quadriken (Kegelschnitte):}
+\begin{tablebox}
+  \begin{ZSFtable}{Z{1.1} | Z{0.9}}
+    \ZSFheaderRow \ZSFhead{Normalform} & \ZSFhead{Geometrischer Typ} \\ \hline
+    \ZSFspan{L}{2}{\ZSFlabel{Rang(A) = 2: voller quadratischer Rang}} \\ \hline
+    $\frac{x^2}{\alpha^2} + \frac{y^2}{\beta^2} = 1$ & Ellipse / Kreis \\ \hline
+    $\frac{x^2}{\alpha^2} - \frac{y^2}{\beta^2} = 1$ & Hyperbel \\ \hline
+    $\frac{x^2}{\alpha^2} + \frac{y^2}{\beta^2} = -1$ & leere Menge \\ \hline
+    $x^2 + \beta^2 y^2 = 0$ & Punkt \\ \hline
+    $x^2 - \beta^2 y^2 = 0$ & sich schneidendes Geradenpaar \\ \hline
+    \ZSFspan{L}{2}{\ZSFlabel{Rang(A) = 1: Parabel oder entartete Fälle}} \\ \hline
+    $x^2 - \gamma y = 0$ & Parabel \\ \hline
+    $x^2 - \alpha^2 = 0$ & paralleles Geradenpaar \\ \hline
+    $x^2 + \alpha^2 = 0$ & leere Menge \\ \hline
+    $x^2 = 0$ & Gerade (doppelt)
+  \end{ZSFtable}
+\end{tablebox}
+
+\begin{figbox}[Visualisierung der Quadriken][align=center]
+  \ZSFimage[width=0.95]{graphics/quadrik_ellipsoid_einschaliges_hyperboloid.png}
+  \par\ZSFgap[S]
+  \ZSFimage[width=0.95]{graphics/quadrik_zweischaliges_hyperboloid_hyperbolisches_paraboloid.png}
+\end{figbox}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "linalg-fs2026",
+  "kind": "zsf",
+  "title": "Lineare Algebra",
+  "semesterCode": "fs2026",
+  "semesterLabel": "FS 2026",
+  "status": "archive",
+  "githubRepository": "lhliddal/eth-linalg-zsf-fs2026-hliddal",
+  "pdfFilename": "linalg_fs2026_hliddal.pdf",
+  "presentation": {
+    "drawingNumber": "LA · FS26",
+    "description": "Lineare Algebra in mein System übertragen für schnelle Orientierung und direkte Anwendung in der Prüfung.",
+    "stage": "layout-final",
+    "diagram": "linalg"
+  },
+  "releaseBaseline": "v3.8.3"
+}

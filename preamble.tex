@@ -1,0 +1,123 @@
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+% ── Platz: Dichte, Zeilenhöhe, Umbruchreserve ────────────────────────
+% Müssen VOR styles/30_layout_spacing stehen.
+% Dichte und Zeilenhöhe sind getrennt, weil unterschiedlich riskant:
+% Abstände sind Leerraum und vertragen jede Skalierung, Zeilenhöhe
+% enthält die Schrift selbst — nur in kleinen Schritten senken und
+% danach das PDF auf kollidierende Formelzeilen prüfen.
+% \def\ZSFDensityFactor{0.85}     % 1    = Referenz, kleiner = dichter
+% \def\ZSFLeadingFactor{0.92}     % 0.95 = Referenz, kleiner = enger
+%
+% Bereichsfaktoren multiplizieren den globalen Faktor für IHREN Bereich —
+% für ZSF, die ungleich verteilt sind (box-lastig vs. textlastig).
+% \def\ZSFDensityBoxes{1}         % Innen-/Aussenabstände der Inhaltsboxen
+% \def\ZSFDensityText{1}          % Absatzabstand im Fliesstext
+% \def\ZSFDensityTables{1}        % Zell- und Zeilenabstand in Tabellen
+% \def\ZSFDensityStructure{1}     % Polsterung und Abstände der Titelbalken
+%
+% Freiraum, der vor einem Titelbalken übrig sein muss, sonst bricht die
+% Spalte davor um. Grösser = Balken stehen seltener knapp am Spaltenfuss.
+% \def\ZSFBreakReserveFactor{1}   % 1 = Referenz
+%
+% Der Abstand NACH einem Titelbalken — der ganze Abstand bis zum ersten
+% Block darunter, Fliesstext wie Box.
+% \def\ZSFBarGapFactor{1}         % 1 = Referenz (3pt), kleiner = enger
+%
+% Schriftgrösse der Diagramm-Beschriftung — beide Stufen gemeinsam.
+% \def\ZSFDiagramLabelScale{0.85} % 1 = Referenz, kleiner = kleinere Labels
+
+\input{styles/00_packages}
+\input{styles/10_math}
+
+% ── Formelsatz: Summen- und Limes-Grenzen ────────────────────────────
+% side = neben dem Zeichen (spart Höhe), stack = darüber/darunter,
+% auto = LaTeX entscheidet nach Kontext.
+% \SetZSFsumMode{auto}            % auto | side | stack
+% \SetZSFlimMode{auto}            % auto | side | stack
+
+\input{styles/11_math_advanced}   % opt-in: LinAlg — Ker/rang/Spur/proj/Im/Re,
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\ifdefined\ZSFShowcaseMode
+  \input{styles/12_plots}
+\fi
+\input{styles/20_tables}
+
+% ── Tabellen: Zebra-Ton ──────────────────────────────────────────────
+% Default folgt der Kapitelfarbe. Ein fester Ton macht Tabellen über alle
+% Kapitel hinweg gleich — sinnvoll, wenn die Kapitelfarbe schon woanders trägt.
+% \SetZSFzebraBG{\TableZebraColor}
+
+\input{styles/30_layout_spacing}
+\input{styles/40_colors_structure}
+\input{styles/50_typography_semantics}
+
+% ── Marker-Darstellung ───────────────────────────────────────────────
+% Default: \ZSFkeyword und \ZSFlabel beide schlicht fett, ohne Farbe.
+% Inline-Betonung im Fliesstext trägt bewusst KEINE Kapitelfarbe — sie brächte
+% Unruhe in den Absatz und sagte nichts, was die Seite nicht ohnehin zeigt.
+% Farbe bleibt den Flächen, den Verweisen und den Formel-Markern vorbehalten.
+% Umstellen heisst GENAU diese eine Zeile, nie ein Kapitel:
+% \renewcommand{\ZSFkeywordStyle}[1]{\textbf{#1}}
+% \renewcommand{\ZSFlabelStyle}[1]{\textbf{#1}}
+% Dritter Marker derselben Familie: die Hervorhebung der Kernaussage.
+% \renewcommand{\ZSFhlStyle}[1]{{\bfseries #1}}
+
+% ── Grössenfarben: Farbe als Identität einer Grösse ──────────────────
+% Für Fächer, in denen dieselben Grössen dokumentweit in Formeln auftauchen.
+% LinAlg arbeitet stattdessen positional mit \ZSFmhlA..D innerhalb einer
+% Herleitung — hier wird bewusst nichts deklariert.
+% \ZSFDeclareQuantity{Kraft}{1}
+
+% ── Eigener Ton: eine wiederkehrende Farbwelt fürs Fach ──────────────
+% `tone` hat drei mitgelieferte Werte (chapter, neutral, warn).
+% \ZSFDeclareTone{beispiel}{ ... }
+
+\input{styles/55_readability}
+
+% ── Fliesstext: Flattersatz ──────────────────────────────────────────
+% \ZSFReadableBodyOn ist der Default, weil die ~50 mm schmalen Spalten im
+% Blocksatz entweder trennen oder Wortzwischenräume aufblähen müssen.
+% \ZSFReadableBodyOff             % zurück zu Blocksatz
+
+\input{styles/60_boxes}
+% \input{styles/65_code_style}    % opt-in: Informatik
+\input{styles/66_index}           % opt-in: Stichwortverzeichnis
+\ZSFIndexShowPageNumbertrue       % Abschnitt · (S. Seite)
+%
+%
+\ifdefined\ZSFShowcaseMode
+  \input{styles/65_code_style}
+  \input{styles/67_code_comments}
+\fi
+\input{styles/75_pdf_identity}
+\input{styles/70_document_settings}

@@ -1,0 +1,33 @@
+\documentclass[8pt]{extarticle}
+\input{preamble}
+
+% ============================================================
+% DOCUMENT
+% ============================================================
+
+\begin{document}
+\setcounter{section}{0}
+\begin{multicols*}{4}
+\ZSFReadableAuto
+
+% Hier neue Kapitel als \input{chapters/chNN_name} einbinden.
+% Für einen bewussten Spaltenumbruch \ZSFNewColumn vor das Strukturmakro setzen.
+\input{chapters/ch00_stichwortverzeichnis}
+\input{chapters/ch01_lineare_gleichungssysteme}
+\input{chapters/ch02_matrizen}
+\input{chapters/ch03_determinante}
+\input{chapters/ch04_vektorraeume}
+\input{chapters/ch05_lineare_abbildungen}
+\input{chapters/ch06_eigenwertproblem}
+\input{chapters/ch07_normen}
+\input{chapters/ch08_skalarprodukt}
+\input{chapters/ch09_quadratische_formen}
+\input{chapters/ch10_kleinste_quadrate}
+\input{chapters/ch11_lineare_diffgleichungssysteme}
+\input{chapters/ch12_zusammenhangsliste}
+\input{chapters/ch13_anhang}
+\input{chapters/ch14_schlusswort}
+
+\end{multicols*}
+\includepdf[pages=-]{graphics/LinAlg_zsf_TimonRong.pdf}
+\end{document}

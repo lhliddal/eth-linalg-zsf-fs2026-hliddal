@@ -1,0 +1,165 @@
+\StartChapter{Zusammenhangsliste}
+
+\begin{runintext}
+Dieses Kapitel bündelt die \ZSFkeyword*{Zusammenhänge} des gesamten Stoffs: welche Eigenschaften einander bedingen und welche nicht. Notation: $\Rightarrow$ folgt, $\Leftrightarrow$ äquivalent, $\nRightarrow$ folgt nicht (mit Gegenbeispiel). Matrizen $A \in \R^{n \times n}$, falls nicht anders angegeben.
+\end{runintext}
+
+\SubsectionBar[sec:hub-full-rank]{Voller Rang}
+\ZSFindex{Rang}
+\ZSFindex{Invertierbarkeitskriterien}
+
+\begin{ZSFlist}[Äquivalente Aussagen für $\rang(A) = n$ \ZSFhubref{sec:matrix-inverse}\ZSFhubref{sec:row-echelon}\ZSFhubref{sec:determinant-connections}]
+  \ZSFItem{Die Matrix lässt sich ohne Nullzeilen in Dreiecksform bringen (voller Zeilen-/Spaltenrang).}
+  \ZSFItem{Die Spaltenvektoren (und Zeilenvektoren) von $A$ sind linear unabhängig.}
+  \ZSFItem{Das Bild von $A$ ist $n$-dimensional: $\dim(\Im(A)) = n$.}
+  \ZSFItem{Das LGS $Ax = b$ ist für beliebiges $b \in \R^n$ lösbar.}
+  \ZSFItem{Das LGS $Ax = b$ besitzt genau eine eindeutige Lösung.}
+  \ZSFItem{Eine Inverse Matrix $A^{-1}$ existiert (die Matrix $A$ ist \ZSFkeyword[Regulare Matrix@Reguläre Matrix]{regulär}).}
+  \ZSFItem{Die Determinante ist ungleich Null: $\det(A) \neq 0$.}
+  \ZSFItem{Kein Eigenwert von $A$ ist gleich Null ($\lambda_i \neq 0$ für alle $i$).}
+  \ZSFItem{Der Kern von $A$ enthält nur den Nullvektor: $\Ker(A) = \{0\}$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-rank-deficit]{Rangdefizit}
+\ZSFindex{Rang}
+
+\begin{ZSFlist}[Äquivalente Aussagen für $\rang(A) < n$ \ZSFhubref{sec:row-echelon}\ZSFhubref{sec:matrix-inverse}]
+  \ZSFItem{Die Matrix lässt sich nur mit Nullzeilen in Dreiecksform bringen (Rangdefekt).}
+  \ZSFItem{Die Spaltenvektoren (und Zeilenvektoren) von $A$ sind linear abhängig.}
+  \ZSFItem{Das Bild von $A$ ist kleiner als $n$-dimensional: $\dim(\Im(A)) < n$.}
+  \ZSFItem{Das LGS $Ax = b$ ist nicht für alle $b$ lösbar.}
+  \ZSFItem{Das LGS $Ax = b$ besitzt entweder keine oder unendlich viele Lösungen.}
+  \ZSFItem{Eine Inverse existiert nicht (die Matrix $A$ ist \ZSFkeyword[Singulare Matrix@Singuläre Matrix]{singulär}).}
+  \ZSFItem{Die Determinante ist gleich Null: $\det(A) = 0$.}
+  \ZSFItem{Mindestens ein Eigenwert von $A$ ist gleich Null ($\exists \lambda_i = 0$).}
+  \ZSFItem{Der Kern von $A$ hat eine Dimension $\ge 1$ (enthält Vektoren $\neq 0$).}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar[sec:hub-quadratic-matrix-properties]{Eigenschaften quadratischer Matrizen}
+\ZSFindex[Matrixeigenschaften, Ubersicht]{Matrixeigenschaften, Übersicht}
+
+\begin{ZSFlist}[Implikationen ($\Rightarrow$ folgt) \ZSFhubref{sec:symmetric-matrices}\ZSFhubref{sec:diagonalization}\ZSFhubref{sec:definiteness-criteria}]
+  \ZSFItem{$A = A^T$ (symmetrisch) $\Rightarrow$ reelle Eigenwerte, orthonormale Eigenbasis, $A = T D T^T$.}
+  \ZSFItem{$A = A^T \Rightarrow$ Eigenvektoren zu verschiedenen Eigenwerten sind orthogonal.}
+  \ZSFItem{$Q^T Q = I$ (orthogonal) $\Rightarrow$ invertierbar mit $Q^{-1} = Q^T$, $\det(Q) = \pm 1$, längentreu $\norm{Qx} = \norm{x}$.}
+  \ZSFItem{positiv definit $\Rightarrow$ symmetrisch, invertierbar, alle $\lambda_i > 0$, $\det(A) > 0$.}
+  \ZSFItem{Dreiecks-/Diagonalmatrix $\Rightarrow$ Eigenwerte $=$ Diagonaleinträge.}
+  \ZSFItem{$n$ verschiedene Eigenwerte $\Rightarrow$ diagonalisierbar (halbeinfach).}
+\end{ZSFlist}
+
+\begin{ZSFlist}[Gilt im Allgemeinen nicht ($\nRightarrow$)]
+  \ZSFItem{diagonalisierbar $\nRightarrow$ invertierbar: z.\,B. $\diag(1,0)$ (Eigenwert $0$).}
+  \ZSFItem{invertierbar $\nRightarrow$ diagonalisierbar: z.\,B. Scherung $\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)$.}
+  \ZSFItem{reelle Matrix $\nRightarrow$ reelle Eigenwerte: eine Drehmatrix hat komplexe Eigenwerte.}
+  \ZSFItem{verschiedene Eigenwerte $\nRightarrow$ orthogonale Eigenvektoren: nur linear unabhängig; orthogonal erst bei symmetrischem $A$.}
+  \ZSFItem{symmetrisch $\nRightarrow$ invertierbar: z.\,B. die Nullmatrix.}
+\end{ZSFlist}
+
+\begin{ZSFlist}[Vererbung durch Operationen]
+  \ZSFItem{$A$ symmetrisch \& invertierbar $\Rightarrow$ $A^{-1}$ symmetrisch, denn $(A^{-1})^T = (A^T)^{-1} = A^{-1}$.}
+  \ZSFItem{$A, B$ invertierbar $\Rightarrow$ $(AB)^{-1} = B^{-1} A^{-1}$ und $(A^T)^{-1} = (A^{-1})^T$.}
+  \ZSFItem{$A, B$ symmetrisch $\Rightarrow$ $A + B$ symmetrisch; $AB$ symmetrisch nur falls $AB = BA$.}
+  \ZSFItem{$A, B$ orthogonal $\Rightarrow$ $AB$ orthogonal; $A^{-1} = A^T$ orthogonal.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-det-trace-eigenvalues]{Determinante, Spur \& Eigenwerte}
+\ZSFindex{Eigenwerte, Determinante und Spur}
+
+\begin{ZSFlist}[Kenngrössen über die Eigenwerte \ZSFhubref{sec:eigenvalues}\ZSFhubref{sec:determinant-rules}\ZSFhubref{sec:trace}]
+  \ZSFItem{$\det(A) = \prod_{i=1}^{n} \lambda_i$ und $\Spur(A) = \ZSFsumAuto{i=1}{n} \lambda_i$ (Eigenwerte mit Vielfachheit).}
+  \ZSFItem{$\det(A) \neq 0 \Leftrightarrow$ invertierbar $\Leftrightarrow 0$ kein Eigenwert $\Leftrightarrow \rang(A) = n$.}
+  \ZSFItem{Rechenregeln: $\det(AB) = \det(A)\det(B)$, $\det(A^{-1}) = \det(A)^{-1}$, $\det(A^T) = \det(A)$, $\det(\alpha A) = \alpha^n \det(A)$.}
+  \ZSFItem{Ähnliche Matrizen ($B = T^{-1} A T$) haben gleiche Eigenwerte, $\det$, $\Spur$, $\rang$ und char.\ Polynom.}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar[sec:hub-basis-dimension-independence]{Basis, Dimension \& Lineare Unabhängigkeit}
+\ZSFindex{Basis}
+
+\begin{ZSFlist}[Vektorraum-Struktur \ZSFhubref{sec:basis}]
+  \ZSFItem{Basis $\Leftrightarrow$ linear unabhängig und Erzeugendensystem.}
+  \ZSFItem{$\dim(V) = $ Anzahl der Basisvektoren (jede Basis von $V$ ist gleich gross).}
+  \ZSFItem{In $\dim(V) = n$: für $n$ Vektoren gilt linear unabhängig $\Leftrightarrow$ Erzeugendensystem $\Leftrightarrow$ Basis.}
+  \ZSFItem{Spalten von $A$ linear unabhängig $\Leftrightarrow \rang(A) = $ Spaltenzahl.}
+  \ZSFItem{Unterraum $U \subseteq V$: $\dim(U) \le \dim(V)$, mit $\dim(U) = \dim(V) \Leftrightarrow U = V$.}
+  \ZSFItem{Mehr als $n$ Vektoren in $\dim(V) = n$ $\Rightarrow$ linear abhängig.}
+  \ZSFItem{linear unabhängig $\nRightarrow$ Basis (erst mit Erzeugendensystem); Erzeugendensystem $\nRightarrow$ Basis (erst mit Unabhängigkeit).}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-kernel-image-dimension]{Lineare Abbildungen: Kern, Bild, Dimension}
+\ZSFindex{Dimensionssatz}
+\ZSFindex[Bijektivitat]{Bijektivität}
+\ZSFindex[Injektivitat]{Injektivität}
+\ZSFindex{Isomorphie}
+\ZSFindex[Surjektivitat]{Surjektivität}
+
+\begin{ZSFlist}[Dimensionssatz (Rangsatz) \ZSFhubref{sec:kernel-image}]
+  \ZSFItem{$F: V \to W$: $\dim(V) = \dim(\Ker(F)) + \dim(\Im(F))$.}
+  \ZSFItem{Matrix $A \in \R^{m \times n}$: $n = \dim(\Ker(A)) + \rang(A)$.}
+  \ZSFItem{$\rang(A) = \rang(A^T)$ (Zeilenrang $=$ Spaltenrang).}
+\end{ZSFlist}
+
+\begin{ZSFlist}[Injektiv, surjektiv, bijektiv]
+  \ZSFItem{injektiv $\Leftrightarrow \Ker(F) = \{0\} \Leftrightarrow \dim(\Ker(F)) = 0$.}
+  \ZSFItem{surjektiv $\Leftrightarrow \Im(F) = W \Leftrightarrow \rang(A) = \dim(W)$.}
+  \ZSFItem{$F: V \to V$ (endlichdim.): injektiv $\Leftrightarrow$ surjektiv $\Leftrightarrow$ bijektiv $\Leftrightarrow$ invertierbar.}
+  \ZSFItem{Isomorphie: $V \cong W \Leftrightarrow \dim(V) = \dim(W)$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-diagonalization]{Diagonalisierbarkeit}
+\ZSFindex{Diagonalisierbarkeit, Kriterien}
+
+\begin{ZSFlist}[Kriterien \& Zusammenhänge \ZSFhubref{sec:diagonalization}]
+  \ZSFItem{diagonalisierbar $\Leftrightarrow$ halbeinfach $\Leftrightarrow$ Eigenbasis existiert $\Leftrightarrow \gVfh(\lambda) = \algVfh(\lambda)$ für alle $\lambda$.}
+  \ZSFItem{Immer: $1 \le \gVfh(\lambda) \le \algVfh(\lambda) \le n$.}
+  \ZSFItem{$n$ verschiedene Eigenwerte $\Rightarrow$ diagonalisierbar (hinreichend, nicht notwendig).}
+  \ZSFItem{$A = A^T \Rightarrow$ orthonormale Eigenbasis, $A = T D T^T$ (hinreichend).}
+  \ZSFItem{diagonalisierbar $\Rightarrow A = T D T^{-1}$ mit $D = \diag(\lambda_i)$, also $A^k = T D^k T^{-1}$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-inner-product-norm-orthogonality]{Skalarprodukt, Norm \& Orthogonalität}
+\ZSFindex[Orthogonalitat]{Orthogonalität}
+
+\begin{ZSFlist}[Vom Skalarprodukt abgeleitet \ZSFhubref{sec:scalar-product}\ZSFhubref{sec:vector-norm}\ZSFhubref{sec:orthogonal-matrices}]
+  \ZSFItem{Induzierte Norm: $\norm{x} = \sqrt{\langle x, x \rangle}$ (euklidische Norm aus dem Standardskalarprodukt).}
+  \ZSFItem{Spektralnorm $\norm{A}_2 = \max_{x \neq 0} \frac{\norm{Ax}}{\norm{x}}$ ist die von der euklidischen Norm induzierte Matrixnorm.}
+  \ZSFItem{Cauchy-Schwarz: $|\langle x, y \rangle| \le \norm{x}\,\norm{y}$.}
+  \ZSFItem{Winkel: $\cos\varphi = \frac{\langle x, y \rangle}{\norm{x}\,\norm{y}}$; orthogonal $\Leftrightarrow \langle x, y \rangle = 0$.}
+  \ZSFItem{Orthogonalsystem (ohne Nullvektor) $\Rightarrow$ linear unabhängig.}
+  \ZSFItem{$Q$ orthogonal $\Leftrightarrow$ Spalten bilden ONB $\Leftrightarrow Q^T Q = I$.}
+  \ZSFItem{Pythagoras: $x \perp y \Rightarrow \norm{x + y}^2 = \norm{x}^2 + \norm{y}^2$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-quadratic-forms-definiteness]{Quadratische Formen \& Definitheit}
+\ZSFindex{Definitheit, Kriterien}
+
+\begin{ZSFlist}[Symmetrische Matrix $\leftrightarrow$ Definitheit \ZSFhubref{sec:quadratic-form-def}\ZSFhubref{sec:definiteness-criteria}]
+  \ZSFItem{Eineindeutig: symmetrisches $A \leftrightarrow$ quadratische Form $q(x) = x^T A x$.}
+  \ZSFItem{Über Eigenwerte: positiv definit $\Leftrightarrow$ alle $\lambda_i > 0$; positiv semidefinit $\Leftrightarrow$ alle $\lambda_i \ge 0$; indefinit $\Leftrightarrow$ Eigenwerte beider Vorzeichen.}
+  \ZSFItem{Hurwitz: positiv definit $\Leftrightarrow$ alle führenden Hauptminoren $\det(A_k) > 0$.}
+  \ZSFItem{Signatur $\sig(A) = (p, n, z)$ zählt die Eigenwerte nach Vorzeichen (invariant unter $A = W^T D W$).}
+  \ZSFItem{positiv definit $\Rightarrow$ invertierbar, $\det(A) > 0$, alle Diagonaleinträge $> 0$.}
+  \ZSFItem{$A$ positiv definit $\Leftrightarrow \langle x, y \rangle_A = x^T A y$ ist ein Skalarprodukt.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-least-squares-projection]{Kleinste Quadrate \& Projektion}
+\ZSFindex{Normalengleichung}
+\ZSFindex{Orthogonalprojektion}
+
+\begin{ZSFlist}[Normalengleichung \& Orthogonalität \ZSFhubref{sec:least-squares}\ZSFhubref{sec:orthogonality-projection}]
+  \ZSFItem{Normalengleichung: $A^T A \hat{x} = A^T c$ minimiert $\norm{A x - c}$.}
+  \ZSFItem{Lösung eindeutig $\Leftrightarrow \rang(A) = n \Leftrightarrow A^T A$ invertierbar.}
+  \ZSFItem{Residuum $r = A\hat{x} - c$ steht orthogonal zum Spaltenraum: $A^T r = 0$.}
+  \ZSFItem{Geometrisch: $A\hat{x}$ ist die orthogonale Projektion von $c$ auf $\Im(A)$.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:hub-linear-ode-eigenvalues]{Lineare DGL-Systeme \& Eigenwerte}
+\ZSFindex{Eigenwerte und Differentialgleichungen}
+
+\begin{ZSFlist}[Lösung über das Spektrum \ZSFhubref{sec:linear-ode}\ZSFhubref{sec:matrix-exponential}]
+  \ZSFItem{$y' = A y$, $A$ diagonalisierbar $\Rightarrow y(t) = \ZSFsumAuto{i=1}{n} C_i\, v_i\, e^{\lambda_i t}$.}
+  \ZSFItem{Komplexe Eigenwerte $\lambda = \alpha \pm i\beta \Rightarrow$ reelle Lösungen mit $e^{\alpha t}(\cos\beta t, \sin\beta t)$ (Schwingung).}
+  \ZSFItem{$\lambda_i < 0$ (bzw.\ Realteil $< 0$) $\Rightarrow$ abklingend; $\lambda_i > 0 \Rightarrow$ divergent.}
+  \ZSFItem{$A = T D T^{-1} \Rightarrow$ Matrixexponential $e^{A t} = T\, e^{D t}\, T^{-1}$.}
+\end{ZSFlist}

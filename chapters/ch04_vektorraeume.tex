@@ -1,0 +1,467 @@
+\ZSFNewColumn
+\StartChapter{Vektorräume}
+
+\begin{runintext}
+Ein \ZSFkeyword*{Vektorraum} (linearer Raum) ist eine mathematische Struktur bestehend aus einer Menge von Vektoren, auf der eine Addition und eine Skalarmultiplikation definiert sind.
+\end{runintext}
+
+\SubsectionBar{Definition \& Axiome}
+\ZSFindex{Vektorraum}
+
+\begin{defbox}[Vektorraum]
+Ein Vektorraum über $\R$ ist eine Menge von Vektoren: Addiert man zwei davon oder multipliziert einen mit einer reellen Zahl, bleibt das Resultat in der Menge. Die beiden Rechenoperationen sind:
+\newline
+\begin{ZSFtable}[header=false, zebra=false]{L L}
+  \ZSFlabel{Innere Operation (Addition):} & \ZSFlabel{Äussere Operation (Skalar):} \\
+  $\oplus \colon V \times V \to V$ & $\odot \colon \R \times V \to V$ \\
+  $(u, v) \mapsto u \oplus v$ & $(\alpha, u) \mapsto \alpha \odot u$
+\end{ZSFtable}
+\end{defbox}
+
+\ZSFindex{Vektorraum-Axiome}
+\begin{defbox}[Vektorraum-Axiome][weight=quiet]
+Für alle $u, v, w \in V$ und $\alpha, \beta \in \R$:
+\[
+\begin{aligned}
+  \text{A1: } & u \oplus v = v \oplus u \\
+  \text{A2: } & (u \oplus v) \oplus w = u \oplus (v \oplus w) \\
+  \text{A3: } & \exists 0 \in V \colon u \oplus 0 = u \\
+  \text{A4: } & \forall u \ \exists -u \in V \colon u \oplus (-u) = 0 \\
+  \text{M1: } & (\alpha \cdot \beta) \odot u = \alpha \odot (\beta \odot u) \\
+  \text{M2: } & (\alpha + \beta) \odot u = (\alpha \odot u) \oplus (\beta \odot u) \\
+  \text{M3: } & \alpha \odot (u \oplus v) = (\alpha \odot u) \oplus (\alpha \odot v) \\
+  \text{M4: } & 1 \odot u = u
+\end{aligned}
+\]
+\end{defbox}
+
+\begin{runintext}
+Typische Vektorräume: der $\R^n$, die Polynome $P_n$ vom Grad $\leq n$, die Matrizen $\R^{m \times n}$ und die stetigen Funktionen $C[a,b]$.
+\end{runintext}
+
+\SubsectionBar{Unterraum}
+\ZSFindexsee{Untervektorraum}{Unterraum}
+
+\begin{defbox}[Untervektorraum]
+Eine nichtleere Teilmenge $U \subseteq V$ eines Vektorraums $V$ heisst \ZSFkeyword{Unterraum} (oder Untervektorraum) von $V$, wenn sie bezüglich der Vektorraumoperationen abgeschlossen ist:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{Abgeschlossenheit bzgl. Addition: $\forall u, v \in U \Longrightarrow u \oplus v \in U$.}
+    \ZSFItem{Abgeschlossenheit bzgl. Skalarmultiplikation: $\forall u \in U, \alpha \in \R \Longrightarrow \alpha \odot u \in U$.}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{runintext}
+\ZSFdanger{Achtung!:} Ein Unterraum ist selbst ein Vektorraum und \ZSFdanger{muss den Nullvektor enthalten} ($0 \in U$).
+\end{runintext}
+
+\ZSFNewColumn
+\SubsectionBar[sec:linear-independence]{Linearkombination \& Unabhängigkeit}
+\ZSFindex{Lineare Abhängigkeit}
+
+\begin{defbox}[Linearkombination]
+Ein Vektor $w \in V$ heisst \ZSFkeyword{Linearkombination} von $v_1, \dots, v_n \in V$, wenn es Skalare $x_1, \dots, x_n \in \R$ gibt mit:
+\[ w = x_1 v_1 + x_2 v_2 + \dotsm + x_n v_n \]
+Dies entspricht der Matrixgleichung $V \cdot x = w$ mit $V = (v_1, \dots, v_n)$.
+\end{defbox}
+
+\begin{defbox}[Lineare Unabhängigkeit]
+Vektoren $v_1, \dots, v_n$ heissen \ZSFkeyword[Lineare Unabhangigkeit@Lineare Unabhängigkeit]{linear unabhängig}, wenn die Gleichung
+\[ x_1 v_1 + x_2 v_2 + \dotsm + x_n v_n = 0 \]
+nur die triviale Lösung $x_1 = x_2 = \dotsm = x_n = 0$ besitzt.
+\end{defbox}
+
+\begin{ZSFlist}[Prüfung auf lineare Unabhängigkeit][ordered]
+  \ZSFItem{Spaltenmatrix}{Erstelle eine Matrix $V = (v_1, \dots, v_n)$, welche die Vektoren als Spalten enthält.}
+  \ZSFItem{Rangbestimmung}{Bestimme den Rang von $V$. Es gilt:
+  \newline
+  $\rang(V) = n \Longrightarrow$ linear unabhängig.
+  \newline
+  $\rang(V) < n \Longrightarrow$ linear abhängig.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:basis]{Hülle, Erzeugendensystem \& Basis \ZSFref{sec:hub-basis-dimension-independence}}
+\ZSFindex{Dimension}
+
+\ZSFindexsee{Span}{Lineare Hülle}
+\begin{defbox}[Lineare Hülle (Span)]
+Die \ZSFkeyword[Lineare Hülle]{lineare Hülle} $\spanop(v_1, \dots, v_n)$ ist die Menge aller Linearkombinationen der Vektoren $v_i$.
+\end{defbox}
+
+\begin{defbox}[Erzeugendensystem]
+Gilt $\spanop(v_1, \dots, v_n) = V$, so heisst $\{v_1, \dots, v_n\}$ ein \ZSFkeyword{Erzeugendensystem} von $V$.
+\end{defbox}
+
+\begin{defbox}[Basis]
+Ein linear unabhängiges Erzeugendensystem von $V$ heisst \ZSFkeyword{Basis} von $V$. Jeder Vektor $x \in V$ kann \ZSFdanger{eindeutig} als Linearkombination der Basisvektoren dargestellt werden.
+\end{defbox}
+
+\SubsectionBar[sec:coordinates]{Koordinaten}
+
+\begin{defbox}[Koordinatenvektor]
+Sei $\mathcal{B} = \{b_1, \dots, b_n\}$ eine Basis von $V$. Jeder Vektor $x \in V$ hat die eindeutige Darstellung $x = \ZSFsumAuto{i=1}{n} x_i b_i$.
+Die Skalare $x_i$ heissen \ZSFkeyword{Koordinaten} von $x$ bezüglich der Basis $\mathcal{B}$, geschrieben als:
+\[ [x]_{\mathcal{B}} = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix} \]
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:basis-change]{Basiswechsel}
+\ZSFindex{Basiswechsel}
+\ZSFindexsee{Koordinatentransformation}{Basiswechsel}
+
+\begin{runintext}
+Sei $V$ ein Vektorraum mit zwei Basen $\ZSFmhlA{\mathcal{Q}} = \{q_1, \dots, q_n\}$ und $\ZSFmhlB{\mathcal{W}} = \{w_1, \dots, w_n\}$.
+\end{runintext}
+
+\begin{ZSFlist}[Basiswechsel durchführen][ordered]
+  \ZSFItem{Übergangsmatrix bestimmen}{Stelle die Spalten der \ZSFkeyword[U@Übergangsmatrix]{Übergangsmatrix} $T_{\mathcal{Q} \to \mathcal{W}}$ auf (alte Basis $\mathcal{Q}$ bezüglich neuer Basis $\mathcal{W}$):
+  \[ T_{\ZSFmhlA{\mathcal{Q}} \to \ZSFmhlB{\mathcal{W}}} = \left( [\ZSFmhlA{q_1}]_{\ZSFmhlB{\mathcal{W}}}, \dots, [\ZSFmhlA{q_n}]_{\ZSFmhlB{\mathcal{W}}} \right) \]
+  Für beliebige Basen $\mathcal{B}, \mathcal{C}$ via Standardbasis $\mathcal{S}$ gilt:
+  \[ T_{\mathcal{B} \to \mathcal{C}} = T_{\mathcal{C} \to \mathcal{S}}^{-1} \cdot T_{\mathcal{B} \to \mathcal{S}} \]
+  Praktische Berechnung via Gauss-Jordan:
+  \[ (T_{\mathcal{C} \to \mathcal{S}} \mid T_{\mathcal{B} \to \mathcal{S}}) \ \xrightarrow{\text{Gauss}}\ (I \mid T_{\mathcal{B} \to \mathcal{C}}) \]}
+  \ZSFItem{Koordinaten transformieren}{Berechne die neuen Koordinaten bezüglich $\mathcal{W}$:
+  \[ [v]_{\ZSFmhlB{\mathcal{W}}} = T_{\ZSFmhlA{\mathcal{Q}} \to \ZSFmhlB{\mathcal{W}}} \cdot [v]_{\ZSFmhlA{\mathcal{Q}}} \]}
+\end{ZSFlist}
+
+\begin{defbox}[Eigenschaften und Tipps][weight=quiet]
+  \begin{ZSFlist}
+    \ZSFItem{Gegenrichtung: $T_{\ZSFmhlB{\mathcal{W}} \to \ZSFmhlA{\mathcal{Q}}} = \left(T_{\ZSFmhlA{\mathcal{Q}} \to \ZSFmhlB{\mathcal{W}}}\right)^{-1}$. \ZSFref{sec:matrix-inverse}}
+    \ZSFItem{\ZSFkeyword{Standardbasis} $\mathcal{S}$: Ist $\mathcal{S}$ die Standardbasis, so ist $T_{\ZSFmhlA{\mathcal{Q}} \to \mathcal{S}} = (q_1, \dots, q_n)$ extrem leicht aufzustellen.}
+    \ZSFItem{\ZSFlabel{Gleiche Abbildung -- neue Matrixdarstellung} \ZSFref{sec:matrix-big-picture}\,\ZSFref{sec:matrix-same-vision}\,\ZSFref{sec:matrix-similarity}:}
+    \begin{ZSFlist}
+      \ZSFItem{\ZSFlabel{Endomorphismus} $F \colon V \to V$ (gleiche Basen):
+          \[ [F]_{\ZSFmhlB{\mathcal{W}}}^{\ZSFmhlB{\mathcal{W}}} = T_{\ZSFmhlA{\mathcal{Q}} \to \ZSFmhlB{\mathcal{W}}} \cdot [F]_{\ZSFmhlA{\mathcal{Q}}}^{\ZSFmhlA{\mathcal{Q}}} \cdot T_{\ZSFmhlB{\mathcal{W}} \to \ZSFmhlA{\mathcal{Q}}} \]}
+      \ZSFItem{\ZSFlabel{Allgemeiner Fall} $F \colon V \to W$ (verschiedene Basen):
+          \[ [F]_{\ZSFmhlB{\mathcal{C}_V}}^{\ZSFmhlB{\mathcal{E}_W}} = T_{\ZSFmhlA{\mathcal{D}_W} \to \ZSFmhlB{\mathcal{E}_W}} \cdot [F]_{\ZSFmhlA{\mathcal{B}_V}}^{\ZSFmhlA{\mathcal{D}_W}} \cdot T_{\ZSFmhlB{\mathcal{C}_V} \to \ZSFmhlA{\mathcal{B}_V}} \]}
+    \end{ZSFlist}
+    \ZSFItem{Ist die Übergangsmatrix orthogonal: $T^{-1} = T^T$. \ZSFref{sec:orthogonal-matrices}}
+  \end{ZSFlist}
+\end{defbox}
+
+\begin{defbox}[1. Wechsel zur Standardbasis][weight=quiet]
+  Basis $\ZSFmhlC{\mathcal{B}} = \left\{ \left(\begin{smallmatrix} 1 \\ 2 \end{smallmatrix}\right), \left(\begin{smallmatrix} 2 \\ 5 \end{smallmatrix}\right) \right\}$, \ZSFkeyword{Standardbasis} $\ZSFmhlA{\mathcal{S}} = \left\{ \left(\begin{smallmatrix} 1 \\ 0 \end{smallmatrix}\right), \left(\begin{smallmatrix} 0 \\ 1 \end{smallmatrix}\right) \right\}$.
+  \[
+  \begin{aligned}
+    T_{\ZSFmhlC{\mathcal{B}} \to \ZSFmhlA{\mathcal{S}}} &= \ZSFbraceunder{\begin{pmatrix} \ZSFmhlC{1} & \ZSFmhlC{2} \\ \ZSFmhlC{2} & \ZSFmhlC{5} \end{pmatrix}}{Basisvektoren als Spalten} \\
+    T_{\ZSFmhlA{\mathcal{S}} \to \ZSFmhlC{\mathcal{B}}} &= \begin{pmatrix} 5 & -2 \\ -2 & 1 \end{pmatrix}
+  \end{aligned}
+  \]
+  Für einen Vektor gilt:
+  \[ \ZSFmhlC{[v]_{\mathcal{B}}} = T_{\ZSFmhlA{\mathcal{S}} \to \ZSFmhlC{\mathcal{B}}} \cdot \ZSFmhlA{[v]_{\mathcal{S}}} \]
+  \[ \begin{pmatrix} 5 & -2 \\ -2 & 1 \end{pmatrix} \ZSFbraceunder{\ZSFmhlA{\begin{pmatrix} 3 \\ 8 \end{pmatrix}}}{$[v]_{\ZSFmhlA{\mathcal{S}}}$} = \ZSFbraceunder{\ZSFmhlC{\begin{pmatrix} -1 \\ 2 \end{pmatrix}}}{$[v]_{\ZSFmhlC{\mathcal{B}}}$} \]
+\end{defbox}
+
+\ZSFgap[S]
+\begin{defbox}[2. Wechsel beliebiger Basen (Allgemein)][weight=quiet]
+  Basen: $\ZSFmhlA{\mathcal{B}} = \left\{ \begin{pmatrix} \ZSFmhlA{b_{11}} \\ \ZSFmhlA{b_{21}} \end{pmatrix}, \begin{pmatrix} \ZSFmhlA{b_{12}} \\ \ZSFmhlA{b_{22}} \end{pmatrix} \right\}$ und $\ZSFmhlC{\mathcal{C}} = \left\{ \begin{pmatrix} \ZSFmhlC{c_{11}} \\ \ZSFmhlC{c_{21}} \end{pmatrix}, \begin{pmatrix} \ZSFmhlC{c_{12}} \\ \ZSFmhlC{c_{22}} \end{pmatrix} \right\}$. \\
+  Aufstellen der Matrizen zur Standardbasis $\ZSFmhlB{\mathcal{S}}$:
+  \[ T_{\ZSFmhlA{\mathcal{B}} \to \ZSFmhlB{\mathcal{S}}} = \begin{pmatrix} \ZSFmhlA{b_{11}} & \ZSFmhlA{b_{12}} \\ \ZSFmhlA{b_{21}} & \ZSFmhlA{b_{22}} \end{pmatrix}, \ T_{\ZSFmhlC{\mathcal{C}} \to \ZSFmhlB{\mathcal{S}}} = \begin{pmatrix} \ZSFmhlC{c_{11}} & \ZSFmhlC{c_{12}} \\ \ZSFmhlC{c_{21}} & \ZSFmhlC{c_{22}} \end{pmatrix} \]
+  Bestimme $T_{\ZSFmhlA{\mathcal{B}} \to \ZSFmhlC{\mathcal{C}}}$ über Gauss-Jordan:
+  \[ \ZSFbraceunder{\begin{ZSFaugmatrix}{2}{2} \ZSFmhlC{c_{11}} & \ZSFmhlC{c_{12}} & \ZSFmhlA{b_{11}} & \ZSFmhlA{b_{12}} \\ \ZSFmhlC{c_{21}} & \ZSFmhlC{c_{22}} & \ZSFmhlA{b_{21}} & \ZSFmhlA{b_{22}} \end{ZSFaugmatrix}}{$(T_{\ZSFmhlC{\mathcal{C}} \to \ZSFmhlB{\mathcal{S}}} \mid T_{\ZSFmhlA{\mathcal{B}} \to \ZSFmhlB{\mathcal{S}}})$} \]
+  \[ \xrightarrow{\text{Gauss}} \ZSFbraceunder{\begin{ZSFaugmatrix}{2}{2} 1 & 0 & \ZSFmhlC{t_{11}} & \ZSFmhlC{t_{12}} \\ 0 & 1 & \ZSFmhlC{t_{21}} & \ZSFmhlC{t_{22}} \end{ZSFaugmatrix}}{$(I \mid \ZSFmhlC{T_{\mathcal{B} \to \mathcal{C}}})$} \]
+\end{defbox}
+
+\ZSFgap[S]
+\begin{defbox}[3. Basiswechsel einer Matrix (Allgemein)][weight=quiet]
+  Allgemeines Transformations-Schema:
+  \[ \ZSFmhlC{[F]_{\mathcal{B}}^{\mathcal{B}}} = \ZSFbraceunder{T^{-1}}{$\ZSFmhlC{\mathcal{B}} \to \ZSFmhlA{\mathcal{S}}$} \cdot \ZSFbraceunder{\ZSFmhlA{[F]_{\mathcal{S}}^{\mathcal{S}}}}{$A$} \cdot \ZSFbraceunder{T}{$\ZSFmhlC{\mathcal{B}} \to \ZSFmhlA{\mathcal{S}}$} \]
+  Gegeben $A = \ZSFmhlA{[F]_{\mathcal{S}}^{\mathcal{S}}} = \begin{pmatrix} \ZSFmhlA{a_{11}} & \ZSFmhlA{a_{12}} \\ \ZSFmhlA{a_{21}} & \ZSFmhlA{a_{22}} \end{pmatrix}$ und neue Basis $\ZSFmhlC{\mathcal{B}} = \left\{ \begin{pmatrix} \ZSFmhlC{b_{11}} \\ \ZSFmhlC{b_{21}} \end{pmatrix}, \begin{pmatrix} \ZSFmhlC{b_{12}} \\ \ZSFmhlC{b_{22}} \end{pmatrix} \right\}$:
+  \begin{ZSFlist}[][ordered]
+    \ZSFItem{$T = \begin{pmatrix} \ZSFmhlC{b_{11}} & \ZSFmhlC{b_{12}} \\ \ZSFmhlC{b_{21}} & \ZSFmhlC{b_{22}} \end{pmatrix}$ aufstellen (Basisvektoren als Spalten).}
+    \ZSFItem{$T^{-1} = \frac{1}{\det(T)} \begin{pmatrix} \ZSFmhlC{b_{22}} & -\ZSFmhlC{b_{12}} \\ -\ZSFmhlC{b_{21}} & \ZSFmhlC{b_{11}} \end{pmatrix}$ berechnen.}
+    \ZSFItem{$\ZSFmhlC{[F]_{\mathcal{B}}^{\mathcal{B}}} = T^{-1} \cdot \ZSFmhlA{A} \cdot T$ ausrechnen.}
+  \end{ZSFlist}
+\end{defbox}
+
+\ZSFgap[S]
+\begin{defbox}[4. Basiswechsel einer Matrix (mit Zahlen)][weight=quiet]
+  $A = \ZSFmhlA{\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}}$ und neue Basis $\ZSFmhlC{\mathcal{B}} = \left\{ \left(\begin{smallmatrix} \ZSFmhlC{1} \\ \ZSFmhlC{1} \end{smallmatrix}\right), \left(\begin{smallmatrix} \ZSFmhlC{1} \\ \ZSFmhlC{2} \end{smallmatrix}\right) \right\}$.
+  \[ T = \begin{pmatrix} \ZSFmhlC{1} & \ZSFmhlC{1} \\ \ZSFmhlC{1} & \ZSFmhlC{2} \end{pmatrix} \quad \Longrightarrow \quad T^{-1} = \begin{pmatrix} 2 & -1 \\ -1 & 1 \end{pmatrix} \]
+  Berechnung des Produkts:
+  \[ \ZSFbraceunder{\ZSFmhlA{\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}}}{$A$} \cdot \ZSFbraceunder{\begin{pmatrix} \ZSFmhlC{1} & \ZSFmhlC{1} \\ \ZSFmhlC{1} & \ZSFmhlC{2} \end{pmatrix}}{$T$} = \begin{pmatrix} 3 & 5 \\ 7 & 11 \end{pmatrix} \]
+  \[ \ZSFbraceunder{\begin{pmatrix} 2 & -1 \\ -1 & 1 \end{pmatrix}}{$T^{-1}$} \begin{pmatrix} 3 & 5 \\ 7 & 11 \end{pmatrix} = \ZSFbraceunder{\ZSFmhlC{\begin{pmatrix} -1 & -1 \\ 4 & 6 \end{pmatrix}}}{$[F]_{\ZSFmhlC{\mathcal{B}}}^{\ZSFmhlC{\mathcal{B}}}$} \]
+\end{defbox}
+
+\SubsectionBar[sec:matrix-big-picture]{Intuition: Eine Matrix -- zwei Geschichten}
+\ZSFindex{Matrixdarstellung}
+\ZSFindexsee{Koordinatendarstellung}{Matrixdarstellung}
+
+\begin{runintext}
+\ZSFlabel{Vektor und Adresse.} Die Basis $\mathcal B=(b_1,b_2)$ legt die Richtungen des Koordinatengitters fest. Darum bedeutet ein Basiswechsel im Bild zugleich ein Wechsel dieses Gitters. Der Pfeil $v$ ist das geometrische Objekt; die Skalare $x,y$ sind seine Adresse bezüglich der Basis:
+\[
+  v=x b_1+y b_2.
+\]
+
+\ZSFlabel{Zwei Lesarten einer Matrix.} In \hyperref[fig:transformation-fixed-basis]{Abb.~1} bewegt die lineare Abbildung $F$ den Pfeil, während die Basis $\mathcal B$ fest bleibt. Ihre Matrix $A$ berechnet die neue Adresse. In \hyperref[fig:basis-change-same-vector]{Abb.~2} bleibt der Pfeil fest; eine neue Basis $\mathcal C=(c_1,c_2)$ gibt ihm eine andere Adresse. Abschnitt \ZSFref{sec:matrix-same-vision} verbindet beide Lesarten anhand derselben Ausgangslage und derselben Matrix.
+\end{runintext}
+
+\begin{figbox}[Transformation: Gleiche Basis, neuer Pfeil\ZSFTitleTag{Abb. 1}][align=center, atomic, padx=none]
+\phantomsection\label{fig:transformation-fixed-basis}
+\begin{tikzpicture}[x=1.40cm,y=1.30cm,font=\ZSFfontDiagramLabel,>=stealth]
+  % Erste Zeile: Derselbe Koordinatenrahmen beschreibt Eingang und Bild.
+  \begin{scope}[xshift=-2.95cm,yshift=1.75cm]
+    \draw[\chaptercolor,very thin,step=0.35] (0,0) grid (1.75,1.40);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (0.70,0.70);
+    \node[text=\chaptercolor] at (0.12,1.23) {$\mathcal B$};
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.35,0)
+      node[below] {$\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.35)
+      node[left] {$\ZSFmhlB{b_2}$};
+    \draw[->,MathHLPrimary,thick] (0,0.70) -- (0.70,0.70)
+      node[midway,above] {$x\,\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (0.70,0) -- (0.70,0.70)
+      node[midway,right] {$y\,\ZSFmhlB{b_2}$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (0.70,0.70)
+      node[above] {$\ZSFmhlC{v}$};
+    \node[align=center] at (0.88,1.55)
+      {$\ZSFmhlC{v}=x\,\ZSFmhlA{b_1}+y\,\ZSFmhlB{b_2}$};
+  \end{scope}
+  \draw[->,thick] (-0.55,2.25) -- (0.25,2.25)
+    node[midway,above] {$F$}
+    node[midway,below] {Matrix $A$};
+  \begin{scope}[xshift=0.38cm,yshift=1.75cm]
+    \draw[\chaptercolor,very thin,step=0.35] (0,0) grid (1.75,1.40);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (1.40,0.70);
+    \node[text=\chaptercolor] at (0.12,1.23) {$\mathcal B$};
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.35,0)
+      node[below] {$\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.35)
+      node[left] {$\ZSFmhlB{b_2}$};
+    \draw[->,MathHLPrimary,thick] (0,0.70) -- (1.40,0.70)
+      node[midway,above] {$x'\,\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (1.40,0) -- (1.40,0.70)
+      node[midway,right] {$y'\,\ZSFmhlB{b_2}$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (1.40,0.70)
+      node[above] {$\ZSFmhlC{F(v)}$};
+    \node[align=center] at (0.88,1.55)
+      {$\ZSFmhlC{F(v)}=x'\,\ZSFmhlA{b_1}+y'\,\ZSFmhlB{b_2}$};
+  \end{scope}
+\end{tikzpicture}
+\ZSFfigcaption{\ZSFlabel{Abb. 1:} $F$ verändert den Vektor $v$ zu $F(v)$. Weil die Basis $\mathcal B=(b_1,b_2)$ fest bleibt, zeigt sich dies als neue Adresse: $(x,y)$ wird zu $(x',y')=A(x,y)$.}
+\end{figbox}
+
+\begin{defbox}[Abb. 1 lesen: Vom Pfeil zur Matrix][tone=neutral, pady=tight]
+Die Basis bleibt fest. Deshalb erscheint die Bewegung des Pfeils als neue Adresse. Die Bilder von $b_1$ und $b_2$ bilden die Spalten von $A$:
+\[
+  F(\ZSFmhlA{b_1})=\ZSFmhlA{b_1},\quad
+  F(\ZSFmhlB{b_2})=\ZSFmhlA{b_1}+\ZSFmhlB{b_2}
+  \quad\Rightarrow\quad
+  A=\begin{pmatrix}1&1\\0&1\end{pmatrix}.
+\]
+Die Skalare $x,y$ werden auf diese beiden Spalten verteilt:
+\[
+  \ZSFmhlC{[F(v)]_{\mathcal B}}
+  =A\begin{pmatrix}x\\y\end{pmatrix}
+  =\ZSFmhlC{\begin{pmatrix}x+y\\y\end{pmatrix}}
+  =\ZSFmhlC{\begin{pmatrix}x'\\y'\end{pmatrix}}.
+\]
+\ZSFhl{Basisbilder bestimmen die Spalten; $x,y$ bestimmen ihre Mischung.}
+\end{defbox}
+
+\begin{figbox}[Basiswechsel: Derselbe Pfeil, neue Basis\ZSFTitleTag{Abb. 2}][tone=neutral, align=center, atomic, padx=none]
+\phantomsection\label{fig:basis-change-same-vector}
+\begin{tikzpicture}[x=1.75cm,y=1.40cm,font=\ZSFfontDiagramLabel,>=stealth]
+  \begin{scope}[xshift=-2.20cm]
+    \node at (0.45,1.16) {Beschreibung in $\mathcal B$};
+    \draw[\chaptercolor,very thin,step=0.25] (0,0) grid (1.00,0.75);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (0.75,0.50);
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.25,0) node[below] {$\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.25) node[left] {$\ZSFmhlB{b_2}$};
+    \draw[->,MathHLPrimary,thick] (0,0.50) -- (0.75,0.50)
+      node[midway,above] {$x\,\ZSFmhlA{b_1}$};
+    \draw[->,MathHLSecondary,thick] (0.75,0) -- (0.75,0.50)
+      node[midway,right] {$y\,\ZSFmhlB{b_2}$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (0.75,0.50) node[above] {$\ZSFmhlC{v}$};
+    \node at (0.45,-0.48) {$\ZSFmhlC{[v]_{\mathcal B}}=(x,y)$};
+  \end{scope}
+  \node at (0.05,0.43) {$=$};
+  \begin{scope}[xshift=0.85cm]
+    \node at (0.38,1.16) {Beschreibung in $\mathcal C$};
+    \foreach \i in {0,...,4}{
+      \draw[\chaptercolor,very thin] ({0.28*\i},{0.08*\i}) -- ++(-0.27,0.78);
+    }
+    \foreach \j in {0,...,3}{
+      \draw[\chaptercolor,very thin] ({-0.09*\j},{0.26*\j}) -- ++(1.12,0.32);
+    }
+    \fill[\chaptercolorlight,opacity=0.55]
+      (0,0) -- (0.84,0.24) -- (0.75,0.50) -- (-0.09,0.26) -- cycle;
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.28,0.08)
+      node[below right] {$\ZSFmhlA{c_1}$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (-0.09,0.26)
+      node[left] {$\ZSFmhlB{c_2}$};
+    \draw[->,MathHLPrimary,thick] (-0.09,0.26) -- (0.75,0.50)
+      node[midway,above] {$u\,\ZSFmhlA{c_1}$};
+    \draw[->,MathHLSecondary,thick] (0.84,0.24) -- (0.75,0.50)
+      node[midway,right] {$w\,\ZSFmhlB{c_2}$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (0.75,0.50) node[above] {$\ZSFmhlC{v}$};
+    \node at (0.38,-0.48) {$\ZSFmhlC{[v]_{\mathcal C}}=(u,w)$};
+  \end{scope}
+\end{tikzpicture}
+\ZSFlabel{Basiswechselmatrix:}
+\[
+  P_{\mathcal C\leftarrow\mathcal B}
+  =\left(\ZSFmhlA{[b_1]_{\mathcal C}}\ \ZSFmhlB{[b_2]_{\mathcal C}}\right),
+  \qquad
+  \ZSFmhlC{[v]_{\mathcal C}}
+  =P_{\mathcal C\leftarrow\mathcal B}\,\ZSFmhlC{[v]_{\mathcal B}}.
+\]
+\ZSFfigcaption{\ZSFlabel{Abb. 2:} Die Diagonale $v$ bleibt exakt derselbe Pfeil. Die neue Basis zerlegt ihn nur anders: $v=x b_1+y b_2=u c_1+w c_2$. Die Matrix $P_{\mathcal C\leftarrow\mathcal B}$ ändert daher nur seine Koordinaten, nicht den Vektor.}
+\end{figbox}
+
+\begin{defbox}[Ein Schema ordnet alle Fälle ein][tone=neutral, weight=quiet, pady=tight]
+\[
+  \ZSFmhlA{[v]_{\mathcal B}}
+  \xrightarrow{\ A=[F]_{\mathcal B}^{\mathcal C}\ }
+  \ZSFmhlC{[F(v)]_{\mathcal C}}.
+\]
+\begin{ZSFlist}
+  \ZSFItem{$\mathcal B=\mathcal C$}{\ZSFlabel{Transformation} \hyperref[fig:transformation-fixed-basis]{(Abb.~1)}: $F$ bewegt den Vektor, die Basis bleibt.}
+  \ZSFItem{$F(v)=v$ für alle $v$}{\ZSFlabel{Basiswechsel} \hyperref[fig:basis-change-same-vector]{(Abb.~2)}: Der Vektor bleibt, die Basis wechselt.}
+  \ZSFItem{Beides zugleich}{\ZSFlabel{Allgemeiner Fall:} $F$ bewegt den Vektor; die Eingabe wird in $\mathcal B$, das Ergebnis in $\mathcal C$ beschrieben.}
+\end{ZSFlist}
+\ZSFhl{Die Matrix rechnet mit Adressen; der Kontext sagt, was sich geometrisch ändert.}
+\end{defbox}
+
+\begin{tablebox}[Was die beiden Bilder einordnen][tone=neutral]
+\begin{ZSFtable}[font=dense, rows=tight]{Y{0.92} Y{1.08}}
+  \ZSFheaderRow \ZSFhead{Am Bild erkennbar} & \ZSFhead{Bedeutung} \\
+  \hyperref[fig:transformation-fixed-basis]{Abb.~1}: Pfeil anders, Basis gleich. & Der Vektor wird transformiert; seine Basis bleibt gleich. \\
+  \hyperref[fig:basis-change-same-vector]{Abb.~2}: Pfeil gleich, Basis anders. & Nur die Koordinaten wechseln; der Vektor bleibt gleich. \\
+  Pfeil und Basis sind nachher anders. & Transformation und Basiswechsel sind kombiniert: $[v]_{\mathcal B}\mapsto[F(v)]_{\mathcal C}$. \\
+  Richtungen bleiben erhalten oder gehen verloren. & Rang zählt die erhaltenen Richtungen; bei vollem Rang macht eine Inverse die Verformung rückgängig. \\
+  Die Basis wird passend entgegengewechselt. & Schlüsselverbindung: Dieselbe Matrix beschreibt Transformation und Basiswechsel aus zwei Sichtweisen \ZSFref{sec:matrix-same-vision}. \\
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{defbox}[Das kennst du bereits][weight=quiet, pady=tight, font=dense]
+\ZSFlabel{Abb. 1 -- Pfeil bewegt:} Eine Matrix mischt ihre Spalten wie eine Linearkombination \ZSFref{sec:linear-independence}; ihre Determinante misst dabei die Volumenskalierung \ZSFref{sec:determinant-properties}.
+
+\ZSFlabel{Abb. 2 -- Basis wechselt:} Die Adresse eines festen Vektors hängt von der Basis ab \ZSFref{sec:coordinates} und wird beim Basiswechsel umgerechnet \ZSFref{sec:basis-change}.
+
+\ZSFhl{Bisher waren das zwei bekannte, aber getrennte Geschichten. Abschnitt \ZSFref{sec:matrix-same-vision} zeigt den überraschenden Zusammenhang: Bei passender Wahl verbindet dieselbe Matrix $A$ beide.}
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:matrix-same-vision]{Intuition: Dieselbe Matrix, zwei Sichtweisen}
+\ZSFindex{Aktive Transformation}
+
+\begin{runintext}
+Abschnitt \ZSFref{sec:matrix-big-picture} trennte die beiden Fälle bewusst: In Abb.~1 bewegt sich der Pfeil, in Abb.~2 wechselt die Basis. Jetzt folgt die Verbindung: Wird die neue Basis passend zur Transformation gewählt, beschreibt \ZSFhl{dieselbe Matrix $A$ beide Vorgänge}. Einmal sehen wir die Matrixwirkung am bewegten Pfeil, einmal an der gewechselten Basis. Beide Bilder starten bei Adresse $(2,3)$ und enden bei Adresse $(5,3)$.
+\end{runintext}
+
+\begin{figbox}[Sicht 1: Der Pfeil bewegt sich\ZSFTitleTag{Abb. 3}][align=center, atomic, padx=none, pady=tight, font=dense]
+\phantomsection\label{fig:matrix-same-vision}
+\begin{tikzpicture}[x=1.08cm,y=0.88cm,font=\ZSFfontDiagramLabel,>=stealth]
+  \begin{scope}[xshift=-2.05cm]
+    \node[align=center] at (0.75,1.20) {Gleiche Ausgangslage};
+    \draw[\chaptercolor,very thin,step=0.25] (0,0) grid (1.5,1.0);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (0.50,0.75);
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.25,0) node[below] {$b_1$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.25) node[left] {$b_2$};
+    \draw[->,MathHLPrimary,thick] (0,0.75) -- (0.50,0.75) node[midway,above] {$2b_1$};
+    \draw[->,MathHLSecondary,thick] (0.50,0) -- (0.50,0.75)
+      node[midway,right] {$3b_2$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (0.50,0.75) node[above right] {$v$};
+    \node at (0.75,-0.34) {Adresse $(\ZSFmhlA{2},\ZSFmhlB{3})$};
+  \end{scope}
+
+  \draw[->,thick] (-0.30,0.55) -- (0.20,0.55)
+    node[midway,above] {$A$};
+
+  \begin{scope}[xshift=0.45cm]
+    \node[align=center] at (0.75,1.20) {Basis fest, neuer Pfeil};
+    \draw[\chaptercolor,very thin,step=0.25] (0,0) grid (1.5,1.0);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (1.25,0.75);
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.25,0) node[below] {$b_1$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.25) node[left] {$b_2$};
+    \draw[->,MathHLPrimary,thick] (0,0.75) -- (1.25,0.75) node[midway,above] {$5b_1$};
+    \draw[->,MathHLSecondary,thick] (1.25,0) -- (1.25,0.75)
+      node[midway,right] {$3b_2$};
+    \draw[->,MathHLTarget,thick] (0,0) -- (1.25,0.75) node[above right] {$F(v)$};
+    \node at (0.75,-0.34) {Adresse $(\ZSFmhlA{5},\ZSFmhlB{3})$};
+  \end{scope}
+\end{tikzpicture}
+\ZSFfigcaption{\ZSFlabel{Abb. 3:} $A$ als Transformation: Pfeil bewegt, Basis fest; $(2,3)$ wird $(5,3)$.}
+\end{figbox}
+
+\begin{figbox}[Sicht 2: Die Basis wechselt\ZSFTitleTag{Abb. 4}][tone=neutral, align=center, atomic, padx=none, pady=tight, font=dense]
+\phantomsection\label{fig:matrix-same-address-basis}
+\begin{tikzpicture}[x=1.08cm,y=0.88cm,font=\ZSFfontDiagramLabel,>=stealth]
+  \begin{scope}[xshift=-2.05cm]
+    \node[align=center] at (0.75,1.20) {Gleiche Ausgangslage};
+    \draw[\chaptercolor,very thin,step=0.25] (0,0) grid (1.5,1.0);
+    \fill[\chaptercolorlight,opacity=0.55] (0,0) rectangle (0.50,0.75);
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.25,0) node[below] {$b_1$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (0,0.25) node[left] {$b_2$};
+    \draw[->,MathHLPrimary,thick] (0,0.75) -- (0.50,0.75) node[midway,above] {$2b_1$};
+    \draw[->,MathHLSecondary,thick] (0.50,0) -- (0.50,0.75)
+      node[midway,right] {$3b_2$};
+    \draw[->,MathHLTarget,thick,dashed] (0,0) -- (0.50,0.75) node[above right] {$v$};
+    \node at (0.75,-0.34) {Adresse $(\ZSFmhlA{2},\ZSFmhlB{3})$};
+  \end{scope}
+
+  \draw[->,thick] (-0.30,0.55) -- (0.20,0.55)
+    node[midway,above] {$A$};
+
+  \begin{scope}[xshift=1.20cm]
+    \node[align=center] at (0.40,1.20) {Pfeil fest, neue Basis};
+    \foreach \i in {0,...,6}{
+      \draw[\chaptercolor,very thin] ({0.25*\i},0) -- ++(-1.0,1.0);
+    }
+    \foreach \j in {0,...,4}{
+      \draw[\chaptercolor,very thin] ({-0.25*\j},{0.25*\j}) -- ++(1.75,0);
+    }
+    \fill[\chaptercolorlight,opacity=0.55]
+      (0,0) -- (1.25,0) -- (0.50,0.75) -- (-0.75,0.75) -- cycle;
+    \draw[->,MathHLPrimary,thick] (0,0) -- (0.25,0) node[below] {$c_1$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (-0.25,0.25) node[left] {$c_2$};
+    \draw[->,MathHLPrimary,thick] (-0.75,0.75) -- (0.50,0.75) node[midway,above] {$5c_1$};
+    \draw[->,MathHLSecondary,thick] (1.25,0) -- (0.50,0.75)
+      node[midway,right] {$3c_2$};
+    \draw[->,MathHLTarget,thick] (0,0) -- (0.50,0.75) node[above right] {$v$};
+    \node at (0.40,-0.34) {Adresse $(\ZSFmhlA{5},\ZSFmhlB{3})$};
+  \end{scope}
+\end{tikzpicture}
+\ZSFfigcaption{\ZSFlabel{Abb. 4:} Dasselbe $A$ als Basiswechsel: Pfeil fest, Basis gewechselt; wieder Adresse $(5,3)$.}
+\end{figbox}
+
+\begin{defbox}[Die Auflösung: Es ist dieselbe Matrix][tone=neutral, pady=tight, font=dense]
+\ZSFlabel{Gemeinsamer Start.} Beide Bilder beginnen mit $\ZSFmhlC{v}=\ZSFmhlA{2b_1}+\ZSFmhlB{3b_2}$, also mit Adresse $(\ZSFmhlA{2},\ZSFmhlB{3})$.
+
+\ZSFlabel{Abb. 3 -- Transformation.} Die Matrix $A$ lässt $b_1$ liegen und kippt $b_2$ einen Schritt nach rechts. So kommen die drei vertikalen Anteile auch horizontal dazu:
+\[
+  A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+  \ZSFmhlC{F(v)}=\ZSFmhlA{5b_1}+\ZSFmhlB{3b_2}.
+\]
+
+\ZSFlabel{Abb. 4 -- Basiswechsel.} Nun bleibt $v$ stehen. In der neuen Basis geht $c_1$ wie bisher nach rechts; $c_2$ geht einen alten Schritt nach links und einen nach oben. Daher
+\[
+  \ZSFmhlA{b_1}=\ZSFmhlA{c_1},\qquad
+  \ZSFmhlB{b_2}=\ZSFmhlA{c_1}+\ZSFmhlB{c_2}.
+\]
+Die Adressen $(1,0)$ und $(1,1)$ von $b_1,b_2$ bilden die Spalten der Basiswechselmatrix. Damit entsteht exakt dieselbe Matrix wie in Abb.~3:
+\[
+  P_{\mathcal C\leftarrow\mathcal B}
+  =\begin{pmatrix}1&1\\0&1\end{pmatrix}
+  =A.
+\]
+Deshalb zerfällt der feste Pfeil in der neuen Basis als
+\[
+  \ZSFmhlC{v}=\ZSFmhlA{5c_1}+\ZSFmhlB{3c_2}.
+\]
+Beide Sichtweisen führen somit dieselbe Rechnung mit derselben Ausgangsadresse aus:
+\[
+  [\ZSFmhlC{F(v)}]_{\mathcal B}
+  =A[\ZSFmhlC{v}]_{\mathcal B}
+  =[\ZSFmhlC{v}]_{\mathcal C}.
+\]
+\ZSFhl{Das ist die zentrale Verbindung: Transformation und Basiswechsel sind hier dieselbe Matrixwirkung aus zwei Sichtweisen. Gleich sind Matrix und Adresse $(5,3)$; verschieden ist nur, ob wir den Pfeil oder die Basis als bewegt betrachten.}
+\ZSFsep[Wann gilt das?]
+Die neue Basis in Abb.~4 ist bewusst passend zu $A$ gewählt. Nur dann ist ihre Basiswechselmatrix dieselbe Matrix wie die Transformationsmatrix aus Abb.~3; eine beliebige neue Basis liefert diese Gleichheit nicht.
+\end{defbox}
+
+\begin{defbox}[Wo die Verbindung später hilft][weight=quiet, pady=tight, font=dense]
+\ZSFlabel{Abbildungsmatrix} \ZSFref{sec:map-matrix}: Abb.~3 erklärt, warum die Bilder der Basisvektoren als Spalten erscheinen.
+\ZSFlabel{Diagonalisierung und Ähnlichkeit} \ZSFref{sec:diagonalization}\,\ZSFref{sec:matrix-similarity}: Eine passende Basis beschreibt dieselbe Abbildung durch eine einfachere Matrix.
+\ZSFlabel{Hauptachsentransformation} \ZSFref{sec:principal-axis}: Eine Form drehen oder die Basis wechseln sind wieder zwei Sichtweisen derselben Vereinfachung.
+\end{defbox}

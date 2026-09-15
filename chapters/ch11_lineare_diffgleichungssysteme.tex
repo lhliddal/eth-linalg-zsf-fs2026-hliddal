@@ -1,0 +1,232 @@
+\ZSFNewColumn
+\StartChapter{Lineare Differentialgleichungssysteme}
+
+\begin{runintext}
+Ein \ZSFkeyword*{System linearer Differentialgleichungen} (DGL-System) verkoppelt mehrere gesuchte Funktionen und deren Ableitungen. Es kann über die Eigenbasis entkoppelt und gelöst werden.
+\end{runintext}
+
+\SubsectionBar[sec:linear-ode]{Homogene DGL-Systeme 1. Ordnung \ZSFref{sec:hub-linear-ode-eigenvalues}}
+\ZSFindex{System linearer Differentialgleichungen}
+\ZSFindexsee{DGL-System}{System linearer Differentialgleichungen}
+\ZSFindex{Homogenes DGL-System}
+\ZSFindex{Anfangswertproblem}
+
+\begin{defbox}[Homogenes DGL-System 1. Ordnung]
+Ein homogenes lineares System erster Ordnung für den Vektor $y(t) \in \R^n$ hat die Form:
+\[ y'(t) = A \cdot y(t) \quad \text{mit Anfangsbedingung } y(0) = y_0 \]
+wobei $A \in \R^{n \times n}$ eine konstante Koeffizientenmatrix ist.
+\end{defbox}
+
+\SubsectionBar[sec:ode-intuition]{Intuition: Ein DGL-System ist eine Mischung unabhängiger Bewegungen}
+\ZSFindex{DGL-System, geometrische Interpretation}
+\ZSFindex{Eigenmode}
+
+\begin{defbox}[Die Leitidee: Abhängige Grössen entkoppeln][weight=quiet, pady=tight, font=dense]
+In den ursprünglichen Koordinaten sind die Grössen $y_1(t)$ und $y_2(t)$ im Allgemeinen \ZSFkeyword*{gekoppelt}: Jede Ableitung hängt von beiden aktuellen Grössen ab.
+\[
+  \begin{aligned}
+    y_1' &= a_{11}y_1+a_{12}y_2,\\
+    y_2' &= a_{21}y_1+a_{22}y_2.
+  \end{aligned}
+\]
+Darum kann man $y_1$ und $y_2$ nicht getrennt lösen: Ändert sich eine Grösse, beeinflusst sie über $A$ auch die andere.
+\ZSFsep[Der Trick der Eigenbasis]
+Der Koordinatenwechsel $y=Tz$ beschreibt denselben Zustand durch neue Grössen $z_1,z_2$. Sind die Spalten von $T$ Eigenvektoren, gilt:
+\[
+  z_1'=\lambda_1z_1,\qquad z_2'=\lambda_2z_2.
+\]
+Jetzt hängt jede Ableitung nur noch von ihrer eigenen Grösse ab. \ZSFhl{Die Eigenbasis verändert das System nicht; sie macht seine voneinander unabhängigen Bewegungsanteile sichtbar.}
+\end{defbox}
+
+\begin{figbox}[Gekoppelt $\to$ entkoppelt $\to$ Zeitentwicklung][align=center, atomic, padx=none]
+\resizebox{0.90\linewidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=0.92cm,font=\ZSFfontDiagramLabel,>=stealth]
+  % Ausgangsraum: ein Zustand setzt sich aus zwei Eigenrichtungen zusammen.
+  \begin{scope}[xshift=-4.10cm]
+    \node[align=center] at (1.15,2.28) {1. Originalkoordinaten: gekoppelt};
+    \draw[->,\chaptercolor!55] (-0.10,0) -- (2.55,0) node[right] {$y_1$};
+    \draw[->,\chaptercolor!55] (0,-0.10) -- (0,2.10) node[above] {$y_2$};
+    \draw[->,MathHLPrimary,thick] (0,0) -- (1.55,0.78)
+      node[midway,below] {$v_1$};
+    \draw[->,MathHLSecondary,thick] (0,0) -- (-0.36,1.35)
+      node[left] {$v_2$};
+    \draw[->,MathHLPrimary] (0,0) -- (1.05,0.53)
+      node[midway,above] {$c_1v_1$};
+    \draw[->,MathHLSecondary] (1.05,0.53) -- (0.69,1.88)
+      node[midway,right] {$c_2v_2$};
+    \draw[->,MathHLTarget,very thick] (0,0) -- (0.69,1.88)
+      node[above right] {$y(0)$};
+    \node[align=center] at (1.15,-0.62)
+      {$y(0)=c_1v_1+c_2v_2$};
+  \end{scope}
+
+  \draw[->,thick] (-1.34,0.86) -- (-0.48,0.86)
+    node[midway,above] {$z=T^{-1}y$};
+
+  % Eigenraum: dieselbe Bewegung wird zu zwei unabhängigen Koordinaten.
+  \begin{scope}[xshift=-0.05cm]
+    \node[align=center] at (1.05,2.28) {2. Eigenbasis: entkoppelt};
+    \draw[->,\chaptercolor!55] (-0.10,0) -- (2.45,0) node[right] {$z_1$};
+    \draw[->,\chaptercolor!55] (0,-0.10) -- (0,2.10) node[above] {$z_2$};
+    \draw[->,MathHLPrimary,very thick] (0,0) -- (1.35,0)
+      node[midway,below] {$c_1$};
+    \draw[->,MathHLSecondary,very thick] (0,0) -- (0,1.55)
+      node[midway,left] {$c_2$};
+    \node[align=left] at (1.17,1.63) {$z_1'=\lambda_1z_1$\\$z_2'=\lambda_2z_2$};
+    \node[align=center] at (1.05,-0.62)
+      {$z(0)=(c_1,c_2)$};
+  \end{scope}
+
+  \draw[->,thick] (2.48,0.86) -- (2.98,0.86)
+    node[midway,above] {getrennt lösen};
+
+  % Zeitentwicklung der beiden unabhängigen Anteile.
+  \begin{scope}[xshift=3.10cm]
+    \node[align=center] at (1.12,2.28) {3. Lösungen in Eigenkoordinaten};
+    \draw[->,\chaptercolor!55] (0,0) -- (2.35,0) node[right] {$t$};
+    \draw[->,MathHLPrimary,thick] (0,0.35) .. controls (0.62,0.40) and (1.15,0.78) .. (2.15,1.55)
+      node[right] {$z_1=c_1e^{\lambda_1t}$};
+    \draw[->,MathHLSecondary,thick] (0,1.72) .. controls (0.62,1.68) and (1.15,1.36) .. (2.15,0.78)
+      node[right] {$z_2=c_2e^{\lambda_2t}$};
+    \node[align=center] at (1.12,1.98) {Beispiel: $\lambda_1>0$, $\lambda_2<0$};
+    \node[align=center] at (1.12,-0.62)
+      {$z_i(t)=c_i e^{\lambda_i t}$};
+  \end{scope}
+\end{tikzpicture}
+}%
+\[
+  \ZSFmhlA{z(t)}\xrightarrow{\ y=Tz\ }\ZSFmhlC{y(t)=Tz(t)}.
+\]
+\ZSFfigcaption{In der Eigenbasis wird nur gerechnet. Das Ergebnis der ursprünglichen Aufgabe ist wieder $y(t)$ in den ursprünglichen Koordinaten.}
+\end{figbox}
+
+\begin{defbox}[Was die Eigenpaare für die Bewegung bedeuten][tone=neutral, pady=tight, font=dense]
+Für einen Eigenvektor $v_i$ gilt:
+\[
+  A v_i=\lambda_i v_i
+  \quad\Longrightarrow\quad
+  y_i(t)=c_i v_i e^{\lambda_i t}.
+\]
+Der Anteil bleibt also auf der Eigenrichtung $v_i$ und verändert nur seine Länge. Der Eigenwert ist der Zeitfaktor:
+\begin{ZSFlist}
+  \ZSFItem{$\lambda_i>0$: Der Anteil wächst exponentiell vom Ursprung weg.}
+  \ZSFItem{$\lambda_i<0$: Der Anteil klingt exponentiell zum Ursprung ab.}
+  \ZSFItem{$\lambda_i=0$: Der Anteil bleibt konstant.}
+\end{ZSFlist}
+\ZSFhl{Die Anfangsbedingung bestimmt die Gewichte $c_i$; die Eigenpaare bestimmen die möglichen Bewegungsarten.}
+\end{defbox}
+
+\begin{defbox}[Warum wechseln -- und wann wieder zurück?][weight=quiet, pady=tight, font=dense]
+\begin{ZSFlist}[][ordered]
+  \ZSFItem{\ZSFlabel{Ausgangsproblem:} Gegeben und gesucht sind $y(0)$ und $y(t)$ in den ursprünglichen Grössen. Dort ist $y'=Ay$ gekoppelt.}
+  \ZSFItem{\ZSFlabel{Rechenbasis:} Mit $z=T^{-1}y$ wechselt man nur die Beschreibung desselben Zustands. Aus $A=TDT^{-1}$ wird das entkoppelte System $z'=Dz$.}
+  \ZSFItem{\ZSFlabel{Rückweg:} Nach dem getrennten Lösen der $z_i(t)$ setzt man $y(t)=Tz(t)$. Erst dieses $y(t)$ beantwortet die ursprüngliche Aufgabe.}
+\end{ZSFlist}
+\ZSFhl{Eigenkoordinaten sind ein Rechenwerkzeug: hinein mit $T^{-1}$, unabhängig lösen, zurück mit $T$.}
+\end{defbox}
+
+\begin{tablebox}[Eigenwerte als qualitative Bewegungsinformation][tone=neutral]
+\begin{ZSFtable}[font=dense, rows=tight]{Y{1.05} Y{0.95}}
+  \ZSFheaderRow \ZSFhead{Eigenwerte} & \ZSFhead{Langzeitverhalten} \\
+  alle $\lambda_i<0$ & Alle Eigenmoden klingen ab: stabil zum Ursprung. \\
+  ein $\lambda_i>0$ & Diese Eigenmode wächst: instabile Richtung. \\
+  verschiedene Vorzeichen & Eine Mode wächst, eine klingt ab: Sattelverhalten. \\
+  $\alpha\pm i\beta$ & $\alpha$ steuert Wachstum/Zerfall, $\beta$ die Rotation. \\
+\end{ZSFtable}
+\end{tablebox}
+
+\SubsectionBar[sec:solve-linear-ode]{Prüfungsweg: Homogenes DGL-System lösen}
+\ZSFindex{Entkopplung}
+\begin{ZSFlist}[Lösen durch Entkopplung][ordered]
+  \ZSFItem{Diagonalisieren}{Diagonalisiere $A = T \cdot D \cdot T^{-1}$. \ZSFref{sec:diagonalization}}
+  \ZSFItem{Allgemeine homogene Lösung}{Stelle die allgemeine Lösung über die Eigenpaare auf:
+  \[ y(t) = \ZSFsumAuto{i=1}{n} C_i \cdot v_i \cdot e^{ \lambda_i t} \]}
+  \ZSFItem{Integrationskonstanten bestimmen}{Löse das LGS $T \cdot C = y_0$, um den Konstantenvektor $C = (C_1, \dots, C_n)^T$ aus den Anfangsbedingungen zu bestimmen:
+  \[ C = T^{-1} \cdot y(0) \]
+  \ZSFref{sec:row-echelon}\ZSFref{sec:matrix-inverse}}
+\end{ZSFlist}
+
+\begin{defbox}[Beispiel][weight=quiet]
+  System: $y'(t) = \begin{pmatrix} 3 & 2 \\ 1 & 4 \end{pmatrix} y(t)$ mit $y(0) = \begin{pmatrix} 3 \\ 6 \end{pmatrix}$
+  \[
+  D = \begin{pmatrix} 2 & 0 \\ 0 & 5 \end{pmatrix}, \ T = \begin{pmatrix} -2 & 1 \\ 1 & 1 \end{pmatrix}
+  \]
+  Daraus ergibt sich die allgemeine Lösung:
+  \[
+  y(t) = C_1 \begin{pmatrix} -2 \\ 1 \end{pmatrix} e^{2t} + C_2 \begin{pmatrix} 1 \\ 1 \end{pmatrix} e^{5t}
+  \]
+  Anfangswerte einsetzen: $T \cdot C = y(0) \Longrightarrow C_1 = 1, \ C_2 = 5$.
+\end{defbox}
+
+\begin{defbox}[Komplexe Eigenwerte \ZSFref{sec:eigenvalues}][weight=quiet]
+  Liegen \ZSFkeyword[Komplex konjugierte Eigenwerte]{komplexe konjugierte Eigenwerte} $\lambda = \alpha \pm i \beta$ mit Eigenvektoren $w = u \pm i v$ vor, lautet die reelle Systemlösung:
+  \[
+  \begin{aligned}
+    y(t) = e^{\alpha t} \bigl[ & (a \cos(\beta t) - b \sin(\beta t)) \cdot u \\
+    &- (a \sin(\beta t) + b \cos(\beta t)) \cdot v \bigr]
+  \end{aligned}
+  \]
+  mit $a,b \in \R$ (Eulersche Formel: $e^{i\omega t} = \cos(\omega t) + i\sin(\omega t)$).
+  \ZSFgap[XS]
+  Dabei sind $u$ und $v$ Real- und Imaginärteil des Eigenvektors ($w = u + i v$). Die zwei reellen Konstanten $a, b$ gehören zu diesem konjugierten Eigenwertpaar (anstelle der $C_i$) und werden aus den Anfangsbedingungen bestimmt.
+\end{defbox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:order-reduction]{Reduktion der Ordnung}
+\ZSFindex{Ordnungsreduktion}
+\ZSFindexsee{DGL höherer Ordnung}{Ordnungsreduktion}
+
+\begin{runintext}
+Jede lineare DGL $n$-ter Ordnung lässt sich durch Substitution der Ableitungen in ein System 1. Ordnung mit $n$ Gleichungen überführen.
+\newline
+Beispiel: $y^{\prime\prime\prime}(t) + 4y^{\prime\prime}(t) + 2y'(t) - 3y(t) = 0$ mit $y(0)=1, y'(0)=3, y^{\prime\prime}(0)=2$.
+\end{runintext}
+
+\begin{ZSFlist}[Ordnungsreduktion][ordered]
+  \ZSFItem{Substituieren}{Definiere neue Variablen für die Ableitungen bis Ordnung $n-1$:
+  \[ y_0 = y, \ y_1 = y', \ y_2 = y^{\prime\prime} \]}
+  \ZSFItem{Ableitungen verknüpfen}{Stelle die Systemgleichungen auf:
+  \[ y_0' = y_1, \ y_1' = y_2 \]}
+  \ZSFItem{Höchste Ableitung einsetzen}{Löse die Originalgleichung nach der höchsten Ableitung auf und ersetze die Variablen:
+  \[ y_2' = 3y_0 - 2y_1 - 4y_2 \]}
+  \ZSFItem{Matrixform formulieren}{Schreibe das DGL-System 1. Ordnung auf:
+  \[ \begin{pmatrix} y_0' \\ y_1' \\ y_2' \end{pmatrix} = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 3 & -2 & -4 \end{pmatrix} \begin{pmatrix} y_0 \\ y_1 \\ y_2 \end{pmatrix}, \ y(0) = \begin{pmatrix} 1 \\ 3 \\ 2 \end{pmatrix} \]
+  \ZSFref{sec:linear-ode}}
+\end{ZSFlist}
+
+\begin{defbox}[Dimension des Lösungsraums][weight=quiet]
+Die Dimension des Lösungsraums eines DGL-Systems ist die Summe der höchsten Ableitungen aller Variablen:
+\[ \dim(\text{Lösungsraum}) = \ZSFsumAuto{i}{} (\text{höchste Ordnung von } y_i) \]
+\end{defbox}
+
+\SubsectionBar[sec:inhomogeneous-ode]{Inhomogene DGL-Systeme}
+
+\ZSFindex{Inhomogenes DGL-System}
+\begin{defbox}[Inhomogenes System]
+Ein lineares DGL-System mit \ZSFkeyword{Störterm} $b(t)$ hat die Form $y'(t) = A \cdot y(t) + b(t)$. Die allgemeine Lösung lautet:
+\[ y(t) = y_h(t) + y_p(t) \]
+wobei $y_h(t)$ die homogene Systemlösung \ZSFref{sec:linear-ode} und $y_p(t)$ eine \ZSFkeyword[Partikularlosung@Partikulärlösung]{partikuläre Lösung} ist.
+\end{defbox}
+
+\begin{ZSFlist}[Partikuläre Lösung bei konstantem Störterm][ordered]
+  \ZSFItem{Ansatz}{Wähle für einen konstanten Störterm $b(t) = b$ den Ansatz $y_p(t) = \text{const} \Longrightarrow y_p'(t) = 0$.}
+  \ZSFItem{LGS lösen}{Setze in das System ein und löse das LGS nach $y_p$ auf:
+  \[ A \cdot y_p = -b \]
+  \ZSFref{sec:row-echelon}}
+  \ZSFItem{Addition}{Die Gesamtlösung ist die Summe: $y(t) = y_h(t) + y_p(t)$.}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar[sec:infinity-conditions]{Bedingungen im Unendlichen}
+\ZSFindex{Bedingungen im Unendlichen}
+\ZSFindex[Stabilitat]{Stabilität}
+
+\begin{runintext}
+Werden statt Anfangswerten Bedingungen im Unendlichen (z. B. $\ZSFlimAuto{t \to \infty} y(t) = a$) vorgegeben, gelten folgende Regeln:
+\end{runintext}
+
+\begin{ZSFlist}[Integrationskonstanten bestimmen \ZSFref{sec:linear-ode}][ordered]
+  \ZSFItem{Stabilität erzwingen}{Soll das System im Unendlichen beschränkt bleiben, setze alle Koeffizienten $C_i$ von divergenten Exponentialtermen ($\lambda_i > 0$) Null.}
+  \ZSFItem{Grenzwert einsetzen}{Setze $t \to \infty$ ein, um konstante stationäre Lösungsanteile ($\lambda_i = 0$) oder abklingende Terme zu ermitteln.}
+  \ZSFItem{Anfangsbedingungen}{Verwende die Anfangswerte bei $t = 0$, um die verbleibenden Konstanten zu bestimmen.}
+\end{ZSFlist}

@@ -1,0 +1,312 @@
+% ============================================================
+% 50_typography_semantics.tex — Schriftmakros für Box-Typen & semantische Inhaltsmakros
+% ============================================================
+
+% Explizite bp-Grössen (wie Analysis) für präzise, font-unabhängige Kontrolle
+\newcommand{\ZSFfontChapter}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+\newcommand{\ZSFfontSection}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+\newcommand{\ZSFfontSubsubsection}{\sffamily\bfseries\fontsize{7.2bp}{8.0bp}\selectfont}
+\newcommand{\ZSFfontBoxTitle}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+% chktex 6
+\newcommand{\ZSFfontNote}{\sffamily\fontsize{6.7bp}{7.5bp}\itshape\selectfont}
+% Rechtsbuendiges Meta-/Kategorie-Tag im Titelbalken (vgl. \ZSFTitleTag in
+% styles/60_boxes.tex). Etwas kleiner und kursiv, damit es den Titel begleitet
+% statt mit ihm zu konkurrieren.
+\newcommand{\ZSFfontTitleTag}{\sffamily\fontsize{6.4bp}{7.0bp}\itshape\selectfont}
+\newcommand{\ZSFfontTitleHeader}{\sffamily\fontsize{11bp}{12.5bp}\bfseries\selectfont}
+\newcommand{\ZSFfontFooter}{\sffamily\bfseries\fontsize{9.5pt}{9.5pt}\selectfont}
+\newcommand{\ZSFfontIdentityMarker}{\fontsize{4pt}{4pt}\selectfont}
+
+% Schrift/Farbe für Code-Kommentare — nur für das optionale Code-Modul
+% (styles/67_code_comments.tex) benötigt. ce_green stammt aus
+% styles/40_colors_structure.tex. Schadlos wenn das Modul deaktiviert ist.
+\newcommand{\ZSFfontCodeComment}{\ttfamily\color{ce_green}}
+
+% Semantische Inhalts-Fontgrössen — die zwei Stufen des Reglers `font`
+% (`normal` | `dense`). Kapitel wählen sie nicht direkt, sondern über den
+% Regler an der Box (styles/60_boxes.tex) oder an der ZSFtable
+% (styles/20_tables.tex). `dense` ist die eine Stufe kleiner: lange Register,
+% Vergleichsmatrizen, gedrängte Aufzählungen.
+%
+% EIN Paar für beide Bausteine, nicht je eines: »eine Stufe kleiner« ist
+% dieselbe Entscheidung, ob sie eine Tabelle oder einen Boxinhalt trifft. Mit
+% zwei Paaren müsste jede Änderung am einen im anderen nachgezogen werden
+% (styles/README → Vereinigungstest).
+%
+% Beide holen die Display-Skips zurück: \normalsize und \footnotesize setzen
+% sie auf die Klassenwerte, und die ZSF-Entscheidung dazu ist eine andere
+% (\ZSFApplyDisplaySkips in 30_layout_spacing). Ohne diesen Nachsatz wären
+% Formeln in jeder Box luftiger als im Fliesstext — lautlos, weil beides
+% für sich korrekt aussieht.
+\newcommand{\ZSFfontContent}{\normalsize\ZSFApplyDisplaySkips}
+\newcommand{\ZSFfontContentDense}{\footnotesize\ZSFApplyDisplaySkips}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFfontTableHead}{\bfseries}
+% Marke einer ZSFlist und Beschriftung eines \ZSFsep-Blockwechsels — beide
+% sind dieselbe Rolle: eine kurze fette Beschriftung innerhalb eines Bausteins.
+\newcommand{\ZSFfontBlockLabel}{\bfseries}
+% Text, der per \textVorBox/\textNachBox an eine Box gebunden wird.
+\newcommand{\ZSFfontBoxBinding}{\small}
+% Inline-Pille für Stolperfallen (\ZSFdanger).
+\newcommand{\ZSFfontDangerTag}{\sffamily\bfseries}
+%
+%
+%
+\newcommand{\ZSFfontRefLocator}{\upshape\bfseries}
+
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxNote}[1]{{\ZSFfontNote\color{MutedTextColor}#1}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\providecommand{\ZSFDiagramLabelScale}{1}
+% Die Grösse wird gerechnet statt geschrieben. Über \the und damit in pt, weil
+% \fontsize sein Argument sonst als Zahl ohne Einheit lesen müsste — der Faktor
+% kommt so als fertiges Mass an und nicht als Term, den \fontsize zerlegt.
+\makeatletter
+\newlength{\ZSF@fontSize}
+\newlength{\ZSF@fontSkip}
+\newcommand{\ZSF@scaledFont}[3]{%
+  \setlength{\ZSF@fontSize}{#1\dimexpr #2\relax}%
+  \setlength{\ZSF@fontSkip}{#1\dimexpr #3\relax}%
+  \fontsize{\the\ZSF@fontSize}{\the\ZSF@fontSkip}\selectfont}
+\newcommand{\ZSFfontDiagramLabel}{%
+  \sffamily\ZSF@scaledFont{\ZSFDiagramLabelScale}{5.8bp}{6.4bp}}
+\newcommand{\ZSFfontDiagramLabelSmall}{%
+  \sffamily\ZSF@scaledFont{\ZSFDiagramLabelScale}{4.6bp}{5.1bp}}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\NewDocumentCommand{\ZSFkeyword}{s o m}{\ZSFkeywordStyle{#3}}
+
+%
+%
+%
+%
+%
+\newcommand{\ZSFlabel}[1]{\ZSFlabelStyle{#1}}
+
+% Die beiden Darstellungs-Hooks der Marker — getrennt, weil \ZSFkeyword und
+% \ZSFlabel verschiedene Dinge bedeuten und eine ZSF den Unterschied ändern
+% können soll, ohne ein einziges Kapitel anzufassen.
+%
+% BEIDE schlicht fett, ohne Farbe. \ZSFkeyword stand bis hierher fett in der
+% KAPITELFARBE, mit dem Argument, der primäre Scan-Anker müsse sich von jeder
+% anderen Fettung abheben. Das Argument ist am Satz gescheitert: In laufendem
+% Text bringt eine eingefärbte Vokabel Unruhe in den Absatz, ohne dass die
+% Farbe etwas sagt — sie wiederholt nur, in welchem Kapitel man ohnehin gerade
+% ist. Wer den Absatz liest, wird gestört; wer ihn überfliegt, findet die
+% Fettung auch ohne Farbe.
+%
+% Farbe bleibt damit im System das, was sie vorher schon war und wofür sie
+% trägt: Kapitel-Identität auf Flächen (Balken, Akzente), Wegweiser zum ZIEL
+% eines Verweises (\ZSFref) und semantische Zuordnung in Formeln (\ZSFmhl*).
+% Als blosse Betonung im Fliesstext ist sie ausdrücklich nicht vorgesehen.
+%
+% Die Unterscheidung der beiden Marker liegt jetzt allein in der Bedeutung —
+% \ZSFkeyword ist ein Fachbegriff und landet im Register, \ZSFlabel ist eine
+% neutrale Beschriftung und tut das nicht. Das ist der Unterschied, der beim
+% Schreiben zählt; er war nie der Farbe zu entnehmen.
+\newcommand{\ZSFkeywordStyle}[1]{\textbf{#1}}
+\newcommand{\ZSFlabelStyle}[1]{\textbf{#1}}
+
+\newcommand{\ZSFScriptRef}[1]{\hfill\textcolor{\ScriptRefColor}{\ZSFfontBoxBinding (S.#1)}}
+
+% \ZSFhl{...} — Hervorhebung des EINEN prüfungskritischsten Fakts pro Box
+% (fett + unterstrichen). Bewusst sparsam: hoechstens einmal pro Block.
+% Klare Rollentrennung:
+%   * Fachbegriff/Scan-Anker        -> \ZSFkeyword
+%   * Stolperfalle/kritische Ausnahme -> \ZSFdanger
+%   * Folgerung                      -> \ZSFconclusion
+%   * sonst die EINE Schlüsselaussage -> \ZSFhl
+% \uline statt \underline: \underline steckt seinen Inhalt in eine
+% unzerbrechliche Box — jede Hervorhebung, die länger als eine Zeile ist,
+% sprengt damit die 50-mm-Spalte. \ZSFhl markiert aber laut Zweck eine ganze
+% Aussage, nicht ein Wort. \uline bricht mit dem Absatz um.
+% Fett als Deklaration, nicht als Argument von \uline: ein \textbf{...} als
+% Argument macht den Inhalt für ulem wieder zu einer Einheit.
+%
+% Die Darstellung liegt wie bei \ZSFkeyword und \ZSFlabel in einem eigenen
+% Hook. Ohne ihn erwischte »die Hervorhebung dieser ZSF umstellen« zwei von
+% drei Markern — der dritte war der einzige mit fest verdrahteter Erscheinung,
+% und man sah es erst am Satz (styles/README → Auszeichnungs-Hooks).
+\newcommand{\ZSFhlStyle}[1]{{\bfseries\uline{#1}}}
+\newcommand{\ZSFhl}[1]{\ZSFhlStyle{#1}}
+
+% Papierorientierte Referenzrollen:
+%   * \ZSFref{label}: hilfreicher Querverweis mit farbiger Abschnittsnummer.
+%   * \ZSFsectionref{label}: kompakte Zielnummer für lokale Router/Tabellen.
+% Ziel-Label via optionales Argument von \SubsubsectionBar/\SubsectionBar/\StartChapter setzen:
+%   \SubsectionBar[sec:matrix-inverse]{Inverse}
+% Farbe = Palette-Farbe des ZIELkapitels (Wegweiser-Prinzip): wird automatisch
+% aus der Kapitelnummer der Referenz abgeleitet ("6.6" -> ChapterColor6).
+% Bei Kapiteln jenseits der Palette wird derselbe Modulo-Lookup wie bei
+% \StartChapter genutzt, damit gewrappte Kapitel und Verweise konsistent sind.
+% Aufrecht + fett statt kursiv für maximale Lesbarkeit bei 6.7bp.
+\makeatletter
+\def\ZSF@refExtractFirst#1#2\@nil{#1}
+\def\ZSF@refExtractChap#1.#2\@nil{#1}
+% Bestimmt \ZSF@refTargetColor aus dem Label; Fallback auf die aktive
+% Kapitelfarbe im ersten latexmk-Pass (Label noch undefiniert).
+\newcommand{\ZSF@refComputeTargetColor}[1]{%
+  \@ifundefined{r@#1}{%
+    \edef\ZSF@refTargetColor{\chaptercolor}%
+  }{%
+    \edef\ZSF@refTargetNum{\expandafter\expandafter\expandafter
+      \ZSF@refExtractFirst\csname r@#1\endcsname\@nil}%
+    \edef\ZSF@refTargetChap{\expandafter\ZSF@refExtractChap\ZSF@refTargetNum.\@nil}%
+    \ZSFSetPaletteColorNameFromNumber{\ZSF@refTargetChap}{\ZSF@refTargetColor}%
+  }%
+}
+% Die Zielfarbe läuft über \ZSFInk. Ohne das steht ein Verweis auf das eigene
+% Kapitel im Titel einer \SubsectionBar als ChapterColorN auf \chaptercolor!75 —
+% derselbe Farbton bei voller Sättigung, also unlesbar, ohne dass Build oder
+% Linter etwas melden. Auf einer Fläche mit eigener Kontrastfarbe erbt der
+% Verweis diese und bleibt lesbar; der Farb-Wegweiser gilt dort, wo er auch
+% ankommt — im Boxinhalt (40_colors_structure → Ink-Vertrag).
+\newcommand{\ZSFref}[1]{%
+  \begingroup
+  \ZSF@refComputeTargetColor{#1}%
+  \hyperref[#1]{{\ZSFfontNote\ZSFfontRefLocator
+    \ZSFInk{\ZSF@refTargetColor}{($\rightarrow$\,\ref*{#1})}}}%
+  \endgroup
+}
+\newcommand{\ZSFsectionref}[1]{%
+  \begingroup
+  \ZSF@refComputeTargetColor{#1}%
+  \hyperref[#1]{{\ZSFfontRefLocator\ZSFInk{\ZSF@refTargetColor}{\ref*{#1}}}}%
+  \endgroup
+}
+% \ZSFhubref{label} — Verweis mit Zielnummer UND Zielname. [FORK-ERWEITERUNG]
+%
+% Dritte Rolle derselben Familie, nicht eine dritte Schreibweise derselben
+% Sache. Der Unterschied ist, wer den Kontext trägt:
+%   \ZSFref        Nummer neben einer Aussage, die selbst schon sagt, worum es
+%                  geht — der Verweis ist Zusatz.
+%   \ZSFsectionref blosse Zielnummer in einer Tabellenzelle, deren Zeile den
+%                  Kontext trägt.
+%   \ZSFhubref     der Verweis IST der Eintrag. In einer Übersicht, die auf
+%                  mehrere Stellen zeigt, steht daneben nichts, was die Nummer
+%                  erklären würde; \ZSFref ergäbe dort eine Reihe blinder
+%                  Sprungziele.
+%
+% Den Klartext liefert \nameref von selbst: Die Strukturmakros hinterlegen den
+% Titel bereits bereinigt (\ZSFplainName, oben). Dieses Makro braucht deshalb
+% keine eigene Liste stillzulegender Marker — die stünde sonst hier ein zweites
+% Mal und veraltete beim nächsten neuen Marker.
+\newcommand{\ZSFhubref}[1]{%
+  \begingroup
+  \ZSF@refComputeTargetColor{#1}%
+  \hyperref[#1]{{\ZSFfontNote\ZSFfontRefLocator
+    \ZSFInk{\ZSF@refTargetColor}{($\rightarrow$\,\ref*{#1}\,\nameref*{#1})}}}%
+  \endgroup\allowbreak
+}
+
+% ------------------------------------------------------------
+% Der Klartext-Name eines Ziels — die Grundlage von \nameref
+% ------------------------------------------------------------
+% Ein Titel darf Marker tragen: \SubsectionBar[sec:inverse]{Inverse
+% \ZSFref{sec:hub-full-rank}}. Fuer die ANZEIGE des Balkens ist das richtig;
+% als NAME des Labels ist es falsch — ein \ZSFref darin ergaebe einen Verweis
+% im Verweis, ein \ZSFkeyword einen Registereintrag an der Fundstelle des
+% Lesers statt an der des Ziels.
+%
+% Die Bereinigung steht deshalb an EINER Stelle und wird beim Setzen des
+% Labels eingebacken (\ZSF@storeLabelName, aufgerufen aus den Strukturmakros).
+% Jeder Konsument von \nameref bekommt sie automatisch — auch ein handge-
+% schriebenes \nameref im Kapitel. Die Alternative waere, dass jede Lesestelle
+% dieselbe Liste mitfuehrt; beim naechsten neuen Marker fehlt sie dort.
+%
+% \ZSFplainName traegt bewusst KEIN @: Der Name wandert ueber die .aux-Datei,
+% und die wird ohne \makeatletter gelesen — gleiche Regel wie bei den
+% Index-Makros \ZSFidxnum/\ZSFidxsee.
+\NewDocumentCommand{\ZSF@plainKeyword}{s o m}{#3}
+% Die Schlucker nehmen ihr Argument UND das Leerzeichen davor: Steht der Marker
+% am Titelende (»Inverse \ZSFref{…}«), bliebe sonst ein Leerzeichen stehen.
+\newcommand{\ZSF@eatOne}[1]{\unskip}
+\newcommand{\ZSF@eatTwo}[2]{\unskip}
+\NewDocumentCommand{\ZSFplainName}{+m}{%
+  \begingroup
+    \let\ZSFkeyword\ZSF@plainKeyword
+    \let\ZSFlabel\@firstofone
+    \let\ZSFhl\@firstofone
+    \let\ZSFref\ZSF@eatOne
+    \let\ZSFsectionref\ZSF@eatOne
+    \let\ZSFScriptRef\ZSF@eatOne
+    \let\ZSFTitleTag\ZSF@eatOne
+    \let\ZSFindex\ZSF@eatOne
+    \let\ZSFindexsee\ZSF@eatTwo
+    #1%
+  \endgroup
+}
+% Hinterlegt den Titel als Namen des folgenden \label. Ohne das liefert
+% \nameref dokumentweit nichts — lautlos, weil kein Baustein es bisher las.
+\newcommand{\ZSF@storeLabelName}[1]{\def\@currentlabelname{\ZSFplainName{#1}}}
+\makeatother
+
+\newcommand{\ZSFconclusion}[1]{%
+  \ZSFInterlude{\ZSFspaceS}%
+  \noindent$\Rightarrow$ #1%
+  \ZSFInterlude{\ZSFspaceS}%
+}
+

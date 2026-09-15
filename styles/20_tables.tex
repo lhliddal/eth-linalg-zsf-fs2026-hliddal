@@ -1,0 +1,356 @@
+% ============================================================
+% 20_tables.tex — Tabellen-Helfer (semantisches Table-System)
+% ============================================================
+% Zentrales Design-Prinzip:
+%   1. Tabellen fuellen IMMER \linewidth (kein manuelles p{0.16..}).
+%   2. Spaltenbreiten werden PROPORTIONAL deklariert (Y{0.18} L{0.54} ...),
+%      sodass die Summe der Faktoren = Anzahl X-Spalten ergibt.
+%   3. Zebra-Streifen + Header-Highlight sind ins Environment eingebaut;
+%      direkte Farb-Primitive sind in Kapiteln per Linter verboten.
+%
+% Damit ist strukturell ausgeschlossen:
+%   - zu kurze Zebra-Streifen (Tabelle schmaler als Box),
+%   - überstehende Zeilen (Content sprengt Box-Breite),
+%   - Drift zwischen Kapiteln (jede Tabelle nutzt dieselben Wrapper).
+
+% ------------------------------------------------------------
+% Spaltentypen (tabularx-X-Varianten)
+% ------------------------------------------------------------
+% Feste Varianten — jede zaehlt als Faktor 1:
+% m{#1}: X-Spalten vertikal mittig (Text + Grafik in einer Zeile).
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}   % linksbuendig, umbricht
+\newcolumntype{C}{>{\Centering\arraybackslash}X}     % zentriert,  umbricht
+\newcolumntype{R}{>{\RaggedLeft\arraybackslash}X}    % rechtsbuendig, umbricht
+
+% Parametrisierte, proportionale Varianten — #1 = relativer Anteil.
+%
+% WICHTIG (tabularx-Konvention): Die Summe aller Faktoren in EINER
+% Tabelle muss = Anzahl X-Spalten sein, damit die Tabelle \linewidth
+% voll ausfuellt. L/C/R zählen als Faktor 1.
+%
+% Beispiele (2 Spalten → Summe 2):
+%   Y{0.6}  Y{1.4}            → 30% / 70%
+%   Y{1}    Y{1}              → 50% / 50% (== L L)
+%   Q{0.8}  Y{1.2}            → 40% / 60%, Spalte 1 rechtsbuendig
+% Beispiele (3 Spalten → Summe 3):
+%   Y{0.6}  Y{1.5}  Y{0.9}    → 20% / 50% / 30%
+%   L       Y{2}    L         → 25% / 50% / 25%
+% Beispiele (4 Spalten → Summe 4):
+%   Y{1.2}  Y{0.8}  Y{1.2}  Y{0.8}  → 30% / 20% / 30% / 20%
+\newcolumntype{Y}[1]{>{\hsize=#1\hsize\RaggedRight\arraybackslash}X} % linksb., proport.
+\newcolumntype{Z}[1]{>{\hsize=#1\hsize\Centering\arraybackslash}X}   % zentriert, proport.
+\newcolumntype{Q}[1]{>{\hsize=#1\hsize\RaggedLeft\arraybackslash}X}  % rechtsb., proport.
+
+% Zentrierte Formel-Spalte (Math-Mode automatisch, proportional)
+\newcolumntype{F}[1]{>{\hsize=#1\hsize\Centering\arraybackslash$}X<{$}}
+
+% ------------------------------------------------------------
+% Luft zwischen Zellinhalt und Zeilenkante
+% ------------------------------------------------------------
+% Der Regler `rows` versprach »mehr Höhe für Zellen mit Brüchen« und konnte
+% das nicht halten: \arraystretch skaliert das Zeilenstreben, und ein Streben
+% ist ein MINDESTmass. Inhalt, der höher ist als es — ein \dfrac, eine Wurzel,
+% ein Bild —, bleibt davon unberührt. Gemessen: an einer Textabelle +22 %
+% Höhe, an derselben Tabelle mit \dfrac-Zellen +5 %.
+%
+% Bündig steht der Inhalt zusätzlich, und zwar unten. Grund ist die
+% Ausrichtung der m-Spalte in array.sty (\ar@align@mcell): Ist eine Zelle
+% höher als ein Streben, senkt sie den Block um
+%   0.5 * (Zellhöhe - Strebenhöhe + \baselineskip)
+% und schiebt ihn damit so weit nach unten, dass die Tiefe der Zelle die Tiefe
+% der Zeile bestimmt — die ganze verbleibende Luft landet oben. Die Formel ist
+% für mehrzeiligen Text gedacht; für eine einzelne hohe Zeile bedeutet sie
+% Unterkante bündig. Im Satz sichtbar: Der Nenner eines \dfrac berührte die
+% Zeilengrenze, in der letzten Zeile lief er aus der Box.
+%
+% Kein strebenbasierter Weg behebt das, weil jede Strebe ein Mindestmass ist
+% und die Zeilentiefe das Maximum aus Strebe und Zellinhalt. Deshalb meldet
+% der Ausrichter die Zelle um \ZSFtableCellPadY höher UND tiefer, ohne sie zu
+% verschieben — dieselbe \raisebox-Geste wie bei \ZSFimage, nur eine Ebene
+% höher und damit für JEDEN hohen Zellinhalt.
+%
+% Nur der hohe Zweig wird angefasst. Kurzer Text läuft weiter über die
+% Grundlinien-Ausrichtung von array.sty; an ihm ändert sich nichts.
+%
+% \ar@align@mcell ist ein Hook und keine Interna-Bastelei: array.sty prüft ihn
+% selbst mit \ifx\ar@align@mcell\@undefined und setzt ihn in anderen Pfaden
+% auf \relax. Die Wache darunter hält den Fall offen, dass eine ältere
+% array.sty ihn gar nicht kennt — dann bleibt alles beim Alten.
+%
+% Bewusst mit TeX-Primitiven und einem EIGENEN Register: \raisebox und die
+% \@tempdim*-Register sind hier belegt — colortbl haelt den Farbueberhang der
+% Zeile in \@tempdimb/\@tempdimc, und eine Zuweisung darauf wuerde die
+% Zeilenflaeche verschieben. Mit \raisebox gemessen: die Zellen kamen leer
+% heraus.
+\newlength{\ZSFtableCellPadY}
+\makeatletter
+\newdimen\ZSF@cellShift
+\@ifundefined{ar@align@mcell}{}{%
+  \def\ar@align@mcell{%
+    \ifdim \ht\ar@mcellbox > \ht\strutbox
+      \ZSF@cellShift\ht\ar@mcellbox
+      \advance\ZSF@cellShift-\ht\@arstrutbox
+      \advance\ZSF@cellShift\baselineskip
+      \ZSF@cellShift=.5\ZSF@cellShift
+      \setbox\ar@mcellbox\hbox{\lower\ZSF@cellShift\box\ar@mcellbox}%
+      \ht\ar@mcellbox\dimexpr\ht\ar@mcellbox+\ZSFtableCellPadY\relax
+      \dp\ar@mcellbox\dimexpr\dp\ar@mcellbox+\ZSFtableCellPadY\relax
+      \box\ar@mcellbox
+    \else
+      \box\ar@mcellbox
+    \fi}%
+}
+\makeatother
+
+% ------------------------------------------------------------
+% Zebra-Streifen (Scannbarkeit)
+% ------------------------------------------------------------
+\newcommand{\ZSFzebraBG}{\TableZebraColor}
+\newcommand{\SetZSFzebraBG}[1]{\renewcommand{\ZSFzebraBG}{#1}}
+%
+%
+%
+\newcommand{\ZSFzebraStart}[1]{\rowcolors{#1}{\BoxPlainBackColor}{\ZSFzebraBG}}
+\newcommand{\ZSFzebraOff}{\rowcolors{1}{}{}}
+
+% ------------------------------------------------------------
+% Header-Highlight
+% ------------------------------------------------------------
+% Konvention:
+%   \ZSFheaderRow   — startet die Header-Zeile und setzt den Zeilen-Hintergrund.
+%   \ZSFhead{<Text>} — umschliesst den Inhalt JEDER Header-Zelle (Farbe + bold).
+%
+% Warum zweigeteilt? In tabularx-X-Spalten propagiert \color, das direkt nach
+% \rowcolor am Zeilenanfang gesetzt wird, NICHT zuverlässig über die
+% &-Grenzen. Die erste Zelle verliert die Farbe, andere behalten sie — je
+% nach Spaltenbreite und Content (siehe SI-Praefix-Bug). Per-Zelle-Wrapper
+% via \ZSFhead{...} ist robust und konsistent.
+\newcommand{\ZSFheaderRowBG}{\chaptercolor}
+\newcommand{\ZSFheaderRowFG}{\chaptercolortext}
+\newcommand{\ZSFheaderRow}{\rowcolor{\ZSFheaderRowBG}}
+% \ZSFInkOwned steht direkt neben dem \color, das den Kontrast setzt: Die
+% Kopfzelle ist eine gesaettigte Flaeche mit eigener Textfarbe, eine
+% Inline-Farbe darin waere unlesbar (40_colors_structure -> Ink-Vertrag).
+\newcommand{\ZSFhead}[1]{{\color{\ZSFheaderRowFG}\ZSFInkOwned\ZSFfontTableHead #1}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@spanBadAlign}[1]{%
+  \PackageError{ZSF}{Unbekannte Ausrichtung '#1' in \string\ZSFspan}%
+    {Gueltig sind L, C und R -- dieselben Buchstaben wie bei den
+     Spaltentypen L/C/R.}%
+}
+\newcommand{\ZSFspan}[3]{%
+  \if L#1\multicolumn{#2}{l}{#3}%
+  \else\if R#1\multicolumn{#2}{r}{#3}%
+  \else\if C#1\multicolumn{#2}{c}{#3}%
+  \else\multicolumn{#2}{c}{\ZSF@spanBadAlign{#1}#3}%
+  \fi\fi\fi
+}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newif\ifZSF@tblHeader
+\newif\ifZSF@tblZebra
+\newcommand{\ZSF@tblFont}{\ZSFfontContent}
+\newcommand{\ZSF@tblStretch}{\ZSFtableArrayStretch}
+\newlength{\ZSF@tblColSep}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@setRows}[1]{%
+  \IfStrEqCase{#1}{%
+    {normal}{\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretch}%
+             \setlength{\ZSFtableCellPadY}{\ZSFDensityTables\ZSFspaceXS}}%
+    {roomy} {\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretchRoomy}%
+             \setlength{\ZSFtableCellPadY}{\ZSFDensityTables\ZSFspaceS}}%
+    {tight} {\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretchTight}%
+             \setlength{\ZSFtableCellPadY}{0pt}}%
+  }%
+}
+\newcommand{\ZSF@setColsep}[1]{%
+  \IfStrEqCase{#1}{%
+    {normal}{\setlength{\ZSF@tblColSep}{\ZSFtableEdgePad}}%
+    {tight} {\setlength{\ZSF@tblColSep}{\ZSFtableEdgePadTight}}%
+  }%
+}
+\newcommand{\ZSF@tblSpec}{}
+\newcommand{\ZSF@beginTabularx}[1]{\tabularx{\linewidth}{#1}}
+\pgfkeys{
+  /zsf/table/.is family, /zsf/table,
+  header/.is if=ZSF@tblHeader,
+  zebra/.is if=ZSF@tblZebra,
+  font/.is choice,
+  font/normal/.code={\renewcommand{\ZSF@tblFont}{\ZSFfontContent}},
+  font/dense/.code={\renewcommand{\ZSF@tblFont}{\ZSFfontContentDense}},
+  % `rows` und `colsep` beantworten ihre Frage EINMAL — die beiden Schlüssel
+  % hier reichen sie nur durch (\ZSF@setRows / \ZSF@setColsep, oben). Das
+  % valuegrid stellt dieselben zwei Fragen und liest dieselbe Antwort; stünde
+  % die Zuordnung an beiden Bausteinen, hiesse `rows=roomy` beim nächsten
+  % Eingriff auf einem der beiden etwas anderes.
+  rows/.is choice,
+  rows/normal/.code={\ZSF@setRows{normal}},
+  rows/roomy/.code ={\ZSF@setRows{roomy}},
+  rows/tight/.code ={\ZSF@setRows{tight}},
+  colsep/.is choice,
+  colsep/normal/.code={\ZSF@setColsep{normal}},
+  colsep/tight/.code ={\ZSF@setColsep{tight}},
+  ZSF@tblDefaults/.style={header=true, zebra=true, font=normal,
+                          rows=normal, colsep=normal},
+}
+\NewDocumentEnvironment{ZSFtable}{O{} m}{%
+  \begingroup
+  % Zellinhalt: ein \ZSFimage hier bekommt Zellen-, nicht Abbildungshoehe.
+  % Explizit und nicht als Default verlassen, damit eine Tabelle IN einer
+  % figbox nicht deren Abbildungsbudget erbt (siehe \ZSF@imgBudget, 60_boxes).
+  \renewcommand{\ZSF@imgBudget}{\ZSFimageMaxHeight}%
+  \pgfkeys{/zsf/table, ZSF@tblDefaults, #1}%
+  \setlength{\tabcolsep}{\ZSF@tblColSep}%
+  \renewcommand{\arraystretch}{\ZSF@tblStretch}%
+  \ZSF@tblFont
+  \ifZSF@tblZebra
+    \ifZSF@tblHeader\ZSFzebraStart{2}\else\ZSFzebraStart{1}\fi
+  \else
+    \ZSFzebraOff
+  \fi
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+  \edef\ZSF@tblSpec{@{\hskip\ZSF@tblColSep}#2@{\hskip\ZSF@tblColSep}}%
+  \expandafter\ZSF@beginTabularx\expandafter{\ZSF@tblSpec}%
+}{%
+  \endtabularx
+  \endgroup
+}
+\makeatother
